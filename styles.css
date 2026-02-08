@@ -827,9 +827,10 @@ footer p {
         width: 100%;
         border-radius: 0;
         justify-content: center;
-        padding: 1rem;
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 0.7rem 1.5rem;
+        /* Reduced padding */
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
     }
 
     .nav-links {
@@ -837,7 +838,8 @@ footer p {
     }
 
     .logo {
-        font-size: 1.4rem;
+        font-size: 1.25rem;
+        /* Reduced logo size */
     }
 
     /* Bottom Nav Visible on Mobile */
@@ -846,19 +848,22 @@ footer p {
         justify-content: space-around;
         align-items: center;
         position: fixed;
-        bottom: 20px;
+        bottom: 12px;
+        /* Adjusted position */
         left: 50%;
         transform: translateX(-50%);
-        width: 90%;
-        max-width: 400px;
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        padding: 0.8rem 1.5rem;
-        border-radius: 50px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        width: 85%;
+        /* Slightly narrower */
+        max-width: 360px;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        padding: 0.5rem 1.2rem;
+        /* Reduced padding */
+        border-radius: 40px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         z-index: 1000;
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.8);
     }
 
     .nav-item {
@@ -867,8 +872,10 @@ footer p {
         align-items: center;
         text-decoration: none;
         color: #9CA3AF;
-        font-size: 0.75rem;
-        gap: 5px;
+        font-size: 0.65rem;
+        /* Reduced font size */
+        gap: 2px;
+        /* Reduced gap */
         font-weight: 500;
         position: relative;
     }
@@ -878,7 +885,8 @@ footer p {
     }
 
     .nav-icon {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        /* Reduced icon size */
     }
 
     /* Padding Adjustments */
