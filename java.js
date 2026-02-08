@@ -133,33 +133,78 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form submission handler
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            // NOTA: Hemos eliminado e.preventDefault() para que el formulario se envíe de forma natural.
-            // Esto soluciona el error "Failed to fetch" cuando se prueba el archivo localmente sin servidor.
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Usamos AJAX para controlar el flujo
 
             const btn = contactForm.querySelector('.btn-submit');
+            const feedbackParams = {
+                originalText: btn.innerText,
+                originalOpacity: btn.style.opacity || '1'
+            };
 
-            // Combinar código de área y número de teléfono antes de enviar
-            const phoneCode = document.getElementById('phone-code')?.value || '';
-            const phoneNumberInput = document.getElementById('phone-number');
+            // 1. Check Cooldown (5 minutes)
+            const COOLDOWN_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+            const lastSubmission = localStorage.getItem('lastSubmissionTime');
 
-            if (phoneNumberInput) {
-                // Modificamos el valor del input para que se envíe completo
-                // Se envía el código y el número juntos
-                // Nota: Al no usar preventDefault, el formulario tomará este nuevo valor inmediatamente
-                // Si el usuario vuelve atrás, verá el número con el código pegado, pero es un compromiso menor por ahora.
-                if (!phoneNumberInput.value.startsWith(phoneCode)) {
-                    // Simple check to avoid double prefixing if they hit back
-                    phoneNumberInput.value = `${phoneCode} ${phoneNumberInput.value}`;
+            if (lastSubmission) {
+                const timePassed = Date.now() - parseInt(lastSubmission);
+                if (timePassed < COOLDOWN_TIME) {
+                    const minutesLeft = Math.ceil((COOLDOWN_TIME - timePassed) / 60000);
+                    alert(`Por favor espere ${minutesLeft} minuto(s) antes de enviar otro formulario.`);
+                    return;
                 }
             }
 
-            // Feedback visual simple (la página se recargará/redirigirá pronto)
+            // 2. Check Terms Acceptance
+            const termsBox = document.getElementById('accept-terms');
+            if (termsBox && !termsBox.checked) {
+                alert('Debe aceptar las condiciones de uso para continuar.');
+                return;
+            }
+
+            // 3. Prepare Data
+            const formData = new FormData(contactForm);
+
+            // 3. UI Feedback
             btn.innerText = 'Enviando...';
             btn.style.opacity = '0.7';
+            btn.disabled = true;
 
-            // Limpiamos localStorage ya que asumimos que se enviará
-            localStorage.removeItem('contactFormData');
+            try {
+                // 4. Send via AJAX (fetch)
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // 5. Success Handling
+                    localStorage.setItem('lastSubmissionTime', Date.now().toString());
+                    localStorage.removeItem('contactFormData'); // Clear draft
+
+                    alert('¡Mensaje enviado con éxito! Nos pondremos en contacto pronto.');
+                    contactForm.reset();
+                    window.location.reload(); // Refresh page as requested
+                } else {
+                    const data = await response.json();
+                    if (Object.hasOwn(data, 'errors')) {
+                        alert(data["errors"].map(error => error["message"]).join(", "));
+                    } else {
+                        alert('Hubo un problema al enviar el formulario. Por favor intente más tarde.');
+                    }
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error de conexión. Verifique su internet e intente de nuevo.');
+                // Restore button
+                btn.innerText = feedbackParams.originalText;
+                btn.style.opacity = feedbackParams.originalOpacity;
+                btn.disabled = false;
+            }
         });
 
         // --- LocalStorage Persistence ---
@@ -189,28 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('name')?.addEventListener('input', saveFormData);
         document.getElementById('phone-number')?.addEventListener('input', saveFormData);
         document.getElementById('service')?.addEventListener('change', saveFormData);
-    }
-
-    // Phone prefix enforcement
-    const phoneCodeInput = document.getElementById('phone-code');
-    if (phoneCodeInput) {
-        phoneCodeInput.addEventListener('input', (e) => {
-            let val = e.target.value;
-            if (!val.startsWith('+')) {
-                val = '+' + val.replace(/\+/g, '');
-            }
-            const digits = val.substring(1).replace(/\D/g, '').substring(0, 3);
-            e.target.value = '+' + digits;
-        });
-
-        phoneCodeInput.addEventListener('keydown', (e) => {
-            if ((e.key === 'Backspace' || e.key === 'Delete') && e.target.selectionStart === 1 && e.target.selectionEnd === 1) {
-                e.preventDefault();
-            }
-            if (e.key === 'ArrowLeft' && e.target.selectionStart === 1) {
-                e.preventDefault();
-            }
-        });
     }
 
     // Navbar scroll effect
