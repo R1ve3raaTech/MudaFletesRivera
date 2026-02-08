@@ -111,12 +111,14 @@ body {
 
 /* Hero Section */
 .hero {
-    height: 95vh;
+    min-height: 100vh;
+    /* Fill the screen */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 0 2rem;
+    padding: 120px 2rem 5rem;
+    /* More top padding for the floating nav */
     /* High-quality Unsplash Flag Background with a darkening overlay */
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
         url('https://images.unsplash.com/photo-1590483734724-388175d74b6e?auto=format&fit=crop&w=1920&q=80');
