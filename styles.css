@@ -578,9 +578,12 @@ body {
 .contact-form select:focus {
     outline: none;
     border-color: var(--primary-brand);
-    background: #FFFFFF;
-    box-shadow: 0 4px 20px rgba(0, 82, 204, 0.1);
-    transform: translateY(-2px);
+}
+
+.card:hover .icon {
+    transform: scale(1.1) rotate(3deg);
+    background: white;
+    box-shadow: 0 15px 30px rgba(0, 82, 204, 0.1);
 }
 
 .btn-submit {
