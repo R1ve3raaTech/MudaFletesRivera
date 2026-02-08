@@ -28,10 +28,13 @@
             TransLogistic CR
         </div>
         <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#servicios">Servicios</a></li>
             <li><a href="#contacto">Contacto</a></li>
             <li><a href="condiciones.html">Condiciones</a></li>
+            <li class="nav-whatsapp-item">
+                <a href="https://wa.me/50670818306" target="_blank" class="nav-whatsapp-link">
+                    <span class="whatsapp-icon">💬</span> WhatsApp
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -81,72 +84,15 @@
         </div>
     </section>
 
+
+
     <section id="nosotros" class="why-us">
         <div class="section-header">
             <h2>¿Por qué elegirnos?</h2>
+            <p>Nos esforzamos por ofrecer un servicio de excelencia basado en valores sólidos y una atención al detalle
+                inigualable.</p>
         </div>
 
-        <div class="founder-bio-container">
-            <div class="founder-photo">
-                <!-- Replace 'src' with the actual photo of your dad -->
-                <img src="assets/WhatsApp Image 2026-02-07 at 21.14.29.jpeg" alt="Fundador de TransLogistic CR">
-                <div class="photo-placeholder">PAPA</div>
-            </div>
-            <div class="founder-info">
-                <div class="founder-icon">👨‍✈️</div>
-                <h3>Experiencia que Conoce su Camino</h3>
-                <p>
-                    "Detrás de TransLogistic CR hay una historia de más de 20 años recorriendo cada rincón de nuestra
-                    querida Costa Rica. Mi padre, el fundador de este proyecto, no solo conduce un camión; él conoce
-                    cada ruta, cada atajo y cada cantón del territorio nacional. Su experiencia es nuestro pilar
-                    fundamental: desde las costas hasta las montañas, ha dedicado aproximadamente dos décadas a
-                    transportar sueños y
-                    pertenencias con la sabiduría que solo dan los años de carretera. Confiar en nosotros es confiar en
-                    alguien que realmente conoce su trabajo, su camino y su gente."
-                </p>
-            </div>
-        </div>
-
-        <div class="section-header" style="margin-top: 6rem;">
-            <h2>Nuestra Flota</h2>
-            <p>Conozca el equipo que mueve su confianza.</p>
-        </div>
-
-        <div class="truck-gallery">
-            <div class="gallery-item">
-                <img src="assets/jacó.jpeg" alt="Camión TransLogistic 1">
-
-                <div class="location-tag">📍 Jacó, Puntarenas</div>
-            </div>
-            <div class="gallery-item">
-                <img src="assets/camion2.jpg" alt="Camión TransLogistic 2">
-
-                <div class="location-tag">📍 Alajuela</div>
-            </div>
-            <div class="gallery-item">
-                <img src="assets/camion3.jpg" alt="Camión TransLogistic 3">
-
-                <div class="location-tag">📍 Heredia</div>
-            </div>
-            <div class="gallery-item">
-                <img src="assets/camion4.jpg" alt="Camión TransLogistic 4">
-
-                <div class="location-tag">📍 Cartago</div>
-            </div>
-            <div class="gallery-item">
-                <img src="assets/camion5.jpg" alt="Camión TransLogistic 5">
-
-                <div class="location-tag">📍 Ruta</div>
-            </div>
-            <div class="gallery-item">
-                <img src="assets/camion6.jpg" alt="Camión TransLogistic 6">
-
-                <div class="location-tag">📍 Operativo</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="values-area">
         <div class="values-showcase">
             <div class="value-item">
                 <div class="value-icon">⏱️</div>
@@ -180,6 +126,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     <section class="direct-contact">
@@ -219,18 +166,19 @@
             <form class="contact-form" id="contactForm" action="https://formspree.io/f/xpqjzprd" method="POST">
                 <div class="form-group">
                     <label for="name">Nombre</label>
-                    <input type="text" id="name" name="name" required placeholder="Tu nombre completo">
+                    <input type="text" id="name" name="name" required placeholder="Tu nombre">
                 </div>
                 <div class="form-group">
                     <label for="phone-number">Teléfono</label>
-                    <input type="tel" id="phone-number" name="phone" required placeholder="8888-8888">
+                    <input type="tel" id="phone-number" name="phone" required placeholder="1234 5678" pattern="[0-9]*"
+                        inputmode="numeric">
                 </div>
                 <div class="form-group">
                     <label for="service">Interés</label>
                     <select id="service" name="service">
                         <option value="transporte">Transporte</option>
                         <option value="mudanza">Mudanza</option>
-                        <option value="materiales">Materiales de Construcción (bondex, fraguas, selladores)</option>
+                        <option value="materiales">Materiales (bondex, fraguas, selladores, etc)</option>
                     </select>
                 </div>
                 <div class="form-group checkbox-group">
@@ -251,23 +199,21 @@
 
     <!-- Bottom Navigation for Mobile -->
     <nav class="bottom-nav">
-        <a href="#inicio" class="nav-item">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-text">Inicio</span>
-        </a>
-        <a href="#servicios" class="nav-item">
-            <span class="nav-icon">🚛</span>
-            <span class="nav-text">Servicios</span>
-        </a>
         <a href="condiciones.html" class="nav-item">
             <span class="nav-icon">📜</span>
             <span class="nav-text">Términos</span>
+        </a>
+        <a href="https://wa.me/50670818306" target="_blank" class="nav-item whatsapp-nav">
+            <span class="nav-icon">💬</span>
+            <span class="nav-text">Escribir</span>
         </a>
         <a href="#contacto" class="nav-item active">
             <span class="nav-icon">📞</span>
             <span class="nav-text">Cotizar</span>
         </a>
     </nav>
+
+
 
     <script src="java.js?v=3"></script>
 </body>

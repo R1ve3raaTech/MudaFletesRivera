@@ -78,6 +78,7 @@ body {
 .nav-links {
     list-style: none;
     display: flex;
+    align-items: center;
     gap: 2.5rem;
 }
 
@@ -487,136 +488,55 @@ section {
     }
 }
 
+/* Integrated WhatsApp Button */
+.nav-whatsapp-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: #25d366;
+    color: white !important;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.2);
+}
+
+.nav-whatsapp-link:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3);
+}
+
+.nav-whatsapp-link .whatsapp-icon {
+    font-size: 1.2rem;
+}
+
+/* Mobile Bottom Nav Adjustment */
+@media (max-width: 768px) {
+    .bottom-nav {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .whatsapp-nav .nav-icon {
+        color: #25d366;
+    }
+
+    .nav-whatsapp-item {
+        display: none;
+        /* Hide top nav version on mobile if using bottom nav */
+    }
+}
+
 /* Contact */
 .contact {
     padding: 8rem 5%;
     background: var(--bg-color);
 }
 
-/* Biography Refinement */
-.founder-bio-container {
-    display: flex;
-    align-items: center;
-    gap: 4rem;
-    max-width: 1000px;
-    margin: 0 auto 4rem;
-    background: rgba(0, 82, 204, 0.03);
-    padding: 4rem;
-    border-radius: 40px;
-    border-left: 8px solid var(--primary-brand);
-    box-shadow: var(--shadow-card);
-}
 
-.founder-photo {
-    flex-shrink: 0;
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid white;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    position: relative;
-    background: #e5e7eb;
-}
-
-.founder-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2;
-    position: relative;
-}
-
-.photo-placeholder {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: 700;
-    color: #9ca3af;
-    letter-spacing: 2px;
-}
-
-.founder-info {
-    flex: 1;
-}
-
-.founder-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.founder-info h3 {
-    font-size: 2.2rem;
-    color: var(--primary-brand);
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-}
-
-.founder-info p {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    font-style: italic;
-}
-
-/* Truck Gallery */
-.truck-gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 3rem auto;
-}
-
-.gallery-item {
-    border-radius: 20px;
-    overflow: hidden;
-    aspect-ratio: 4/3;
-    position: relative;
-    background: #e5e7eb;
-    box-shadow: var(--shadow-card);
-    transition: var(--transition-smooth);
-}
-
-.gallery-item:hover {
-    transform: scale(1.03);
-    box-shadow: var(--shadow-hover);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.gallery-placeholder {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #9ca3af;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.location-tag {
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-    background: rgba(0, 82, 204, 0.85);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    backdrop-filter: blur(4px);
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
 
 /* Checkbox Style Refinement */
 .checkbox-group {
@@ -626,7 +546,7 @@ section {
     border: 1px solid #e5e7eb;
     margin-bottom: 2rem;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
 }
 
@@ -634,7 +554,6 @@ section {
     width: 24px !important;
     height: 24px !important;
     min-width: 24px;
-    margin-top: 3px;
     accent-color: var(--primary-brand);
     cursor: pointer;
 }
@@ -754,23 +673,7 @@ section {
     box-shadow: 0 15px 30px rgba(0, 82, 204, 0.4);
 }
 
-@media (max-width: 900px) {
-    .founder-bio-container {
-        flex-direction: column;
-        padding: 3rem 2rem;
-        text-align: center;
-        gap: 2rem;
-    }
 
-    .founder-photo {
-        width: 200px;
-        height: 200px;
-    }
-
-    .founder-info h3 {
-        font-size: 1.8rem;
-    }
-}
 
 
 /* End of editorial styles */

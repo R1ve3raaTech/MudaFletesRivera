@@ -232,7 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Save data on change
         document.getElementById('name')?.addEventListener('input', saveFormData);
-        document.getElementById('phone-number')?.addEventListener('input', saveFormData);
+        document.getElementById('phone-number')?.addEventListener('input', (e) => {
+            // Remove any non-numeric characters
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            saveFormData();
+        });
         document.getElementById('service')?.addEventListener('change', saveFormData);
     }
 
