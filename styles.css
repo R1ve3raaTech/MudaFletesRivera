@@ -378,11 +378,19 @@ body {
 /* Direct Contact Section */
 .direct-contact {
     padding: 8rem 5%;
-    background: var(--gradient-hero);
-    color: var(--on-brand);
+    background: #0042a5;
+    /* Solid professional blue */
+    color: #FFFFFF;
     text-align: center;
     position: relative;
     overflow: hidden;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.direct-contact .section-header h2,
+.direct-contact .section-header p {
+    color: #FFFFFF !important;
 }
 
 .numbers-grid {
