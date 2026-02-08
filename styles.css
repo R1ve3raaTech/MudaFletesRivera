@@ -195,14 +195,32 @@ body {
     padding: 6rem 5%;
 }
 
-.section-header {
-    text-align: center;
-    margin-bottom: 5rem;
+/* Sections Common */
+section {
+    width: 100%;
+    position: relative;
+}
+
+.why-us {
+    padding: 8rem 5%;
+    background-color: var(--surface-color);
+}
+
+.values-area {
+    padding: 6rem 5%;
+    background-color: var(--bg-color);
+}
+
+.why-us .section-header:not(:first-child) {
+    margin-top: 6rem;
 }
 
 .section-header {
     text-align: center;
     margin-bottom: 4rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .section-header h2 {
