@@ -221,124 +221,122 @@ body {
     padding: 8rem 5%;
 }
 
-.cards-container {
+/* Values Showcase Redesign */
+.values-showcase {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    justify-content: center;
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Bento Grid Specifics */
-.bento-grid {
-    grid-template-columns: repeat(1, 1fr);
-    /* Mobile default */
-}
-
-@media (min-width: 768px) {
-    .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .bento-grid .span-col-2 {
-        grid-column: span 2;
-    }
-}
-
-@media (min-width: 1024px) {
-    .bento-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .bento-grid .span-col-2 {
-        grid-column: span 2;
-    }
-
-    /* Make the middle two cards span 1 col each, so 2+1+1 (needs 4 cols) or 2+2 layout? 
-       Let's try a 2-column grid where some span 2 and others 1. 
-       Actually, a 2-column grid is safer.
-       Row 1: [Puntualidad (2)]
-       Row 2: [Trato] [Cuidado]
-       Row 3: [Precio (2)]
-    */
-    .bento-grid {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 900px;
-        margin: 0 auto;
-    }
-}
-
-.cards-container.flex-center {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.cards-container.flex-center .card {
-    flex: 1 1 320px;
-    max-width: 400px;
-}
-
-.card {
+.value-item {
     background: var(--surface-color);
-    padding: 3rem 2rem;
-    border-radius: 24px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    transition: var(--transition-smooth);
+    padding: 3rem;
+    border-radius: 32px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
-.card .icon {
-    display: inline-flex;
-    margin-bottom: 1.5rem;
+.value-item:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 82, 204, 0.1);
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: var(--accent-color);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-}
-
-.card:hover::before {
-    transform: scaleX(1);
-}
-
-.icon {
+.value-icon {
     font-size: 3rem;
-    margin-bottom: 1.5rem;
-    background: var(--bg-color);
-    border: 1px solid var(--accent-color);
-    display: inline-flex;
-    padding: 1rem;
-    border-radius: 50%;
-    color: var(--primary-brand);
+    margin-bottom: 2rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 24px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: transform 0.3s ease;
 }
 
-.card h3 {
+.value-item:hover .value-icon {
+    transform: scale(1.1) rotate(5deg);
+    background: white;
+}
+
+.value-item h3 {
     font-size: 1.6rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
+    color: var(--primary-brand);
+    margin-bottom: 1.2rem;
+    font-weight: 700;
 }
 
-.card p {
-    color: var(--text-secondary);
-    font-size: 1rem;
+.value-item p {
+    font-size: 1.05rem;
     line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+/* Highlight Card Style */
+.value-item.highlight {
+    background: linear-gradient(145deg, #ffffff, #fdfdfd);
+    border: 2px solid var(--primary-brand);
+    grid-column: span 2;
+}
+
+@media (max-width: 1024px) {
+    .value-item.highlight {
+        grid-column: span 1;
+    }
+}
+
+.value-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.link-secondary {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.link-secondary:hover {
+    color: var(--primary-brand);
+    border-bottom-color: var(--primary-brand);
+}
+
+.btn-minimal {
+    background: var(--primary-brand);
+    color: white;
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-minimal:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 82, 204, 0.3);
+}
+
+/* Contact Section Baseline */
+.contact {
+    padding: 8rem 5%;
+    background: var(--bg-color);
 }
 
 /* Contact */
