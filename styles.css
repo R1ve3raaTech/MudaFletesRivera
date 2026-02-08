@@ -777,6 +777,7 @@ footer p {
     /* Sections */
     .services,
     .why-us,
+    .values-showcase,
     .direct-contact {
         padding: 3rem 1.5rem !important;
     }
@@ -785,25 +786,31 @@ footer p {
         font-size: 2rem;
     }
 
-    /* Cards */
-    .cards-container {
-        grid-template-columns: 1fr;
+    /* Cards & Values */
+    .cards-container,
+    .values-showcase {
+        grid-template-columns: 1fr !important;
         gap: 1.5rem;
     }
 
-    .bento-grid {
-        grid-template-columns: 1fr !important;
+    .value-item {
+        padding: 2rem;
+        border-radius: 24px;
     }
 
-    .bento-grid .span-col-2 {
+    .value-item.highlight {
         grid-column: span 1 !important;
     }
 
-    .card {
-        padding: 2rem;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-        /* Softer shadow */
-        border: 1px solid rgba(0, 0, 0, 0.03);
+    .value-actions {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .btn-minimal {
+        width: 100%;
+        text-align: center;
     }
 
     /* Pretty Form Styles */
