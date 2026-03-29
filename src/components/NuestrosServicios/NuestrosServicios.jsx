@@ -1,0 +1,77 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Truck, Package, HardHat, ShieldCheck, Clock, MapPin } from 'lucide-react';
+import styles from './NuestrosServicios.module.css';
+
+const ServiceCard = ({ icon: Icon, title, description, benefits, index }) => {
+    return (
+        <motion.div 
+            className={styles.card}
+            initial={{ opacity: 0, y: 50, rotateX: 20 }}
+            whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+            viewport={{ once: true }}
+            whileHover={{ y: -15, scale: 1.02 }}
+            transition={{ delay: index * 0.1, duration: 0.6, type: "spring" }}
+        >
+            <div className={styles.iconContainer}>
+                <Icon size={48} className={styles.icon} />
+            </div>
+            <h3>{title}</h3>
+            <p className={styles.desc}>{description}</p>
+            <ul className={styles.benefits}>
+                {benefits.map((b, i) => (
+                    <li key={i}>✨ {b}</li>
+                ))}
+            </ul>
+            <div className={styles.cardAccent}></div>
+        </motion.div>
+    );
+};
+
+const Services = () => {
+    const services = [
+        {
+            icon: Truck,
+            title: "Logística de Carga",
+            description: "Transportamos sus objetos con todo el cuidado del mundo.",
+            benefits: ["Carga Asegurada", "Seguimiento en Tiempo Real", "Conductores Expertos"]
+        },
+        {
+            icon: Package,
+            title: "Mudanzas Profesionales",
+            description: "Transportamos su mudanza con gran cuidado y seguridad a todo el territorio nacional.",
+            benefits: ["Embalaje de Protección", "Carga y Descarga", "Desarmado de Muebles"]
+        },
+        {
+            icon: HardHat,
+            title: "Productos Especializados",
+            description: "Distribuímos productos de construcción de alta resistencia para su hogar u oficina.",
+            benefits: ["Precios de Fábrica", "Entrega Inmediata", "Asesoría Técnica"]
+        }
+    ];
+
+    return (
+        <section id="servicios" className={styles.services}>
+            <div className={styles.sectionHeader}>
+                <motion.span 
+                    className={styles.topLabel}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                >
+                    Nuestros Servicios
+                </motion.span>
+                <h2>Compromiso y Seguridad Garantizada</h2>
+                <div className={styles.headerLine}></div>
+                <p>No solo transportamos carga; movemos su confianza con gran responsabilidad y puntualidad.</p>
+            </div>
+
+            <div className={styles.cardsGrid}>
+                {services.map((service, index) => (
+                    <ServiceCard key={index} {...service} index={index} />
+                ))}
+            </div>
+        </section>
+    );
+};
+
+export default Services;

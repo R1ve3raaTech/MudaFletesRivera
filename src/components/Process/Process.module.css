@@ -1,0 +1,90 @@
+.process {
+    padding: 8rem 5%;
+    background-color: var(--surface-color);
+}
+
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 6rem;
+}
+
+.sectionHeader h2 {
+    font-size: 3rem;
+    color: var(--primary-brand);
+    margin-bottom: 1rem;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 100px;
+}
+
+.stepItem {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 4rem;
+    position: relative;
+}
+
+.stepCircle {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    background: var(--accent-color);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.line {
+    position: absolute;
+    left: 35px;
+    top: 70px;
+    width: 2px;
+    height: calc(100% + 4rem - 70px);
+    background: rgba(128, 128, 128, 0.2);
+    z-index: 1;
+}
+
+.stepItem:last-child .line {
+    display: none;
+}
+
+.stepContent h3 {
+    font-size: 1.8rem;
+    color: var(--primary-brand);
+    margin-bottom: 0.8rem;
+}
+
+.stepContent p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stepItem {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .line {
+        display: none;
+    }
+}

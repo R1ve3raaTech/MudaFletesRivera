@@ -1,0 +1,102 @@
+.directContact {
+    padding: 8rem 5%;
+    background: #0042a5;
+    color: #FFFFFF;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.sectionHeader h2,
+.sectionHeader p {
+    color: #FFFFFF !important;
+}
+
+.sectionHeader h2 {
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+.numbersGrid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-top: 4rem;
+}
+
+.numberItem {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 2.5rem 4rem;
+    border-radius: 80px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 320px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.numberItem:hover {
+    transform: translateY(-10px) scale(1.02);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--accent-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.numberLabel {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.phoneLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.phoneLinks a {
+    transition: var(--transition-smooth);
+    display: inline-block;
+    color: #FFFFFF;
+    font-size: 2.4rem;
+    font-weight: 800;
+    text-decoration: none;
+    line-height: 1.1;
+}
+
+.phoneLinks a:hover {
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .directContact {
+        padding: 4rem 1.5rem !important;
+    }
+
+    .numbersGrid {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .numberItem {
+        padding: 2rem;
+        min-width: 100%;
+        border-radius: 40px;
+    }
+
+    .phoneLinks a {
+        font-size: 2rem;
+    }
+}
