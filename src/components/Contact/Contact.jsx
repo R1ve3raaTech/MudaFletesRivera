@@ -199,7 +199,7 @@ const ContactForm = () => {
                 <label htmlFor="name">Nombre completo</label>
                 <input
                     id="name" name="name" type="text" required
-                    placeholder="Juan Pérez"
+                    placeholder=""
                     value={formData.name}
                     onChange={handleChange}
                     className={styles.input}
@@ -213,7 +213,7 @@ const ContactForm = () => {
                     <span className={styles.prefix}>🇨🇷 +506</span>
                     <input
                         id="phone" name="phone" type="tel" required
-                        placeholder="7081 8306"
+                        placeholder=""
                         value={formData.phone}
                         onChange={handlePhoneChange}
                         inputMode="numeric"

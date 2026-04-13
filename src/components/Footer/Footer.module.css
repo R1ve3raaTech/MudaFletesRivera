@@ -29,13 +29,14 @@
 }
 
 .truckIcon {
-    width: 36px;
-    height: 36px;
-    transition: filter 0.3s ease;
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
 }
 
 [data-theme='dark'] .truckIcon {
-    filter: brightness(0) invert(1);
+    filter: drop-shadow(0 2px 10px rgba(255, 255, 255, 0.1));
 }
 
 .brand p {
