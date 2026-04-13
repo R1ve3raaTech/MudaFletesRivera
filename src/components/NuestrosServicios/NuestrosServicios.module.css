@@ -135,10 +135,38 @@
 
 @media (max-width: 768px) {
     .services {
-        padding: 5rem 1.5rem;
+        padding: 4rem 1.2rem;
+    }
+
+    .sectionHeader {
+        margin-bottom: 3.5rem;
     }
 
     .sectionHeader h2 {
-        font-size: 2.22rem;
+        font-size: 2rem;
+    }
+
+    .sectionHeader p {
+        font-size: 1.05rem;
+    }
+
+    .cardsGrid {
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 2.5rem 1.5rem;
+        border-radius: 30px;
+    }
+
+    .iconContainer {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 1.5rem;
+    }
+
+    .card h3 {
+        font-size: 1.5rem;
     }
 }

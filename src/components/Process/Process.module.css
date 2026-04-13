@@ -71,6 +71,18 @@
 }
 
 @media (max-width: 768px) {
+    .process {
+        padding: 4rem 1.2rem;
+    }
+
+    .sectionHeader {
+        margin-bottom: 3rem;
+    }
+
+    .sectionHeader h2 {
+        font-size: 2rem;
+    }
+
     .container {
         padding-left: 0;
         display: flex;
@@ -81,7 +93,24 @@
 
     .stepItem {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1.2rem;
+        margin-bottom: 3rem;
+    }
+
+    .stepCircle {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        font-size: 1.2rem;
+    }
+
+    .stepContent h3 {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stepContent p {
+        font-size: 0.95rem;
     }
 
     .line {
