@@ -29,8 +29,7 @@
 }
 
 [data-theme='dark'] .heroBg {
-    background-image: url('../../assets/mudatransportes.png');
-    background-size: cover;
+    opacity: 0.6;
 }
 
 .overlay {

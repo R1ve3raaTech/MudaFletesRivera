@@ -177,7 +177,7 @@ const ContactForm = () => {
                     <CheckCircle size={72} className={styles.successIcon} />
                 </motion.div>
                 <h3>¡Mensaje enviado!</h3>
-                <p>Nos pondremos en contacto pronto. Gracias por confiar en MudaTransportesRivera.</p>
+                <p>Nos pondremos en contacto pronto. Gracias por confiar en MudaFletesRivera.</p>
                 <button className={styles.btnReset} onClick={() => setStatus('idle')}>Enviar otro</button>
             </motion.div>
         );

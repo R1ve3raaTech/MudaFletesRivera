@@ -14,8 +14,8 @@ const Footer = () => (
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             >
                 <div className={styles.logo}>
-                    <img src={logoImg} className={styles.truckIcon} alt="MudaTransportesRivera Logo" />
-                    MudaTransportesRivera
+                    <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
+                    MudaFletesRivera
                 </div>
                 <p>Soluciones de transporte, mudanzas y materiales de construcción en todo Costa Rica.</p>
             </motion.div>
@@ -63,7 +63,7 @@ const Footer = () => (
         </div>
 
         <div className={styles.bottom}>
-            <p>© 2026 MudaTransportesRivera. Todos los derechos reservados.</p>
+            <p>© 2026 MudaFletesRivera. Todos los derechos reservados.</p>
             <Link to="/condiciones" className={styles.bottomLink}>Condiciones de Uso</Link>
         </div>
     </footer>

@@ -30,8 +30,8 @@ const Navbar = () => {
     return (
         <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
             <div className={styles.logo}>
-                <img src={logoImg} className={styles.truckIcon} alt="MudaTransportesRivera Logo" />
-                MudaTransportesRivera
+                <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
+                MudaFletesRivera
             </div>
             <ul className={styles.navLinks}>
                 <li><a href="#contacto">Contacto</a></li>

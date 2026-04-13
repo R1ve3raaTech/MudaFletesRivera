@@ -11,7 +11,7 @@ const Conditions = () => {
                 <div className={styles.termsSection}>
                     <h2>1. Introducción</h2>
                     <p>
-                        Bienvenido a MudaTransportesRivera. Al utilizar nuestros servicios de transporte, mudanzas y los acabados 
+                        Bienvenido a MudaFletesRivera. Al utilizar nuestros servicios de transporte, mudanzas y los acabados 
                         de adhesivos especializados, usted acepta cumplir con los siguientes términos y condiciones.
                     </p>
                 </div>
@@ -30,7 +30,7 @@ const Conditions = () => {
                     <h2>3. Venta de Materiales</h2>
                     <p>
                         Los adhesivos y pegamentos especializados (tipo Bondex) deben utilizarse siguiendo estrictamente las 
-                        instrucciones del fabricante. MudaTransportesRivera solamente transporta el producto, no lo fabrica ni lo 
+                        instrucciones del fabricante. MudaFletesRivera solamente transporta el producto, no lo fabrica ni lo 
                         empaca, mucho menos se responsabiliza por aplicaciones incorrectas e indebido de los productos.
                     </p>
                 </div>
