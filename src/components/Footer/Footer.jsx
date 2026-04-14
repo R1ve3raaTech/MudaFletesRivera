@@ -53,8 +53,8 @@ const Footer = () => (
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:translogisticccr@gmail.com">
-                            <Mail size={18} /> translogisticccr@gmail.com
+                        <a href="mailto:info@mudafletesrivera.com">
+                            <Mail size={18} /> info@mudafletesrivera.com
                         </a>
                     </li>
                     <li><MapPin size={18} /> San José, Costa Rica</li>

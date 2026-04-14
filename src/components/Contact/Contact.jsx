@@ -46,7 +46,7 @@ const ContactInfo = () => (
             {[
                 { Icon: Phone, label: "Llámenos y WhatsApp", value: "+506 7081 8306", href: "https://wa.me/50670818306" },
                 { Icon: Phone, label: "Logística & Despacho",  value: "+506 7132 8432", href: "https://wa.me/50671328432" },
-                { Icon: Mail, label: "Correo electrónico",    value: "translogisticccr@gmail.com", href: "mailto:translogisticccr@gmail.com" },
+                { Icon: Mail, label: "Correo electrónico",    value: "info@mudafletesrivera.com", href: "mailto:info@mudafletesrivera.com" },
                 { Icon: MapPin, label: "Ubicación",            value: "San José, Costa Rica" },
             ].map(({ Icon, label, value, href }, i) => (
                 <motion.div
