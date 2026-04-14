@@ -27,6 +27,14 @@
     --on-brand: #FFFFFF;
 }
 
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
 html {
     scroll-padding-top: 90px;
 }
@@ -36,9 +44,13 @@ html {
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
-    max-width: 100%;
-    -webkit-tap-highlight-color: transparent; /* Remove mobile tap blue highlight */
+    -webkit-tap-highlight-color: transparent;
 }
+
+img, video, canvas, svg {
+    max-width: 100%;
+}
+
 
 body {
     font-family: 'Outfit', sans-serif;
@@ -53,6 +65,12 @@ body {
 
 #root {
     width: 100%;
+}
+
+#app-container {
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
 }
 
 section {
