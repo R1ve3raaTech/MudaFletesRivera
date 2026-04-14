@@ -25,14 +25,14 @@ const BottomNav = () => {
                 <span className={styles.navIcon}><MessageCircle size={24} /></span>
                 <span className={styles.navText}>Escribir</span>
             </a>
-            <a 
-                href="#contacto" 
+            <Link 
+                to="/#contacto" 
                 className={`${styles.navItem} ${active === 'cotizar' ? styles.active : ''}`}
                 onClick={() => setActive('cotizar')}
             >
                 <span className={styles.navIcon}><Phone size={20} /></span>
                 <span className={styles.navText}>Cotizar</span>
-            </a>
+            </Link>
         </nav>
     );
 };
