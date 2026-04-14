@@ -43,7 +43,7 @@ const Navbar = () => {
             </div>
 
             <ul className={styles.navLinks}>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><Link to="/#contacto">Contacto</Link></li>
                 <li><Link to="/condiciones">Condiciones</Link></li>
                 <li className={styles.desktopOnly}>
                     <button onClick={toggleTheme} className={styles.themeToggle} aria-label="Cambiar Tema">
