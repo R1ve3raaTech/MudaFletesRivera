@@ -2,10 +2,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.2rem 3rem;
+    padding: 0.8rem 1.5rem 0.8rem 2.5rem;
     position: fixed;
-    width: 90%;
-    max-width: 1300px;
+    width: 92%;
+    max-width: 1400px;
     left: 50%;
     transform: translateX(-50%);
     top: 1.5rem;
@@ -26,7 +26,7 @@
 
 .scrolled {
     top: 1rem;
-    padding: 0.9rem 3rem;
+    padding: 0.6rem 1.2rem 0.6rem 2rem;
     background: rgba(255, 255, 255, 0.9);
     width: 95%;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
@@ -38,16 +38,17 @@
 
 .logo {
     font-weight: 800;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: var(--primary-brand);
     display: flex;
     align-items: center;
     gap: 0.8rem;
     letter-spacing: -1px;
+    white-space: nowrap;
 }
 
 .truckIcon {
-    height: 48px;
+    height: 42px;
     width: auto;
     object-fit: contain;
     transition: all 0.3s ease;
@@ -61,17 +62,18 @@
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
 }
 
 .navLinks a {
     text-decoration: none;
     color: var(--text-primary);
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     padding: 0.5rem 0;
     position: relative;
+    white-space: nowrap;
 }
 
 .navLinks a:hover {
@@ -122,18 +124,19 @@
 }
 
 .navWhatsappLink {
-    padding: 0.85rem 2.2rem;
+    padding: 0.75rem 1.8rem;
     background: linear-gradient(135deg, #34E073 0%, #1FAF53 100%);
     color: white !important;
     border: none;
     border-radius: 100px;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 800;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.25);
+    gap: 0.6rem;
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2);
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .navWhatsappLink::after {
