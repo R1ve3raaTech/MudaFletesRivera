@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Truck, Package, ShieldCheck } from 'lucide-react';
+import { Truck, Package, ShieldCheck, MessageCircle } from 'lucide-react';
 import styles from './Hero.module.css';
 
 const FloatingIcon = ({ icon: Icon, delay, className }) => (
