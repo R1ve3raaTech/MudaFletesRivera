@@ -8,7 +8,6 @@ import WhyUs from './components/whyus/WhyUs';
 import Process from './components/Process/Process';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
-import BottomNav from './components/BottomNav/BottomNav';
 import Conditions from './components/Conditions/Conditions';
 
 // Component to handle scroll behavior
@@ -58,7 +57,6 @@ const App = () => {
                     </Routes>
                 </main>
                 <Footer />
-                <BottomNav />
             </div>
         </Router>
     );
