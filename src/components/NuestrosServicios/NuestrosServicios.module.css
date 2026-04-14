@@ -109,6 +109,7 @@
     margin-top: 2rem;
     border-top: 1px solid rgba(128, 128, 128, 0.1);
     padding-top: 2rem;
+    flex-grow: 1; /* Esto hace que la lista tome el espacio disponible */
 }
 
 .benefits li {
@@ -119,8 +120,9 @@
 }
 
 .cardActions {
-    margin-top: 2.5rem;
+    margin-top: auto; /* Esto empuja el botón al fondo siempre */
     width: 100%;
+    padding-top: 2rem;
 }
 
 .btnService {
