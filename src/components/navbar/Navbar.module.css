@@ -145,6 +145,21 @@
     box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
 }
 
+.navMain {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.mobileActions {
+    display: none;
+}
+
+.desktopOnly {
+    display: block;
+}
+
 @media (max-width: 1024px) {
     .navLinks { gap: 1.5rem; }
 }
@@ -157,9 +172,36 @@
         transform: none !important;
         width: 100% !important;
         border-radius: 0;
-        padding: 0.9rem 1.5rem;
-        background: #ffffff;
+        padding: 0.8rem 1.2rem;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
     }
+
+    [data-theme='dark'] .navbar {
+        background: rgba(15, 23, 42, 0.9);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
     .navLinks { display: none; }
-    .logo { font-size: 1.35rem; }
+
+    .mobileActions {
+        display: flex;
+        align-items: center;
+    }
+
+    .desktopOnly {
+        display: none;
+    }
+
+    .logo { 
+        font-size: 1.2rem; 
+        gap: 0.5rem;
+    }
+
+    .truckIcon {
+        height: 38px;
+    }
 }

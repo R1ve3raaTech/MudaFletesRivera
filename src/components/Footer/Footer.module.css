@@ -109,7 +109,8 @@
     .brand { grid-column: 1 / -1; }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer { padding-top: 4rem; }
     .bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
 }

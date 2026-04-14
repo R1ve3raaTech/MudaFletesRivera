@@ -181,6 +181,7 @@
     .header h2 { font-size: 2rem; }
     .header p { font-size: 1rem; }
     .header { margin-bottom: 3.5rem; }
+    .grid { grid-template-columns: 1fr; gap: 1.5rem; }
     .card { padding: 2.2rem 1.5rem; border-radius: 30px; }
     .iconBg { width: 60px; height: 60px; margin-bottom: 1.5rem; border-radius: 18px; }
     .card h3 { font-size: 1.35rem; }

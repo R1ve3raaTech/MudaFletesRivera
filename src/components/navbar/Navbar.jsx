@@ -29,14 +29,23 @@ const Navbar = () => {
 
     return (
         <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
-            <div className={styles.logo}>
-                <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
-                MudaFletesRivera
+            <div className={styles.navMain}>
+                <div className={styles.logo}>
+                    <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
+                    <span>MudaFletesRivera</span>
+                </div>
+                
+                <div className={styles.mobileActions}>
+                    <button onClick={toggleTheme} className={styles.themeToggle} aria-label="Cambiar Tema">
+                        {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                    </button>
+                </div>
             </div>
+
             <ul className={styles.navLinks}>
                 <li><a href="#contacto">Contacto</a></li>
                 <li><Link to="/condiciones">Condiciones</Link></li>
-                <li>
+                <li className={styles.desktopOnly}>
                     <button onClick={toggleTheme} className={styles.themeToggle} aria-label="Cambiar Tema">
                         {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
                     </button>
