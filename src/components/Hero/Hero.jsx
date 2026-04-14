@@ -45,7 +45,7 @@ const Hero = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.8, duration: 0.8 }}
                 >
-                    Transportes y Mudanzas <br /> <span>a todo el territorio nacional</span>
+                    Mudanzas sin Estrés y <br /> <span>Cargas Seguras en Todo el País</span>
                 </motion.h1>
                 
                 <motion.p
@@ -53,8 +53,8 @@ const Hero = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.2, duration: 1 }}
                 >
-                    Desde hace 20 años, movemos su confianza con máxima responsabilidad, 
-                    puntualidad y el cuidado que sus pertenencias merecen.
+                    Más de 20 años moviendo los hogares de Costa Rica con máxima responsabilidad. 
+                    Llegamos a tiempo, cuidamos sus bienes y le damos la tranquilidad que merece.
                 </motion.p>
                 
                 <motion.div 
@@ -63,7 +63,9 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5, duration: 0.8 }}
                 >
-                    <a href="#contacto" className={styles.btnPrimary}>Cotizar Ahora</a>
+                    <a href="https://wa.me/50670818306" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary}>
+                        <MessageCircle size={22} /> Cotizar por WhatsApp
+                    </a>
                     <a href="#servicios" className={styles.btnSecondary}>Ver Servicios</a>
                 </motion.div>
             </motion.div>

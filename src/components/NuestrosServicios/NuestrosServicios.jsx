@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Truck, Package, HardHat, ShieldCheck, Clock, MapPin } from 'lucide-react';
+import { Truck, Package, HardHat, ShieldCheck, Clock, MapPin, MessageCircle } from 'lucide-react';
 import styles from './NuestrosServicios.module.css';
 
 const ServiceCard = ({ icon: Icon, title, description, benefits, index }) => {
@@ -23,6 +23,16 @@ const ServiceCard = ({ icon: Icon, title, description, benefits, index }) => {
                     <li key={i}>✨ {b}</li>
                 ))}
             </ul>
+            <div className={styles.cardActions}>
+                <a 
+                    href={`https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20${encodeURIComponent(title)}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className={styles.btnService}
+                >
+                    <MessageCircle size={18} /> Cotizar este servicio
+                </a>
+            </div>
             <div className={styles.cardAccent}></div>
         </motion.div>
     );

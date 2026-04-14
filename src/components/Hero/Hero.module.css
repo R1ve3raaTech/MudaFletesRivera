@@ -94,21 +94,24 @@
 }
 
 .btnPrimary {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
     padding: 1.4rem 3.5rem;
-    background: var(--accent-color);
-    color: #000000;
+    background: #25D366;
+    color: #ffffff;
     border-radius: 50px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 10px 25px rgba(255, 159, 28, 0.3);
+    box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
 }
 
 .btnPrimary:hover {
-    background: white;
+    background: #1FAF53;
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
 }
 
 .btnSecondary {
