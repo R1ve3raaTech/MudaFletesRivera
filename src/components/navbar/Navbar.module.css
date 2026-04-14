@@ -124,19 +124,26 @@
 }
 
 .navWhatsappLink {
-    padding: 0.75rem 1.8rem;
-    background: linear-gradient(135deg, #34E073 0%, #1FAF53 100%);
-    color: white !important;
+    padding: 0.5rem 0;
+    background: transparent;
+    color: #25D366 !important;
     border: none;
-    border-radius: 100px;
-    font-size: 1rem;
+    border-radius: 0;
+    font-size: 0.95rem;
     font-weight: 800;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.6rem;
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2);
+    box-shadow: none;
     transition: all 0.3s ease;
     white-space: nowrap;
+    line-height: 1;
+}
+
+.navWhatsappLink:hover {
+    color: #1FAF53 !important;
+    transform: translateY(-1px);
 }
 
 .navWhatsappLink::after {
