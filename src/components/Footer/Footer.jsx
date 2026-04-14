@@ -53,7 +53,7 @@ const Footer = () => (
                         </a>
                     </li>
                     <li>
-                        <a href="mailto:info@mudafletesrivera.com">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@mudafletesrivera.com" target="_blank" rel="noopener noreferrer">
                             <Mail size={18} /> info@mudafletesrivera.com
                         </a>
                     </li>
