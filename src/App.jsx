@@ -13,9 +13,18 @@ import BottomNav from './components/BottomNav/BottomNav';
 import Conditions from './components/Conditions/Conditions';
 import { useEffect } from 'react';
 
-// Component to handle scroll to top on route change
 const ScrollToTop = () => {
     const { pathname, hash } = useLocation();
+
+    useEffect(() => {
+        // Al montar la app (fresco o recarga), si hay un hash, lo limpiamos después de un breve momento
+        // para asegurar que no persista en futuras recargas si el usuario ya bajó.
+        if (window.location.hash) {
+            setTimeout(() => {
+                window.history.replaceState(null, null, window.location.pathname);
+            }, 500); // 500ms es suficiente para que el scroll empiece y luego limpiamos
+        }
+    }, []);
 
     useEffect(() => {
         if (!hash) {
@@ -25,6 +34,10 @@ const ScrollToTop = () => {
             const element = document.getElementById(id);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
+                // Limpiar el hash para que no se quede pegado en la barra de navegación
+                setTimeout(() => {
+                    window.history.replaceState(null, null, window.location.pathname);
+                }, 1000);
             }
         }
     }, [pathname, hash]);
