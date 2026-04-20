@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Truck, Package, ShieldCheck, MessageCircle } from 'lucide-react';
+import logoImg from '../../assets/mudafletesrivera.png';
 import styles from './Hero.module.css';
 
 const FloatingIcon = ({ icon: Icon, delay, className }) => (
@@ -39,10 +40,19 @@ const Hero = () => {
                 transition={{ duration: 1, ease: "easeOut" }}
             >
                 <motion.div 
-                    className={styles.heroBadge}
+                    className={styles.heroLogo}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5, duration: 0.8 }}
+                >
+                    <img src={logoImg} alt="MudaFletesRivera Logo" />
+                </motion.div>
+
+                <motion.div 
+                    className={styles.heroBadge}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7, duration: 0.8 }}
                 >
                     🚚 Transporte de Confianza en CR
                 </motion.div>

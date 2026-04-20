@@ -42,6 +42,18 @@
     max-width: 900px;
     z-index: 5;
     position: relative;
+    gap: 1rem;
+}
+
+.heroLogo {
+    margin-bottom: 0.5rem;
+}
+
+.heroLogo img {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.05));
 }
 
 .heroBadge {
