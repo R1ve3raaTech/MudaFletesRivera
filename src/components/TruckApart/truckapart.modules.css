@@ -123,12 +123,14 @@
 }
 
 .truckSecBadgeLogo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 0.5rem;
-    object-fit: cover;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 0.3rem;
+    object-fit: contain;
     background: white;
     border-radius: 50%;
+    padding: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .truckSecSubtitle {
@@ -270,15 +272,20 @@
         font-size: 2rem;
     }
     .truckSecBadge {
-        width: 120px;
-        height: 120px;
-        bottom: -15px;
-        left: -15px;
-        padding: 1rem;
-        border-width: 6px;
+        width: 110px;
+        height: 110px;
+        bottom: -10px;
+        left: -10px;
+        padding: 0.5rem;
+        border-width: 5px;
+    }
+    .truckSecBadgeLogo {
+        width: 50px;
+        height: 50px;
+        padding: 5px;
     }
     .truckSecBadge span {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
     .truckSecMainImgWrapper {
         aspect-ratio: 1/1;
