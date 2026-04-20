@@ -9,6 +9,7 @@ import Process from './components/Process/Process';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import Conditions from './components/Conditions/Conditions';
+import TruckApart from './components/TruckApart/truckapart';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
@@ -39,6 +40,7 @@ const HomePage = () => {
             <Services />
             <Process />
             <WhyUs />
+            <TruckApart />
             <Contact />
         </>
     );
