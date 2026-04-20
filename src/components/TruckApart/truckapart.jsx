@@ -1,7 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, TruckIcon, Route, Box, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, TruckIcon, Route, Box } from 'lucide-react';
 import './truckapart.modules.css';
+import truck1 from '../../assets/truck1.jpg';
+import truck2 from '../../assets/truck2.jpg';
+import logoNew from '../../assets/logo_truck_circle.png';
 
 const TruckApart = () => {
     return (
@@ -19,7 +22,7 @@ const TruckApart = () => {
                 >
                     <div className="truckSecMainImgWrapper">
                         <img 
-                            src="/src/assets/truck1.jpg"
+                            src={truck1}
                             alt="Vista exterior de nuestro camión" 
                             className="truckSecImage"
                             onError={(e) => {
@@ -36,7 +39,7 @@ const TruckApart = () => {
                     
                     <div className="truckSecSubImgWrapper">
                         <img 
-                            src="/src/assets/truck2.jpg"
+                            src={truck2}
                             alt="Interior acondicionado del camión" 
                             className="truckSecImage"
                             onError={(e) => {
@@ -52,7 +55,7 @@ const TruckApart = () => {
                     </div>
                     
                     <div className="truckSecBadge">
-                        <img src="/src/assets/logo_truck_circle.png" alt="Logo Nuevo" className="truckSecBadgeLogo" />
+                        <img src={logoNew} alt="Logo Nuevo" className="truckSecBadgeLogo" />
                         <span>Equipamiento<br/>Seguro</span>
                     </div>
                 </motion.div>
@@ -66,7 +69,7 @@ const TruckApart = () => {
                     transition={{ duration: 0.7 }}
                 >
                     <div className="truckSecSubtitle">
-                        <img src="/src/assets/logo_truck_circle.png" alt="Logo" className="truckSecSubLogo" />
+                        <img src={logoNew} alt="Logo" className="truckSecSubLogo" />
                         Confianza en cada kilómetro
                     </div>
                     <h2 className="truckSecTitle">
