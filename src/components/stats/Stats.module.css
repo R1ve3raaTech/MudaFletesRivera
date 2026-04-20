@@ -1,22 +1,37 @@
 .stats {
-    width: 94%;
-    max-width: 1200px;
-    margin: 4rem auto;
-    padding: 5rem 5%;
-    background: var(--primary-dark);
-    color: white;
-    border-radius: 40px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 6rem 5%;
+    background: var(--bg-neutral);
+    border-top: 1px solid var(--border-neutral);
+    border-bottom: 1px solid var(--border-neutral);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme='light'] .stats {
+    background: var(--bg-neutral);
+}
+
+.stats::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, var(--primary-brand) 0%, transparent 70%);
+    opacity: 0.05;
+    z-index: 0;
 }
 
 .container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
+    gap: 3rem;
     width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .statItem {
@@ -25,42 +40,57 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 1.5rem;
+    transition: var(--transition-smooth);
+}
+
+.statItem:hover {
+    transform: translateY(-5px);
 }
 
 .number {
     font-size: 3.5rem;
     font-weight: 800;
     color: var(--accent-color);
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
-    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.2));
 }
 
 .label {
-    font-size: 1.1rem;
-    opacity: 0.8;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
 }
 
-@media (max-width: 1100px) {
+[data-theme='dark'] .label {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 1024px) {
     .container {
         grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
 }
 
 @media (max-width: 768px) {
     .stats {
         width: 100%;
-        margin: 0;
-        padding: 4rem 1.5rem;
+        margin: 2rem 0;
+        padding: 3rem 1.5rem;
         border-radius: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-left: none;
+        border-right: none;
     }
 
     .container {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem 1rem;
+        gap: 2rem 1rem;
     }
 
     .number {
@@ -70,22 +100,15 @@
 
     .label {
         font-size: 0.7rem;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
     }
 }
 
 @media (max-width: 480px) {
-    .stats {
-        padding: 3rem 1rem;
-    }
     .container {
-        grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem 0.5rem;
     }
     .number {
-        font-size: 1.8rem;
-    }
-    .label {
-        font-size: 0.65rem;
+        font-size: 2rem;
     }
 }

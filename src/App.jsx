@@ -10,6 +10,7 @@ import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import Conditions from './components/Conditions/Conditions';
 import TruckApart from './components/TruckApart/truckapart';
+import BottomNav from './components/BottomNav/BottomNav';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
@@ -59,6 +60,7 @@ const App = () => {
                     </Routes>
                 </main>
                 <Footer />
+                <BottomNav />
             </div>
         </Router>
     );

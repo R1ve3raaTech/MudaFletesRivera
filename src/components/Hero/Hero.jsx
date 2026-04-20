@@ -34,18 +34,25 @@ const Hero = () => {
             
             <motion.div 
                 className={styles.heroContent}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, ease: "easeOut" }}
             >
-
+                <motion.div 
+                    className={styles.heroBadge}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                >
+                    🚚 Transporte de Confianza en CR
+                </motion.div>
                 
                 <motion.h1
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8, duration: 0.8 }}
                 >
-                    Mudanzas sin Estrés y <br /> <span>Cargas Seguras en Todo el País</span>
+                    Mudanzas sin Estrés y <br /> <span>Cargas Seguras</span>
                 </motion.h1>
                 
                 <motion.p

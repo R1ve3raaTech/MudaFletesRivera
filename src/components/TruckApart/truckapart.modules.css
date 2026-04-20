@@ -1,9 +1,10 @@
 .truckSecContainer {
     width: 100%;
     padding: 6rem 10%;
-    background-color: var(--bg-color);
+    background-color: var(--bg-neutral);
     position: relative;
-    overflow: hidden;
+    border-top: 1px solid var(--border-neutral);
+    border-bottom: 1px solid var(--border-neutral);
 }
 
 .truckSecWrapper {
@@ -56,8 +57,8 @@
     border-radius: 24px;
     overflow: hidden;
     box-shadow: var(--shadow-card);
-    border: 8px solid var(--bg-color);
-    background: var(--surface-color);
+    border: 8px solid white;
+    background: white;
     z-index: 2;
     transition: transform 0.5s ease;
 }
@@ -78,28 +79,29 @@
     position: absolute;
     bottom: -20px;
     left: -20px;
-    background: var(--primary-brand);
-    color: var(--on-brand);
+    background: white;
+    color: var(--primary-brand);
     padding: 2rem;
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    box-shadow: var(--shadow-hover);
-    border: 8px solid var(--bg-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-neutral);
     z-index: 3;
     transition: var(--transition-smooth);
 }
 
 .truckSecBadge span {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.85rem;
+    font-weight: 700;
     margin-top: 0.5rem;
     line-height: 1.1;
+    color: var(--text-primary);
 }
 
 .truckSecBadge:hover {

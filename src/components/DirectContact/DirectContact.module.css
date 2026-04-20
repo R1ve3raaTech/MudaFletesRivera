@@ -1,63 +1,60 @@
 .directContact {
     padding: 8rem 5%;
-    background: #0042a5;
-    color: #FFFFFF;
+    background: var(--bg-neutral);
+    color: var(--text-primary);
     text-align: center;
     position: relative;
-    overflow: hidden;
-    border-top: 2px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-neutral);
+    border-bottom: 1px solid var(--border-neutral);
 }
 
 .sectionHeader {
     text-align: center;
-    margin-bottom: 4rem;
-}
-
-.sectionHeader h2,
-.sectionHeader p {
-    color: #FFFFFF !important;
+    margin-bottom: 3rem;
 }
 
 .sectionHeader h2 {
-    font-size: 2.8rem;
-    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.sectionHeader p {
+    color: var(--text-secondary) !important;
 }
 
 .numbersGrid {
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 2rem;
     flex-wrap: wrap;
-    margin-top: 4rem;
+    margin-top: 3rem;
 }
 
 .numberItem {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 2.5rem 4rem;
-    border-radius: 80px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    min-width: 320px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-neutral);
+    min-width: 300px;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition-smooth);
 }
 
 .numberItem:hover {
-    transform: translateY(-10px) scale(1.02);
-    background: rgba(255, 255, 255, 0.15);
-    border-color: var(--accent-color);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary-brand);
 }
 
 .numberLabel {
     display: block;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2.5px;
+    letter-spacing: 2px;
     margin-bottom: 1rem;
-    color: var(--accent-color);
+    color: var(--text-muted);
 }
 
 .phoneLinks {
@@ -67,17 +64,16 @@
 }
 
 .phoneLinks a {
-    transition: var(--transition-smooth);
-    display: inline-block;
-    color: #FFFFFF;
-    font-size: 2.4rem;
+    color: var(--primary-brand);
+    font-size: 2rem;
     font-weight: 800;
     text-decoration: none;
     line-height: 1.1;
+    transition: var(--transition-smooth);
 }
 
 .phoneLinks a:hover {
-    color: var(--accent-color);
+    color: var(--primary-dark);
 }
 
 @media (max-width: 768px) {
@@ -87,16 +83,16 @@
 
     .numbersGrid {
         flex-direction: column;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .numberItem {
-        padding: 2rem;
+        padding: 1.5rem;
         min-width: 100%;
-        border-radius: 40px;
+        border-radius: 20px;
     }
 
     .phoneLinks a {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 }

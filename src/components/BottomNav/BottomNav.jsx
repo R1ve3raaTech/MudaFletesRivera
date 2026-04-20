@@ -1,38 +1,58 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FileText, MessageCircle, Phone } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Home, Truck, MessageCircle, Info } from 'lucide-react';
+import { useLocation, Link } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
 const BottomNav = () => {
-    const [active, setActive] = useState('cotizar');
+    const location = useLocation();
+    const currentPath = location.pathname + location.hash;
+
+    const navItems = [
+        { icon: Home, label: 'Inicio', path: '/#inicio' },
+        { icon: Truck, label: 'Servicios', path: '/#servicios' },
+        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306', external: true },
+        { icon: Info, label: 'Legal', path: '/condiciones' },
+    ];
 
     return (
         <nav className={styles.bottomNav}>
-            <Link 
-                to="/condiciones" 
-                className={`${styles.navItem} ${active === 'terminos' ? styles.active : ''}`}
-                onClick={() => setActive('terminos')}
-            >
-                <span className={styles.navIcon}><FileText size={20} /></span>
-                <span className={styles.navText}>Términos</span>
-            </Link>
-            <a 
-                href="https://wa.me/50670818306" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className={`${styles.navItem} ${styles.whatsappNav}`}
-            >
-                <span className={styles.navIcon}><MessageCircle size={24} /></span>
-                <span className={styles.navText}>Escribir</span>
-            </a>
-            <Link 
-                to="/#contacto" 
-                className={`${styles.navItem} ${active === 'cotizar' ? styles.active : ''}`}
-                onClick={() => setActive('cotizar')}
-            >
-                <span className={styles.navIcon}><Phone size={20} /></span>
-                <span className={styles.navText}>Cotizar</span>
-            </Link>
+            {navItems.map((item, index) => {
+                const isActive = currentPath === item.path;
+                const Icon = item.icon;
+
+                if (item.external) {
+                    return (
+                        <a 
+                            key={index}
+                            href={item.path}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.navItem}
+                        >
+                            <Icon size={24} />
+                            <span>{item.label}</span>
+                        </a>
+                    );
+                }
+
+                return (
+                    <Link 
+                        key={index} 
+                        to={item.path} 
+                        className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                    >
+                        <motion.div
+                            whileTap={{ scale: 0.9 }}
+                            className={styles.iconWrapper}
+                        >
+                            <Icon size={24} />
+                        </motion.div>
+                        <span>{item.label}</span>
+                        {isActive && <motion.div layoutId="bubble" className={styles.activeIndicator} />}
+                    </Link>
+                );
+            })}
         </nav>
     );
 };
