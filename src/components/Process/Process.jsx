@@ -10,8 +10,9 @@ const StepItem = ({ step, title, description, index }) => {
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.2, type: "spring", stiffness: 100 }}
+            whileHover={{ scale: 1.02 }}
         >
-            <div className={styles.stepCircle}>{step}</div>
+            <motion.div className={styles.stepCircle} whileHover={{ scale: 1.1, backgroundColor: 'var(--accent-color)', color: 'white' }}>{step}</motion.div>
             <div className={styles.line}></div>
             <div className={styles.stepContent}>
                 <h3>{title}</h3>
