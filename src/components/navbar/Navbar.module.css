@@ -211,11 +211,13 @@
     }
 
     .logo { 
-        font-size: 1rem; 
-        gap: 0.3rem;
+        font-size: 1.1rem; 
+        gap: 0.5rem;
     }
 
     .truckIcon {
-        height: 28px;
+        height: 36px;
+        width: 36px;
+        border-radius: 50%;
     }
 }

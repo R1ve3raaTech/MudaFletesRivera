@@ -75,8 +75,17 @@
 }
 
 @media (max-width: 480px) {
+    .stats {
+        padding: 3rem 1rem;
+    }
     .container {
-        grid-template-columns: repeat(2, 1fr); /* Keep 2 columns even on small phones */
-        gap: 2rem 1rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem 0.5rem;
+    }
+    .number {
+        font-size: 1.8rem;
+    }
+    .label {
+        font-size: 0.65rem;
     }
 }
