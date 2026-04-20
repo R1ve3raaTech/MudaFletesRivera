@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageCircle, Moon, Sun } from 'lucide-react';
-import logoImg from '../../assets/logo_truck_circle.png';
+import logoImg from '../../assets/mudafletesrivera.png';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
