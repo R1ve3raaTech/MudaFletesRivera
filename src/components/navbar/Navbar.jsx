@@ -31,11 +31,6 @@ const Navbar = () => {
             <ul className={styles.navLinks}>
                 <li><Link to="/#contacto">Contacto</Link></li>
                 <li><Link to="/condiciones">Condiciones</Link></li>
-                <li className={styles.navWhatsappItem}>
-                    <a href="https://wa.me/50670818306" target="_blank" rel="noopener noreferrer" className={styles.navWhatsappLink}>
-                        <MessageCircle size={22} /> WhatsApp
-                    </a>
-                </li>
             </ul>
         </nav>
     );

@@ -1,0 +1,62 @@
+.floatButton {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+    z-index: 2000;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.floatButton:hover .tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.tooltip {
+    position: absolute;
+    left: 70px;
+    background: #1E293B;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 6px 6px 0;
+    border-style: solid;
+    border-color: transparent #1E293B transparent transparent;
+}
+
+@media (max-width: 768px) {
+    .floatButton {
+        bottom: 6rem; /* Above the mobile bottom nav */
+        left: 1.5rem;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .tooltip {
+        display: none;
+    }
+}

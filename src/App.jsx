@@ -11,6 +11,7 @@ import Footer from './components/Footer/Footer';
 import Conditions from './components/Conditions/Conditions';
 import TruckApart from './components/TruckApart/truckapart';
 import BottomNav from './components/BottomNav/BottomNav';
+import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
@@ -61,6 +62,7 @@ const App = () => {
                 </main>
                 <Footer />
                 <BottomNav />
+                <WhatsappFloat />
             </div>
         </Router>
     );
