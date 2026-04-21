@@ -11,7 +11,7 @@ const BottomNav = () => {
     const navItems = [
         { icon: Home, label: 'Inicio', path: '/#inicio' },
         { icon: Truck, label: 'Servicios', path: '/#servicios' },
-        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306', external: true },
+        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306', external: true, isSpecial: true },
         { icon: Info, label: 'Legal', path: '/condiciones' },
     ];
 
@@ -28,7 +28,7 @@ const BottomNav = () => {
                             href={item.path}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={styles.navItem}
+                            className={`${styles.navItem} ${item.isSpecial ? styles.special : ''}`}
                         >
                             <Icon size={24} />
                             <span>{item.label}</span>
