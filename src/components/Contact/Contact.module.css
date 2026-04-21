@@ -13,7 +13,7 @@
     right: -200px;
     width: 700px;
     height: 700px;
-    border-radius: 50%;
+    border-radius: 4px;
     background: radial-gradient(circle, var(--accent-color, #ff9f1c) 0%, transparent 70%);
     opacity: 0.04;
     pointer-events: none;
@@ -26,7 +26,7 @@
     left: -200px;
     width: 700px;
     height: 700px;
-    border-radius: 50%;
+    border-radius: 4px;
     background: radial-gradient(circle, var(--primary-brand, #0052cc) 0%, transparent 70%);
     opacity: 0.05;
     pointer-events: none;
@@ -37,7 +37,7 @@
     max-width: 1300px;
     margin: 0 auto;
     background: var(--surface-color);
-    border-radius: 48px;
+    border-radius: 4px;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
     display: grid;
     grid-template-columns: 1fr 1px 1fr;
@@ -59,7 +59,7 @@
     padding: 0.5rem 1.2rem;
     background: white;
     border: 1px solid var(--border-neutral);
-    border-radius: 30px;
+    border-radius: 4px;
     font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -367,7 +367,7 @@ a.infoValue:hover {
     background: var(--primary-brand);
     color: white;
     border: none;
-    border-radius: 50px;
+    border-radius: 4px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;

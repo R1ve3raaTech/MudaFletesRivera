@@ -7,8 +7,7 @@
     padding: 120px 2rem 5rem;
     color: var(--text-primary);
     position: relative;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
+    border-radius: 0;
     margin-bottom: 2rem;
     overflow: hidden;
     background: white;
@@ -55,17 +54,16 @@
 .heroLogo img {
     height: auto;
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
     object-fit: contain;
-    background-color: var(--bg-color); /* Match page background */
-    mix-blend-mode: multiply; /* Blend white into page background */
+    mix-blend-mode: normal;
 }
 
 .heroBadge {
     padding: 0.6rem 1.2rem;
     background: var(--bg-neutral);
     border: 1px solid var(--border-neutral);
-    border-radius: 100px;
+    border-radius: 4px;
     font-size: 0.85rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
@@ -114,7 +112,7 @@
     padding: 1.1rem 2.2rem;
     background: #25D366;
     color: #ffffff;
-    border-radius: 100px;
+    border-radius: 4px;
     font-weight: 700;
     font-size: 1rem;
     box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
@@ -132,10 +130,10 @@
     align-items: center;
     justify-content: center;
     padding: 1.1rem 2.2rem;
-    background: white;
+    background: transparent;
     border: 1px solid var(--border-neutral);
     color: var(--text-primary);
-    border-radius: 100px;
+    border-radius: 4px;
     font-weight: 700;
     font-size: 1rem;
     transition: var(--transition-smooth);
@@ -171,7 +169,7 @@
     width: 30px;
     height: 50px;
     border: 2px solid white;
-    border-radius: 20px;
+    border-radius: 4px;
 }
 
 .wheel {
@@ -185,8 +183,7 @@
 @media (max-width: 768px) {
     .hero {
         padding: 6.5rem 1.2rem 4rem;
-        border-bottom-left-radius: 40px;
-        border-bottom-right-radius: 40px;
+        border-radius: 0;
         margin-bottom: 2rem;
         min-height: 80vh;
         display: flex;

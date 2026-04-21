@@ -25,7 +25,7 @@
 
 .truckSecMainImgWrapper {
     position: relative;
-    border-radius: 24px;
+    border-radius: 4px;
     overflow: hidden;
     box-shadow: var(--shadow-hover);
     aspect-ratio: 4/5;
@@ -54,11 +54,11 @@
     right: 0;
     width: 55%;
     aspect-ratio: 1/1;
-    border-radius: 24px;
+    border-radius: 4px;
     overflow: hidden;
     box-shadow: var(--shadow-card);
     border: 8px solid white;
-    background: white;
+    background: transparent;
     z-index: 2;
     transition: transform 0.5s ease;
 }
@@ -82,7 +82,7 @@
     background: white;
     color: var(--primary-brand);
     padding: 2rem;
-    border-radius: 50%;
+    border-radius: 4px;
     width: 140px;
     height: 140px;
     display: flex;
@@ -117,7 +117,7 @@
     height: 32px;
     width: 32px;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: 0;
 }
 
 [data-theme='dark'] .truckSecSubLogo {
@@ -129,8 +129,8 @@
     height: 70px;
     margin-bottom: 0.3rem;
     object-fit: contain;
-    background: white;
-    border-radius: 50%;
+    background: transparent;
+    border-radius: 0;
     padding: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
@@ -192,7 +192,7 @@
     height: 55px;
     background: rgba(0, 82, 204, 0.1);
     color: var(--primary-brand);
-    border-radius: 14px;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -230,7 +230,7 @@
     background: var(--primary-brand);
     filter: blur(150px);
     opacity: 0.08;
-    border-radius: 50%;
+    border-radius: 4px;
     z-index: 0;
     top: 50%;
     left: -100px;

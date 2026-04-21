@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MessageCircle, Package, Mail, MapPin } from 'lucide-react';
-import logoImg from '../../assets/mudafletesrivera.png';
+import logoImg from '../../assets/trucklogo.png';
 import styles from './Footer.module.css';
 
 const Footer = () => (
