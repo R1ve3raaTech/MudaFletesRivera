@@ -272,6 +272,18 @@
     }
     .truckSecTitle {
         font-size: 2rem;
+        text-align: center;
+    }
+    .truckSecSubtitle {
+        justify-content: center;
+        text-align: center;
+    }
+    .truckSecDesc {
+        text-align: center;
+    }
+    .truckSecFeature {
+        align-items: center;
+        text-align: center;
     }
     .truckSecBadge {
         width: 110px;

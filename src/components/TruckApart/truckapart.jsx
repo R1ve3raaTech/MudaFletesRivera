@@ -4,7 +4,7 @@ import { ShieldCheck, TruckIcon, Route, Box } from 'lucide-react';
 import './truckapart.modules.css';
 import truck1 from '../../assets/truck1.jpg';
 import truck2 from '../../assets/truck2.jpg';
-import logoNew from '../../assets/MRlogo.png';
+import logoNew from '../../assets/trucklogo.png';
 
 const TruckApart = () => {
     return (
