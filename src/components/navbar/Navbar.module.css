@@ -48,11 +48,12 @@
 }
 
 .truckIcon {
-    height: 42px;
-    width: 42px;
-    object-fit: cover;
+    height: 48px;
+    width: 48px;
+    object-fit: contain;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    background: white;
+    transition: var(--transition-smooth);
 }
 
 [data-theme='dark'] .truckIcon {
@@ -210,7 +211,10 @@
     }
 
     .truckIcon {
-        height: 32px;
-        width: 32px;
+        height: 36px;
+        width: 36px;
+        object-fit: contain;
+        border-radius: 50%;
+        background: white;
     }
 }
