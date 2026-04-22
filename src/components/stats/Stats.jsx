@@ -19,9 +19,9 @@ const StatItem = ({ number, label, suffix = "+" }) => {
 
 const Stats = () => {
     const data = [
-        { number: +20000, label: "Viajes Realizados" },
+        { number: +20K, label: "Viajes Realizados" },
         { number: +20, label: "Años de Experiencia", suffix: "+" },
-        { number: 5000, label: "Clientes Felices" },
+        { number: +5K, label: "Clientes Felices" },
         { number: 7, label: "Provincias Cubiertas", suffix: "" }
     ];
 
@@ -36,4 +36,4 @@ const Stats = () => {
     );
 };
 
-export default Stats;
+export default Stats;jj
