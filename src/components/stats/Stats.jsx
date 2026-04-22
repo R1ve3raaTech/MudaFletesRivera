@@ -19,9 +19,9 @@ const StatItem = ({ number, label, suffix = "+" }) => {
 
 const Stats = () => {
     const data = [
-        { number: 2000, label: "Viajes Realizados" },
-        { number: 15, label: "Años de Experiencia", suffix: "+" },
-        { number: 500, label: "Clientes Felices" },
+        { number: +20000, label: "Viajes Realizados" },
+        { number: +20, label: "Años de Experiencia", suffix: "+" },
+        { number: 5000, label: "Clientes Felices" },
         { number: 7, label: "Provincias Cubiertas" }
     ];
 
