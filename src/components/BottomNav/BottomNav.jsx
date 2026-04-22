@@ -11,17 +11,12 @@ const BottomNav = () => {
     const navItems = [
         { icon: Home, label: 'Inicio', path: '/#inicio' },
         { icon: Truck, label: 'Servicios', path: '/#servicios' },
-        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306', external: true, isSpecial: true },
+        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306', external: true },
         { icon: Info, label: 'Legal', path: '/condiciones' },
     ];
 
     return (
-        <motion.nav 
-            className={styles.bottomNav}
-            initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-        >
+        <nav className={styles.bottomNav}>
             {navItems.map((item, index) => {
                 const isActive = currentPath === item.path;
                 const Icon = item.icon;
@@ -33,7 +28,7 @@ const BottomNav = () => {
                             href={item.path}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`${styles.navItem} ${item.isSpecial ? styles.special : ''}`}
+                            className={styles.navItem}
                         >
                             <Icon size={24} />
                             <span>{item.label}</span>
@@ -58,7 +53,7 @@ const BottomNav = () => {
                     </Link>
                 );
             })}
-        </motion.nav>
+        </nav>
     );
 };
 
