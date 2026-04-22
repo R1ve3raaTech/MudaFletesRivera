@@ -16,7 +16,12 @@ const BottomNav = () => {
     ];
 
     return (
-        <nav className={styles.bottomNav}>
+        <motion.nav 
+            className={styles.bottomNav}
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+        >
             {navItems.map((item, index) => {
                 const isActive = currentPath === item.path;
                 const Icon = item.icon;
@@ -53,7 +58,7 @@ const BottomNav = () => {
                     </Link>
                 );
             })}
-        </nav>
+        </motion.nav>
     );
 };
 

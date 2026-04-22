@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import Services from './components/NuestrosServicios/NuestrosServicios';
@@ -34,9 +35,20 @@ const ScrollToTop = () => {
     return null;
 };
 
+const PageWrapper = ({ children }) => (
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+    >
+        {children}
+    </motion.div>
+);
+
 const HomePage = () => {
     return (
-        <>
+        <PageWrapper>
             <Hero />
             <Stats />
             <Services />
@@ -44,7 +56,19 @@ const HomePage = () => {
             <WhyUs />
             <TruckApart />
             <Contact />
-        </>
+        </PageWrapper>
+    );
+};
+
+const AnimatedRoutes = () => {
+    const location = useLocation();
+    return (
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/condiciones" element={<Conditions />} />
+            </Routes>
+        </AnimatePresence>
     );
 };
 
@@ -55,10 +79,7 @@ const App = () => {
             <div id="app-container">
                 <Navbar />
                 <main>
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/condiciones" element={<Conditions />} />
-                    </Routes>
+                    <AnimatedRoutes />
                 </main>
                 <Footer />
                 <BottomNav />
