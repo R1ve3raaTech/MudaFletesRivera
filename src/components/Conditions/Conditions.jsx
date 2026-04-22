@@ -7,25 +7,25 @@ const Conditions = () => {
     return (
         <motion.div 
             className={styles.termsContainer}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
         >
             <motion.div 
                 className={styles.termsCard}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
+                initial={{ opacity: 0, y: 30, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
             >
                 <h1>Condiciones de Uso</h1>
 
                 <motion.div 
                     className={styles.termsSection}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
+                    transition={{ delay: 0.1 }}
                 >
                     <h2>1. Introducción</h2>
                     <p>
@@ -36,10 +36,10 @@ const Conditions = () => {
 
                 <motion.div 
                     className={styles.termsSection}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.4 }}
+                    transition={{ delay: 0.2 }}
                 >
                     <h2>2. Servicios de Transporte y Mudanza</h2>
                     <p>
@@ -52,10 +52,10 @@ const Conditions = () => {
 
                 <motion.div 
                     className={styles.termsSection}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
+                    transition={{ delay: 0.3 }}
                 >
                     <h2>3. Venta de Materiales</h2>
                     <p>
@@ -67,10 +67,10 @@ const Conditions = () => {
 
                 <motion.div 
                     className={styles.termsSection}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.6 }}
+                    transition={{ delay: 0.4 }}
                 >
                     <h2>4. Cotizaciones y Pagos</h2>
                     <p>
@@ -82,10 +82,10 @@ const Conditions = () => {
 
                 <motion.div 
                     className={styles.termsSection}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.7 }}
+                    transition={{ delay: 0.5 }}
                 >
                     <h2>5. Privacidad</h2>
                     <p>
