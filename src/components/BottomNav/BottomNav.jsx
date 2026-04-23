@@ -11,7 +11,7 @@ const BottomNav = () => {
     const navItems = [
         { icon: Home, label: 'Inicio', path: '/#inicio' },
         { icon: Truck, label: 'Servicios', path: '/#servicios' },
-        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306', external: true, isSpecial: true },
+        { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza', external: true, isSpecial: true },
         { icon: Info, label: 'Legal', path: '/condiciones' },
     ];
 

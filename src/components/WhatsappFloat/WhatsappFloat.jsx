@@ -6,7 +6,7 @@ import styles from './WhatsappFloat.module.css';
 const WhatsappFloat = () => {
     return (
         <motion.a
-            href="https://wa.me/50670818306"
+            href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.floatButton}

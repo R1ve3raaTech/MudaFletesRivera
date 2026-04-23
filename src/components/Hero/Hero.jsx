@@ -70,7 +70,7 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5, duration: 0.8 }}
                 >
-                    <a href="https://wa.me/50670818306" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary}>
+                    <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer" className={styles.btnPrimary}>
                         <MessageCircle size={22} /> Cotizar por WhatsApp
                     </a>
                     <a href="#servicios" className={styles.btnSecondary}>Ver Servicios</a>

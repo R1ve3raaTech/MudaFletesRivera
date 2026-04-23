@@ -43,12 +43,12 @@ const Footer = () => (
                 <h4>Contacto Directo</h4>
                 <ul>
                     <li>
-                        <a href="https://wa.me/50670818306" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">
                             <MessageCircle size={18} /> WhatsApp: 7081-8306
                         </a>
                     </li>
                     <li>
-                        <a href="https://wa.me/50671328432" target="_blank" rel="noopener noreferrer">
+                        <a href="https://wa.me/50671328432?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">
                             <Package size={18} /> Despacho: 7132-8432
                         </a>
                     </li>
