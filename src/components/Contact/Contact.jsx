@@ -211,7 +211,6 @@ const ContactForm = () => {
                 <label htmlFor="phone">Teléfono</label>
                 <input
                     id="phone" name="phone" type="tel" required
-                    placeholder="Ej: 8888 8888"
                     value={formData.phone}
                     onChange={handlePhoneChange}
                     inputMode="numeric"
