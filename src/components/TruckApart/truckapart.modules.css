@@ -257,14 +257,13 @@
 @media (max-width: 992px) {
     .truckSecWrapper {
         flex-direction: column;
-        gap: 4rem;
+        gap: 3rem;
     }
     .truckSecVisual {
         width: 100%;
-        max-width: 500px;
+        max-width: 550px;
         margin: 0 auto;
-        padding-right: 1.5rem;
-        padding-bottom: 1.5rem;
+        padding: 0; /* Remove side padding to center properly */
     }
 }
 
