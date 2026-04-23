@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, TruckIcon, Route, Box, ChevronLeft, ChevronRight, MessageCircle, Send } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
-import './Fleet.module.css';
+import './NuestroEquipo.css';
 import truck1 from '../../assets/truck1.jpg';
 import truck2 from '../../assets/truck2.jpg';
 import logoNew from '../../assets/trucklogo.png';
@@ -22,7 +21,7 @@ const images = [
     }
 ];
 
-const Fleet = () => {
+const NuestroEquipo = () => {
     const [[page, direction], setPage] = React.useState([0, 0]);
     const [isHovered, setIsHovered] = React.useState(false);
 
@@ -153,7 +152,6 @@ const Fleet = () => {
                                 <p>Llegamos a todo Costa Rica.</p>
                             </div>
                         </motion.div>
-
                     </div>
 
                     <motion.div 
@@ -176,4 +174,4 @@ const Fleet = () => {
     );
 };
 
-export default Fleet;
+export default NuestroEquipo;

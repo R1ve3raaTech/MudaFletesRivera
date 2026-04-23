@@ -19,8 +19,6 @@
 .truckSecVisual {
     flex: 1.4;
     position: relative;
-    padding-right: 2rem;
-    padding-bottom: 2rem;
 }
 
 .truckSecCarouselContainer {
@@ -45,39 +43,17 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: brightness(0.95);
+    filter: brightness(1);
 }
 
 .truckSecSlideOverlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
     display: flex;
     align-items: flex-end;
     padding: 2.5rem;
     color: white;
-}
-@media (max-width: 768px) {
-    .truckSecSlideOverlay {
-        position: relative;
-        background: var(--surface-color);
-        color: var(--text-primary);
-        padding: 1.5rem;
-        height: auto;
-        border-top: 1px solid var(--border-neutral);
-    }
-    .truckSecCarouselContainer {
-        aspect-ratio: auto;
-        height: auto;
-    }
-    .truckSecSlide {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
-    .truckSecMainImg {
-        aspect-ratio: 3/2;
-    }
 }
 
 .truckSecSlideOverlay h3 {
@@ -87,24 +63,10 @@
     line-height: 1.1;
 }
 
-@media (max-width: 768px) {
-    .truckSecSlideOverlay h3 {
-        font-size: 1.2rem;
-        color: var(--primary-brand);
-    }
-}
-
 .truckSecSlideOverlay p {
     font-size: 0.9rem;
     opacity: 0.95;
     line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-    .truckSecSlideOverlay p {
-        color: var(--text-secondary);
-        opacity: 1;
-    }
 }
 
 .truckSecNavBtn {
@@ -133,8 +95,6 @@
 .truckSecNavBtn.prev { left: 15px; }
 .truckSecNavBtn.next { right: 15px; }
 
-/* Removal of old badge styles */
-
 /* RIGHT SIDE - CONTENT */
 .truckSecContent {
     flex: 1;
@@ -146,12 +106,6 @@
     object-fit: cover;
     border-radius: 0;
 }
-
-[data-theme='dark'] .truckSecSubLogo {
-    filter: none;
-}
-
-/* Styles removed */
 
 .truckSecSubtitle {
     color: var(--primary-brand);
@@ -264,7 +218,6 @@
     filter: brightness(1.1);
 }
 
-/* Decorators */
 .truckSecBlob {
     position: absolute;
     width: 400px;
@@ -281,35 +234,21 @@
 }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
-    .truckSecTitle {
-        font-size: 2.4rem;
-    }
-    .truckSecWrapper {
-        gap: 3rem;
-    }
-}
-
 @media (max-width: 992px) {
     .truckSecWrapper {
         flex-direction: column;
-        gap: 3rem;
+        gap: 2.5rem;
     }
     .truckSecVisual {
         width: 100%;
-        max-width: 550px;
+        max-width: 600px;
         margin: 0 auto;
-        padding: 0; /* Remove side padding to center properly */
     }
 }
 
 @media (max-width: 768px) {
     .truckSecContainer {
-        padding: 5rem 5%;
-    }
-    .truckSecGrid {
-        grid-template-columns: 1fr;
-        gap: 1.8rem;
+        padding: 4rem 5%;
     }
     .truckSecTitle {
         font-size: 2rem;
@@ -317,32 +256,25 @@
     }
     .truckSecSubtitle {
         justify-content: center;
-        text-align: center;
     }
     .truckSecDesc {
         text-align: center;
+        font-size: 1rem;
     }
-    .truckSecFeature {
-        align-items: center;
-        text-align: center;
+    .truckSecGrid {
+        grid-template-columns: 1fr;
     }
-    .truckSecBadge {
-        width: 110px;
-        height: 110px;
-        bottom: -10px;
-        left: -10px;
-        padding: 0.5rem;
-        border-width: 5px;
+    .truckSecActions {
+        justify-content: center;
     }
-    .truckSecBadgeLogo {
-        width: 50px;
-        height: 50px;
-        padding: 5px;
+    .truckSecSlideOverlay {
+        padding: 1.5rem;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 40%);
     }
-    .truckSecBadge span {
-        font-size: 0.75rem;
+    .truckSecSlideOverlay h3 {
+        font-size: 1.2rem;
     }
-    .truckSecMainImgWrapper {
-        aspect-ratio: 1/1;
+    .truckSecSlideOverlay p {
+        font-size: 0.85rem;
     }
 }
