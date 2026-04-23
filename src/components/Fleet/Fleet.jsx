@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ShieldCheck, TruckIcon, Route, Box, ChevronLeft, ChevronRight, MessageCircle, Send } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import './truckapart.modules.css';
+import './Fleet.module.css';
 import truck1 from '../../assets/truck1.jpg';
 import truck2 from '../../assets/truck2.jpg';
 import logoNew from '../../assets/trucklogo.png';
@@ -22,7 +22,7 @@ const images = [
     }
 ];
 
-const TruckApart = () => {
+const Fleet = () => {
     const [[page, direction], setPage] = React.useState([0, 0]);
     const [isHovered, setIsHovered] = React.useState(false);
 
@@ -96,6 +96,7 @@ const TruckApart = () => {
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: 0.2 }}
+                                        className="truckSecOverlayContent"
                                     >
                                         <h3>{images[page].title}</h3>
                                         <p>{images[page].subtitle}</p>
@@ -153,13 +154,6 @@ const TruckApart = () => {
                             </div>
                         </motion.div>
 
-                        <motion.div className="truckSecFeature" whileHover={{ x: 10 }} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>
-                            <div className="truckSecFeatureIcon"><TruckIcon size={22} /></div>
-                            <div>
-                                <h4>Rampa de Carga</h4>
-                                <p>Agilidad en mobiliario pesado.</p>
-                            </div>
-                        </motion.div>
                     </div>
 
                     <motion.div 
@@ -182,4 +176,4 @@ const TruckApart = () => {
     );
 };
 
-export default TruckApart;
+export default Fleet;

@@ -51,11 +51,33 @@
 .truckSecSlideOverlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
     display: flex;
     align-items: flex-end;
     padding: 2.5rem;
     color: white;
+}
+@media (max-width: 768px) {
+    .truckSecSlideOverlay {
+        position: relative;
+        background: var(--surface-color);
+        color: var(--text-primary);
+        padding: 1.5rem;
+        height: auto;
+        border-top: 1px solid var(--border-neutral);
+    }
+    .truckSecCarouselContainer {
+        aspect-ratio: auto;
+        height: auto;
+    }
+    .truckSecSlide {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    .truckSecMainImg {
+        aspect-ratio: 3/2;
+    }
 }
 
 .truckSecSlideOverlay h3 {
@@ -65,10 +87,24 @@
     line-height: 1.1;
 }
 
+@media (max-width: 768px) {
+    .truckSecSlideOverlay h3 {
+        font-size: 1.2rem;
+        color: var(--primary-brand);
+    }
+}
+
 .truckSecSlideOverlay p {
     font-size: 0.9rem;
     opacity: 0.95;
     line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+    .truckSecSlideOverlay p {
+        color: var(--text-secondary);
+        opacity: 1;
+    }
 }
 
 .truckSecNavBtn {

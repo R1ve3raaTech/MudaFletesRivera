@@ -10,7 +10,7 @@ import Process from './components/Process/Process';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import Conditions from './components/Conditions/Conditions';
-import TruckApart from './components/TruckApart/truckapart';
+import Fleet from './components/Fleet/Fleet';
 import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
 
@@ -54,7 +54,7 @@ const HomePage = () => {
             <Services />
             <Process />
             <WhyUs />
-            <TruckApart />
+            <Fleet />
             <Contact />
         </PageWrapper>
     );
