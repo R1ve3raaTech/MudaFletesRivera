@@ -382,7 +382,10 @@ a.infoValue:hover {
     .contact { padding: 6rem 3%; }
     .inner { grid-template-columns: 1fr; }
     .divider { display: none; }
-    .contactInfo { padding: 4rem 2.5rem; }
+    .contactInfo { 
+        padding: 4rem 2.5rem;
+        border-right: none; /* Remove vertical line on mobile */
+    }
     .form { padding: 4rem 2.5rem; }
 }
 
