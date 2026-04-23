@@ -53,7 +53,7 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8, duration: 0.8 }}
                 >
-                    Mudanzas sin Estrés y <br /> <span>Cargas Seguras</span>
+                    Tu Mudanza Garantizada: <br /> <span>Sin Estrés y Seguro Total</span>
                 </motion.h1>
                 
                 <motion.p
@@ -61,8 +61,7 @@ const Hero = () => {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.2, duration: 1 }}
                 >
-                    Más de 20 años moviendo los hogares de Costa Rica con máxima responsabilidad. 
-                    Llegamos a tiempo, cuidamos sus bienes y le damos la tranquilidad que merece.
+                    Más de 20 años de liderazgo en Costa Rica. No solo movemos muebles, protegemos tu patrimonio con puntualidad experta y el equipo más confiable del país.
                 </motion.p>
                 
                 <motion.div 

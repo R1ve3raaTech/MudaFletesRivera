@@ -43,19 +43,19 @@ const Services = () => {
         {
             icon: Truck,
             title: "Logística de Carga",
-            description: "Transportamos sus objetos con todo el cuidado del mundo.",
+            description: "Soluciones logísticas de alto nivel. Su mercancía llega intacta, a tiempo y respaldada por nuestra experiencia de décadas.",
             benefits: ["Carga Asegurada", "Seguimiento en Tiempo Real", "Conductores Expertos"]
         },
         {
             icon: Package,
             title: "Mudanzas Profesionales",
-            description: "Transportamos su mudanza con gran cuidado y seguridad a todo el territorio nacional.",
+            description: "Traslados residenciales y de oficina sin complicaciones. Empacamos y movemos su vida con el máximo respeto y seguridad.",
             benefits: ["Embalaje de Protección", "Carga y Descarga", "Desarmado de Muebles"]
         },
         {
             icon: HardHat,
             title: "Productos Especializados",
-            description: "Distribuímos productos de construcción de alta resistencia para su hogar u oficina.",
+            description: "Calidad certificada en materiales de construcción. Le asesoramos para que su proyecto tenga los mejores cimientos.",
             benefits: ["Precios de Fábrica", "Entrega Inmediata", "Asesoría Técnica"]
         }
     ];
@@ -70,9 +70,9 @@ const Services = () => {
                 >
                     Nuestros Servicios
                 </motion.span>
-                <h2>Compromiso y Seguridad Garantizada</h2>
+                <h2>Servicios que Resuelven su Vida</h2>
                 <div className={styles.headerLine}></div>
-                <p>No solo transportamos carga; movemos su confianza con gran responsabilidad y puntualidad.</p>
+                <p>Nuestra misión es su tranquilidad. Ofrecemos soluciones de transporte personalizadas con garantía real de cumplimiento.</p>
             </div>
 
             <div className={styles.cardsGrid}>

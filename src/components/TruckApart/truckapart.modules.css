@@ -1,6 +1,6 @@
 .truckSecContainer {
     width: 100%;
-    padding: 6rem 10%;
+    padding: 6rem 5%;
     background-color: var(--bg-neutral);
     position: relative;
     border-top: 1px solid var(--border-neutral);
@@ -12,101 +12,92 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 4rem;
+    gap: 2rem;
 }
 
 /* LEFT SIDE - VISUAL */
 .truckSecVisual {
-    flex: 1;
+    flex: 1.4;
     position: relative;
     padding-right: 2rem;
     padding-bottom: 2rem;
 }
 
-.truckSecMainImgWrapper {
+.truckSecCarouselContainer {
     position: relative;
-    border-radius: 4px;
+    width: 100%;
+    aspect-ratio: 3/2;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow-hover);
-    aspect-ratio: 4/5;
-    background: var(--surface-color);
-    border: 1px solid rgba(0,0,0,0.05);
+    background: #f0f0f0;
 }
 
-[data-theme='dark'] .truckSecMainImgWrapper {
-    border-color: rgba(255,255,255,0.05);
+.truckSecSlide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.truckSecImage {
+.truckSecMainImg {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s ease;
+    object-position: center;
+    filter: brightness(0.95);
 }
 
-.truckSecMainImgWrapper:hover .truckSecImage {
-    transform: scale(1.05);
-}
-
-.truckSecSubImgWrapper {
+.truckSecSlideOverlay {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 55%;
-    aspect-ratio: 1/1;
-    border-radius: 4px;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    border: 8px solid white;
-    background: transparent;
-    z-index: 2;
-    transition: transform 0.5s ease;
-}
-
-.truckSecSubImgWrapper:hover {
-    transform: translateY(-10px);
-}
-
-.truckSecSubImgWrapper .truckSecImage {
-    transition: transform 0.8s ease;
-}
-
-.truckSecSubImgWrapper:hover .truckSecImage {
-    transform: scale(1.1);
-}
-
-.truckSecBadge {
-    position: absolute;
-    bottom: -20px;
-    left: -20px;
-    background: white;
-    color: var(--primary-brand);
-    padding: 2rem;
-    border-radius: 4px;
-    width: 140px;
-    height: 140px;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
     display: flex;
-    flex-direction: column;
+    align-items: flex-end;
+    padding: 2.5rem;
+    color: white;
+}
+
+.truckSecSlideOverlay h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+    line-height: 1.1;
+}
+
+.truckSecSlideOverlay p {
+    font-size: 0.9rem;
+    opacity: 0.95;
+    line-height: 1.4;
+}
+
+.truckSecNavBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    border: none;
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid var(--border-neutral);
-    z-index: 3;
+    cursor: pointer;
+    z-index: 10;
     transition: var(--transition-smooth);
 }
 
-.truckSecBadge span {
-    font-size: 0.85rem;
-    font-weight: 700;
-    margin-top: 0.5rem;
-    line-height: 1.1;
-    color: var(--text-primary);
+.truckSecNavBtn:hover {
+    background: var(--primary-brand);
 }
 
-.truckSecBadge:hover {
-    transform: scale(1.05) rotate(-5deg);
-}
+.truckSecNavBtn.prev { left: 15px; }
+.truckSecNavBtn.next { right: 15px; }
+
+/* Removal of old badge styles */
 
 /* RIGHT SIDE - CONTENT */
 .truckSecContent {
@@ -124,16 +115,7 @@
     filter: none;
 }
 
-.truckSecBadgeLogo {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 0.3rem;
-    object-fit: contain;
-    background: transparent;
-    border-radius: 0;
-    padding: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+/* Styles removed */
 
 .truckSecSubtitle {
     color: var(--primary-brand);
@@ -178,48 +160,72 @@
 .truckSecGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
 .truckSecFeature {
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.truckSecFeatureIcon {
-    width: 55px;
-    height: 55px;
-    background: rgba(0, 82, 204, 0.1);
-    color: var(--primary-brand);
-    border-radius: 4px;
-    display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 1.2rem;
+    background: var(--surface-color);
+    padding: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-neutral);
     transition: var(--transition-smooth);
 }
 
-[data-theme='dark'] .truckSecFeatureIcon {
-    background: rgba(59, 130, 246, 0.15);
+.truckSecFeatureIcon {
+    width: 48px;
+    height: 48px;
+    background: rgba(37, 99, 235, 0.1);
     color: var(--primary-brand);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition-smooth);
 }
 
 .truckSecFeature:hover .truckSecFeatureIcon {
     background: var(--primary-brand);
-    color: var(--on-brand);
-    transform: translateY(-5px);
+    color: white;
 }
 
-.truckSecFeature h4 {
-    font-size: 1.2rem;
+.truckSecActions {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.truckSecBtnForm, .truckSecBtnWa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 2rem;
+    border-radius: 8px;
     font-weight: 700;
-    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    font-size: 0.95rem;
 }
 
-.truckSecFeature p {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
+.truckSecBtnForm {
+    background: var(--primary-brand);
+    color: white;
+}
+
+.truckSecBtnWa {
+    background: #25D366;
+    color: white;
+}
+
+.truckSecBtnForm:hover, .truckSecBtnWa:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    filter: brightness(1.1);
 }
 
 /* Decorators */

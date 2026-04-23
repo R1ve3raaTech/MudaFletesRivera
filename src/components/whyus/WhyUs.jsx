@@ -7,20 +7,20 @@ import styles from './WhyUs.module.css';
 const values = [
     {
         Icon: Clock,
-        title: "El Respeto al Tiempo",
-        description: "La puntualidad no es opcional, es nuestra promesa. Honramos su agenda sin excusas.",
+        title: "Puntualidad Innegociable",
+        description: "Honramos su tiempo como el recurso más valioso. Llegamos cuando decimos, sin excusas ni retrasos.",
         color: "#3B82F6"
     },
     {
         Icon: Handshake,
-        title: "Honestidad y Trato",
-        description: "Manejamos sus pertenencias con la integridad y el respeto que merecen. Siempre.",
+        title: "Trato Preferencial",
+        description: "Sus bienes son tratados con la misma integridad y cuidado que si fueran nuestros. Ética en cada paso.",
         color: "#10B981"
     },
     {
         Icon: Shield,
-        title: "Cuidado Absoluto",
-        description: "Protección rigurosa de sus bienes. Nos esforzamos para que todo llegue impecable.",
+        title: "Seguridad Certificada",
+        description: "Protocolos rigurosos de protección. Trabajamos incansablemente para garantizar que todo llegue impecable.",
         color: "#8B5CF6"
     },
     {
@@ -77,7 +77,7 @@ const WhyUs = () => (
                 <motion.p
                     initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
                 >
-                    Nos esforzamos por ofrecer un servicio de excelencia basado en valores sólidos y una atención al detalle inigualable.
+                    Somos la opción líder en Costa Rica porque combinamos décadas de experiencia con un compromiso inquebrantable por un servicio de excelencia.
                 </motion.p>
             </div>
 

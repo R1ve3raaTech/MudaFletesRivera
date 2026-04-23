@@ -24,17 +24,17 @@ const StepItem = ({ step, title, description, index }) => {
 
 const Process = () => {
     const steps = [
-        { step: "01", title: "Cotice en Segundos", description: "Envíe un WhatsApp o llene el formulario detallando la carga y destino." },
-        { step: "02", title: "Reciba un Precio Justo", description: "Le daremos una cotización honesta y clara sin tarifas ocultas." },
-        { step: "03", title: "Recolección Segura", description: "Llegamos puntualmente para cargar sus bienes con el mayor cuidado." },
-        { step: "04", title: "Entrega Puntual", description: "Llevamos su carga intacta a cualquier rincón de Costa Rica." }
+        { step: "01", title: "Cotice con Expertos", description: "Envíe un WhatsApp ahora. Le atenderemos en minutos para entender sus necesidades." },
+        { step: "02", title: "Precio sin Sorpresas", description: "Reciba una propuesta honesta, clara y competitiva. Garantizamos transparencia total." },
+        { step: "03", title: "Cuidado de Élite", description: "Nuestro equipo llega puntualmente para proteger y cargar sus bienes con técnicas profesionales." },
+        { step: "04", title: "Entrega Exitosa", description: "Su vida o negocio llega a su nuevo destino en perfecto estado y a tiempo." }
     ];
 
     return (
         <section id="proceso" className={styles.process}>
             <div className={styles.sectionHeader}>
-                <h2>Su Mudanza Paso a Paso</h2>
-                <p>Simplificamos el transporte para que su mente esté tranquila.</p>
+                <h2>Así de Fácil es Mudarse con Nosotros</h2>
+                <p>Nuestra metodología depurada garantiza que su única preocupación sea disfrutar su nuevo espacio.</p>
             </div>
             <div className={styles.container}>
                 {steps.map((s, i) => (
