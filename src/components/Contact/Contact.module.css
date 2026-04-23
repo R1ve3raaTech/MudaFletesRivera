@@ -202,28 +202,7 @@ a.infoValue:hover {
     background: var(--surface-color);
 }
 
-/* Phone row */
-.phoneWrap {
-    display: flex;
-    gap: 0;
-}
-
-.prefix {
-    padding: 1.1rem 1.2rem;
-    background: rgba(128, 128, 128, 0.05);
-    border: 2px solid rgba(128, 128, 128, 0.2);
-    border-right: none;
-    border-radius: 16px 0 0 16px;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-.phoneInput {
-    border-radius: 0 16px 16px 0;
-    flex: 1;
-}
+/* Phone styles simplified to use standard input */
 
 /* Service chips */
 .serviceGrid {

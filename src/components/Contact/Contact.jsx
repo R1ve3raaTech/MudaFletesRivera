@@ -209,17 +209,14 @@ const ContactForm = () => {
             {/* Phone */}
             <div className={styles.field}>
                 <label htmlFor="phone">Teléfono</label>
-                <div className={styles.phoneWrap}>
-                    <span className={styles.prefix}>🇨🇷 +506</span>
-                    <input
-                        id="phone" name="phone" type="tel" required
-                        placeholder=""
-                        value={formData.phone}
-                        onChange={handlePhoneChange}
-                        inputMode="numeric"
-                        className={`${styles.input} ${styles.phoneInput}`}
-                    />
-                </div>
+                <input
+                    id="phone" name="phone" type="tel" required
+                    placeholder="Ej: 8888 8888"
+                    value={formData.phone}
+                    onChange={handlePhoneChange}
+                    inputMode="numeric"
+                    className={styles.input}
+                />
             </div>
 
             {/* Service selector */}
