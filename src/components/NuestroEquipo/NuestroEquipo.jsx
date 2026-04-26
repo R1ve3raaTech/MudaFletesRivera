@@ -65,6 +65,12 @@ const NuestroEquipo = () => {
     };
 
     React.useEffect(() => {
+        // Preload images
+        images.forEach(image => {
+            const img = new Image();
+            img.src = image.url;
+        });
+
         if (isHovered) return;
         const timer = setInterval(() => {
             paginate(1);
@@ -124,7 +130,8 @@ const NuestroEquipo = () => {
                                     src={images[page].url} 
                                     alt={images[page].title}
                                     className="truckSecMainImg"
-                                    loading="lazy"
+                                    loading={page === 0 ? "eager" : "lazy"}
+                                    fetchpriority={page === 0 ? "high" : "low"}
                                     decoding="async"
                                 />
                                 <div className="truckSecSlideOverlay">

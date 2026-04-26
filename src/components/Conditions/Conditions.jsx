@@ -29,8 +29,9 @@ const Conditions = () => {
                 >
                     <h2>1. Introducción</h2>
                     <p>
-                        Bienvenido a MudaFletesRivera. Al utilizar nuestros servicios de transporte, mudanzas y los acabados 
-                        de adhesivos especializados, usted acepta cumplir con los siguientes términos y condiciones.
+                        Bienvenido a MudaFletesRivera. Al utilizar nuestros servicios de transporte, mudanzas y logística 
+                        especializada, usted acepta cumplir con los siguientes términos y condiciones establecidos para 
+                        garantizar la seguridad de su patrimonio.
                     </p>
                 </motion.div>
 
@@ -47,6 +48,20 @@ const Conditions = () => {
                         responsable de declarar objetos de valor excepcional o fragilidad extrema antes de iniciar el 
                         servicio. No nos hace responsable de daños en artículos no embalados adecuadamente por el cliente. 
                         NO transportamos: arena, grava, arcilla, escombros, y ninguno de sus variantes.
+                    </p>
+                </motion.div>
+
+                <motion.div 
+                    className={styles.termsSection}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                >
+                    <h2>3. Puntualidad y Compromiso</h2>
+                    <p>
+                        Nuestro compromiso es la puntualidad. El cliente debe asegurar que los accesos estén despejados 
+                        y listos para la carga en la hora acordada para evitar retrasos en la logística nacional.
                     </p>
                 </motion.div>
 
