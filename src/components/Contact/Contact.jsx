@@ -8,10 +8,6 @@ import styles from './Contact.module.css';
 const FORMSPREE_URL = "https://formspree.io/f/xpqjzprd";
 const COOLDOWN_MS = 4 * 60 * 1000;
 
-const services = [
-    { value: "transporte", label: "🚚  Transporte de Carga" },
-    { value: "materiales", label: "🧱  Materiales (Bondex, etc.)" },
-];
 
 const ContactInfo = () => (
     <div className={styles.contactInfo}>
@@ -73,7 +69,7 @@ const ContactInfo = () => (
 );
 
 const ContactForm = () => {
-    const [formData, setFormData] = useState({ name: '', phone: '', service: 'transporte', acceptTerms: false });
+    const [formData, setFormData] = useState({ name: '', phone: '', acceptTerms: false });
     const [status, setStatus] = useState('idle'); // idle | sending | success | error
 
     useEffect(() => {
@@ -126,14 +122,14 @@ const ContactForm = () => {
         try {
             const res = await fetch(FORMSPREE_URL, {
                 method: 'POST',
-                body: JSON.stringify({ name: formData.name, phone: formData.phone, service: formData.service }),
+                body: JSON.stringify({ name: formData.name, phone: formData.phone }),
                 headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
             });
             if (res.ok) {
                 localStorage.setItem('lastSubmissionTime', Date.now().toString());
                 localStorage.removeItem('contactFormData');
                 setStatus('success');
-                setFormData({ name: '', phone: '', service: 'transporte', acceptTerms: false });
+                setFormData({ name: '', phone: '', acceptTerms: false });
                 
                 Swal.fire({
                     icon: 'success',
@@ -218,22 +214,6 @@ const ContactForm = () => {
                 />
             </div>
 
-            {/* Service selector */}
-            <div className={styles.field}>
-                <label>¿Qué servicio necesita?</label>
-                <div className={styles.serviceGrid}>
-                    {services.map(({ value, label }) => (
-                        <button
-                            key={value}
-                            type="button"
-                            className={`${styles.serviceChip} ${formData.service === value ? styles.serviceChipActive : ''}`}
-                            onClick={() => handleChange({ target: { name: 'service', value } })}
-                        >
-                            {label}
-                        </button>
-                    ))}
-                </div>
-            </div>
 
             {/* Terms */}
             <label className={styles.checkboxLabel}>

@@ -53,7 +53,7 @@ const Hero = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8, duration: 0.8 }}
                 >
-                    Tu Mudanza Garantizada: <br /> <span>Sin Estrés y Seguro Total</span>
+                    Mudanzas y Fletes en <span>Costa Rica</span>: Su Patrimonio en Manos de Expertos
                 </motion.h1>
                 
                 <motion.p

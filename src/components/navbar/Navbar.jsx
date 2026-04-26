@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle } from 'lucide-react';
+import { Home, Truck, MessageCircle, Info } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
 import styles from './Navbar.module.css';
 
@@ -29,8 +29,9 @@ const Navbar = () => {
             </div>
 
             <ul className={styles.navLinks}>
-                <li><Link to="/#contacto">Contacto</Link></li>
-                <li><Link to="/condiciones">Condiciones</Link></li>
+                <li><Link to="/#inicio"><Home size={18} /> Inicio</Link></li>
+                <li><Link to="/#servicios"><Truck size={18} /> Servicios</Link></li>
+                <li><Link to="/condiciones"><Info size={18} /> Condiciones</Link></li>
             </ul>
         </nav>
     );

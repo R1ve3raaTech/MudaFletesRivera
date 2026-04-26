@@ -34,24 +34,24 @@
 
 /* ─── INNER LAYOUT ───────────────────────────────────────── */
 .inner {
-    max-width: 1300px;
+    max-width: 900px;
     margin: 0 auto;
     background: var(--surface-color);
     border-radius: 4px;
     box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
-    display: grid;
-    grid-template-columns: 1fr 1px 1fr;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
 /* ─── LEFT: CONTACT INFO ─────────────────────────────────── */
 .contactInfo {
-    padding: 5rem 4.5rem;
+    padding: 5rem 4.5rem 3rem;
     background: var(--bg-neutral);
     color: var(--text-primary);
     position: relative;
     overflow: hidden;
-    border-right: 1px solid var(--border-neutral);
+    text-align: center;
 }
 
 .badge {
@@ -90,16 +90,19 @@
 
 /* Info Cards */
 .infoCards {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1.2rem;
+    width: 100%;
 }
 
 .infoCard {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1.4rem;
-    padding: 1.4rem;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.8rem;
     background: white;
     border: 1px solid var(--border-neutral);
     border-radius: 20px;
@@ -155,10 +158,13 @@ a.infoValue:hover {
 
 /* ─── RIGHT: FORM ─────────────────────────────────────────── */
 .form {
-    padding: 5rem 4.5rem;
+    padding: 3rem 4.5rem 5rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .formTitle {
@@ -166,6 +172,7 @@ a.infoValue:hover {
     font-weight: 800;
     color: var(--primary-brand);
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 /* Fields */
@@ -181,6 +188,11 @@ a.infoValue:hover {
     color: var(--text-primary);
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-align: center;
+}
+
+.input {
+    text-align: center;
 }
 
 .input {
@@ -242,6 +254,7 @@ a.infoValue:hover {
 .checkboxLabel {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.9rem;
     cursor: pointer;
     font-size: 0.95rem;

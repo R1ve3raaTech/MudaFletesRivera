@@ -55,21 +55,6 @@ const Conditions = () => {
                     initial={{ opacity: 0, y: 15 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                >
-                    <h2>3. Venta de Materiales</h2>
-                    <p>
-                        Los adhesivos y pegamentos especializados (tipo Bondex) deben utilizarse siguiendo estrictamente las 
-                        instrucciones del fabricante. MudaFletesRivera solamente transporta el producto, no lo fabrica ni lo 
-                        empaca, mucho menos se responsabiliza por aplicaciones incorrectas e indebido de los productos.
-                    </p>
-                </motion.div>
-
-                <motion.div 
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                 >
                     <h2>4. Cotizaciones y Pagos</h2>

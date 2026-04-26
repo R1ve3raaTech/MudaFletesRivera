@@ -60,11 +60,12 @@
 
     .activeIndicator {
         position: absolute;
-        top: -5px;
-        width: 40px;
-        height: 60px;
-        background: rgba(37, 99, 235, 0.1);
-        border-radius: 15px;
+        top: -6px;
+        left: calc(50% - 25px);
+        width: 50px;
+        height: 55px;
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: 18px;
         z-index: 1;
     }
 

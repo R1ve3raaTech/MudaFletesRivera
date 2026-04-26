@@ -2,22 +2,57 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, TruckIcon, Route, Box, ChevronLeft, ChevronRight, MessageCircle, Send } from 'lucide-react';
 import './NuestroEquipo.css';
-import truck1 from '../../assets/truck1.jpg';
-import truck2 from '../../assets/truck2.jpg';
+import mudanza1 from '../../assets/mudanza1.png';
+import mudanza2 from '../../assets/mudanza2.png';
+import mudanza3 from '../../assets/mudanza3.png';
+import mudanza4 from '../../assets/mudanza4.png';
+import mudanza5 from '../../assets/mudanza5.png';
+import truck1 from '../../assets/truck1.png';
+import truck2 from '../../assets/truck2.png';
 import logoNew from '../../assets/trucklogo.png';
 
 const images = [
     {
         id: 1,
         url: truck1,
-        title: "Nuestra Flota",
-        subtitle: "Camiones modernos y equipados para traslados de alta seguridad.",
+        title: "Tu nuevo comienzo en las mejores manos.",
+        subtitle: "Nuestra puntualidad y presencia profesional en zonas residenciales nos avalan como la opción número uno en tranquilidad.",
     },
     {
         id: 2,
+        url: mudanza1,
+        title: "Manos expertas, tesoros protegidos.",
+        subtitle: "No solo movemos muebles, cuidamos tu patrimonio. Utilizamos técnicas de embalaje profesional con capas de protección de alta resistencia.",
+    },
+    {
+        id: 3,
         url: truck2,
-        title: "Espacio Optimizado",
-        subtitle: "Interiores acondicionados para proteger hasta el objeto más delicado.",
+        title: "Logística de alto nivel a tu servicio.",
+        subtitle: "Contamos con una flota moderna y equipada, robusta por fuera pero suave y segura por dentro para carga delicada.",
+    },
+    {
+        id: 4,
+        url: mudanza5,
+        title: "Organización inteligente: La clave del éxito.",
+        subtitle: "Maximizamos la seguridad separando la carga por niveles. Tu mudanza viaja organizada, facilitando una descarga rápida.",
+    },
+    {
+        id: 5,
+        url: mudanza4,
+        title: "Seguridad en cada kilómetro.",
+        subtitle: "Nuestras unidades cuentan con equipamiento de vanguardia para asegurar que su carga viaje protegida y llegue a tiempo.",
+    },
+    {
+        id: 6,
+        url: mudanza2,
+        title: "Blindaje total para tu mobiliario.",
+        subtitle: "Desde acabados en espejo hasta tapicerías finas, aplicamos un sellado hermético que protege contra polvo y humedad.",
+    },
+    {
+        id: 7,
+        url: mudanza3,
+        title: "Capacidad sin límites, orden sin fallas.",
+        subtitle: "Equipos de línea blanca, parrillas y muebles de exterior... no hay carga demasiado grande. Nuestro estibado evita desplazamientos.",
     }
 ];
 
@@ -89,6 +124,8 @@ const NuestroEquipo = () => {
                                     src={images[page].url} 
                                     alt={images[page].title}
                                     className="truckSecMainImg"
+                                    loading="lazy"
+                                    decoding="async"
                                 />
                                 <div className="truckSecSlideOverlay">
                                     <motion.div 
@@ -121,7 +158,7 @@ const NuestroEquipo = () => {
                             Elite & Profesional
                         </div>
                         <h2 className="truckSecTitle">
-                            Excelencia en <span>Equipo y Flota</span>
+                            Mudanzas Profesionales en <span>Toda Costa Rica</span>
                         </h2>
                         <p className="truckSecDesc">
                             Combinamos la mejor tecnología en transporte con un equipo humano excepcional. Cada mudanza es tratada con precisión logística para garantizar la integridad absoluta de sus bienes.

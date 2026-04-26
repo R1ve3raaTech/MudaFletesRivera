@@ -1,16 +1,12 @@
 .stats {
     width: 100%;
     margin: 0;
-    padding: 6rem 5%;
-    background: var(--bg-neutral);
-    border-top: 1px solid var(--border-neutral);
-    border-bottom: 1px solid var(--border-neutral);
+    padding: 8rem 5%;
+    background: var(--primary-dark);
+    background-image: var(--gradient-hero);
     position: relative;
     overflow: hidden;
-}
-
-[data-theme='light'] .stats {
-    background: var(--bg-neutral);
+    color: white;
 }
 
 .stats::before {
@@ -49,22 +45,19 @@
 }
 
 .number {
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 800;
-    color: var(--accent-color);
-    background: var(--gradient-accent);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: white;
     margin-bottom: 0.5rem;
-    filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.2));
+    text-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .label {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    font-weight: 600;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
 [data-theme='dark'] .label {

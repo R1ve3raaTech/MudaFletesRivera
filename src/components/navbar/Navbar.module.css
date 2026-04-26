@@ -12,9 +12,8 @@
     background: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     z-index: 1000;
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -72,15 +71,20 @@
     text-decoration: none;
     color: var(--text-primary);
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     transition: all 0.3s ease;
-    padding: 0.5rem 0;
+    padding: 0.6rem 0.8rem;
     position: relative;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 8px;
 }
 
 .navLinks a:hover {
     color: var(--primary-brand);
+    background: rgba(0, 82, 204, 0.05);
 }
 
 .navLinks a::after {
@@ -127,38 +131,63 @@
 }
 
 .navWhatsappLink {
-    padding: 0.6rem 1.25rem;
-    background: rgba(37, 211, 102, 0.1);
-    color: #25D366 !important;
-    border: 1px solid rgba(37, 211, 102, 0.2);
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    padding: 0.7rem 1.6rem;
+    background: #25D366;
+    color: white !important;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 800;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 0.7rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     white-space: nowrap;
     position: relative;
+    border: none;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    animation: pulse-green 2.5s infinite;
     overflow: hidden;
 }
 
+.navWhatsappLink::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transition: none;
+    animation: sweep 4s infinite ease-in-out;
+    transform: skewX(-25deg);
+}
+
 [data-theme='dark'] .navWhatsappLink {
-    background: rgba(37, 211, 102, 0.15);
-    border-color: rgba(37, 211, 102, 0.3);
+    background: linear-gradient(135deg, #22c55e 0%, #065f46 100%);
 }
 
 .navWhatsappLink:hover {
-    background: #25D366;
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-    border-color: #25D366;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+    filter: brightness(1.1);
 }
 
-.navWhatsappLink::after {
-    display: none;
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+    70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+@keyframes sweep {
+    0% { left: -120%; }
+    30% { left: 150%; }
+    100% { left: 150%; }
 }
 
 .navMain {
