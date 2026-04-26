@@ -2,13 +2,13 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, TruckIcon, Route, Box, ChevronLeft, ChevronRight, MessageCircle, Send } from 'lucide-react';
 import './NuestroEquipo.css';
-import mudanza1 from '../../assets/mudanza1.png';
-import mudanza2 from '../../assets/mudanza2.png';
-import mudanza3 from '../../assets/mudanza3.png';
-import mudanza4 from '../../assets/mudanza4.png';
-import mudanza5 from '../../assets/mudanza5.png';
-import truck1 from '../../assets/truck1.png';
-import truck2 from '../../assets/truck2.png';
+import mudanza1 from '../../assets/mudanza1.webp';
+import mudanza2 from '../../assets/mudanza2.webp';
+import mudanza3 from '../../assets/mudanza3.webp';
+import mudanza4 from '../../assets/mudanza4.webp';
+import mudanza5 from '../../assets/mudanza5.webp';
+import truck1 from '../../assets/truck1.webp';
+import truck2 from '../../assets/truck2.webp';
 import logoNew from '../../assets/trucklogo.png';
 
 const images = [
