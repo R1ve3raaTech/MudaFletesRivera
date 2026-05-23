@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
 import Navbar from './components/navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import Services from './components/NuestrosServicios/NuestrosServicios';
@@ -10,6 +10,8 @@ import Process from './components/Process/Process';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import Conditions from './components/Conditions/Conditions';
+import Reseñas from './components/Resenhas/Resenhas';
+
 import NuestroEquipo from './components/NuestroEquipo/NuestroEquipo';
 import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
@@ -55,6 +57,7 @@ const HomePage = () => {
             <Process />
             <WhyUs />
             <NuestroEquipo />
+            <Reseñas />
             <Contact />
         </PageWrapper>
     );

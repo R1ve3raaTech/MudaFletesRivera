@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, Truck, MessageCircle, Info } from 'lucide-react';
+import { Home, Truck, MessageCircle, Info, Star } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
@@ -12,6 +12,7 @@ const BottomNav = () => {
         { icon: Home, label: 'Inicio', path: '/#inicio' },
         { icon: Truck, label: 'Servicios', path: '/#servicios' },
         { icon: MessageCircle, label: 'Cotizar', path: 'https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza', external: true, isSpecial: true },
+        { icon: Star, label: 'Reseñas', path: '/#resenas' },
         { icon: Info, label: 'Legal', path: '/condiciones' },
     ];
 
