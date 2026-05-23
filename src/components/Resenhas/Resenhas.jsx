@@ -358,12 +358,15 @@ const Modal = ({ onClose }) => {
     );
 };
 
+const POR_PAGINA = 6;
+
 const Reseñas = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [reseñas, setReseñas] = useState([]);
     const [cargando, setCargando] = useState(true);
+    const [pagina, setPagina] = useState(1);
 
-    useEffect(() => {
+    const cargarReseñas = () => {
         supabase
             .from('mudafletesrivera')
             .select('*')
@@ -371,7 +374,17 @@ const Reseñas = () => {
                 setReseñas(data ?? []);
                 setCargando(false);
             });
-    }, []);
+    };
+
+    useEffect(() => { cargarReseñas(); }, []);
+
+    const totalPaginas = Math.ceil(reseñas.length / POR_PAGINA);
+    const reseñasPagina = reseñas.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
+
+    const irPagina = (n) => {
+        setPagina(n);
+        document.getElementById('resenas')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     return (
         <section id="resenas" className={styles.section}>
@@ -431,20 +444,37 @@ const Reseñas = () => {
                         <p className={styles.emptyTitle}>¡Muy pronto más reseñas!</p>
                         <p className={styles.emptySub}>Sé el primero en compartir tu experiencia con nosotros.</p>
                     </motion.div>
-                ) : reseñas.map((r, i) => (
-                    <ReseñaCard key={i} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
+                ) : reseñasPagina.map((r, i) => (
+                    <ReseñaCard key={r.id ?? i} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
                 ))}
             </div>
+
+            {totalPaginas > 1 && (
+                <div className={styles.pagination}>
+                    <button
+                        className={styles.pageBtn}
+                        onClick={() => irPagina(pagina - 1)}
+                        disabled={pagina === 1}
+                    >
+                        ← Anterior
+                    </button>
+                    <span className={styles.pageInfo}>{pagina} / {totalPaginas}</span>
+                    <button
+                        className={styles.pageBtn}
+                        onClick={() => irPagina(pagina + 1)}
+                        disabled={pagina === totalPaginas}
+                    >
+                        Siguiente →
+                    </button>
+                </div>
+            )}
 
             <AnimatePresence>
                 {modalOpen && <Modal onClose={(recargar) => {
                     setModalOpen(false);
                     if (recargar) {
-                        supabase
-                            .from('mudafletesrivera')
-                            .select('*')
-                            .order('created_at', { ascending: false })
-                            .then(({ data }) => setReseñas(data ?? []));
+                        setPagina(1);
+                        cargarReseñas();
                     }
                 }} />}
             </AnimatePresence>
