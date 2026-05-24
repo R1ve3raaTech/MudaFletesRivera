@@ -183,7 +183,8 @@ const Modal = ({ onClose }) => {
         if (!form.dia || !form.mes || !form.anio) e.fecha = 'La fecha es obligatoria.';
         if (form.calificacion === 0) e.calificacion = 'Seleccioná un nivel de alivio.';
         if (!form.comentario.trim()) e.comentario = 'El comentario es obligatorio.';
-        else if (form.comentario.trim().length < 10) e.comentario = 'El comentario debe tener al menos 10 caracteres.';
+        else if (form.comentario.trim().length < 20) e.comentario = 'El comentario debe tener al menos 20 caracteres.';
+        else if (form.comentario.trim().length > 150) e.comentario = 'El comentario no puede superar los 150 caracteres.';
         return e;
     };
 
@@ -332,12 +333,13 @@ const Modal = ({ onClose }) => {
                             )}
 
                             <div className={styles.field}>
-                                <label>Comentario <span className={styles.charHint}>({form.comentario.length} / mín. 10)</span></label>
+                                <label>Comentario <span className={styles.charHint}>({form.comentario.length} / 150)</span></label>
                                 <textarea
                                     value={form.comentario}
-                                    onChange={set('comentario')}
+                                    onChange={(e) => { if (e.target.value.length <= 150) set('comentario')(e); }}
                                     placeholder="Contanos tu experiencia..."
                                     rows={4}
+                                    maxLength={150}
                                     className={errors.comentario ? styles.inputError : ''}
                                 />
                                 {errors.comentario && <span className={styles.error}>{errors.comentario}</span>}
