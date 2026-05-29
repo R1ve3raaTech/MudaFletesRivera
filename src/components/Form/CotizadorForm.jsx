@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { jsPDF } from 'jspdf';
 import logoTruck from '../../assets/trucklogo.png';
+import supabase from '../../supabaseClient';
 import {
     MessageCircle, MapPin, Package, Settings, Calendar,
     AlertTriangle, Info, Zap, CheckCircle, ArrowRight, ArrowLeft,
@@ -43,6 +44,7 @@ const OpcionBtn = ({ value, selected, onClick, children }) => (
 export default function CotizadorForm() {
     const [paso, setPaso] = useState(1);
     const [form, setForm] = useState({
+        nombre: '',
         origen: '',
         destino: '',
         escalerasOrigen: '',
@@ -57,6 +59,7 @@ export default function CotizadorForm() {
         ayudantes: 0,
         fecha: '',
     });
+    const [enviando, setEnviando] = useState(false);
 
     const set = (k) => (v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -81,7 +84,7 @@ export default function CotizadorForm() {
 
     const pasoValido = [
         false,
-        form.origen.trim() && form.destino.trim() && form.escalerasOrigen && form.escalerasDestino && form.caminata && form.parqueo,
+        form.nombre.trim() && form.origen.trim() && form.destino.trim() && form.escalerasOrigen && form.escalerasDestino && form.caminata && form.parqueo,
         totalMuebles > 0,
         form.fragiles && form.desmontaje && form.embalaje,
         form.fecha,
@@ -233,6 +236,11 @@ ${mueblesList || '  (no especificado)'}${extras}
             y += lineas.length * 5.5;
         };
 
+        // ── CLIENTE ──────────────────────────────────────────────
+        seccion('Cliente');
+        fila('Nombre', form.nombre);
+        y += 4; lineaFina();
+
         // ── UBICACION ────────────────────────────────────────────
         seccion('Ubicacion');
         fila('Origen', form.origen);
@@ -297,21 +305,78 @@ ${mueblesList || '  (no especificado)'}${extras}
         doc.setFont('helvetica', 'normal');
         doc.text('Este documento es una solicitud de cotizacion. El precio final sera confirmado por WhatsApp.', cx, y, { align: 'center' });
 
-        doc.save('cotizacion-mudanza.pdf');
+        return doc;
     };
 
     const enviarWhatsapp = async () => {
-        await generarPDF();
-        const msg = 'Hola! Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.';
-        setTimeout(() => {
-            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        setEnviando(true);
+        try {
+            const doc = await generarPDF();
+            const blob = doc.output('blob');
+            const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
+
+            // Subir PDF a Supabase Storage
+            let pdfUrl = null;
+            const { data: uploadData, error: uploadError } = await supabase.storage
+                .from('cotizaciones')
+                .upload(filename, blob, { contentType: 'application/pdf' });
+
+            if (!uploadError && uploadData) {
+                const { data: urlData } = supabase.storage
+                    .from('cotizaciones')
+                    .getPublicUrl(filename);
+                pdfUrl = urlData?.publicUrl ?? null;
+            }
+
+            // Guardar datos en la tabla
+            await supabase.from('cotizaciones').insert({
+                nombre: form.nombre.trim(),
+                origen: form.origen.trim(),
+                destino: form.destino.trim(),
+                fecha_mudanza: form.fecha,
+                urgente: esUrgente,
+                articulos: {
+                    muebles: Object.fromEntries(
+                        MUEBLES.filter(m => (form.muebles[m.id] || 0) > 0)
+                               .map(m => [m.label, form.muebles[m.id]])
+                    ),
+                    detalle: form.otrosDetalle.trim(),
+                },
+                servicios: {
+                    fragiles: form.fragiles === 'si',
+                    desmontaje: form.desmontaje === 'si',
+                    embalaje: form.embalaje === 'si',
+                    ayudantes: form.ayudantes,
+                },
+                acceso: {
+                    escaleras_origen: form.escalerasOrigen,
+                    escaleras_destino: form.escalerasDestino,
+                    caminata: form.caminata === 'si',
+                    parqueo: form.parqueo,
+                },
+                pdf_url: pdfUrl,
+            });
+
+            // Descargar PDF localmente
+            doc.save(`cotizacion-${form.nombre.trim()}.pdf`);
+
+            // Abrir WhatsApp
+            const msg = `Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.`;
+            setTimeout(() => {
+                window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+            }, 600);
+
+        } catch (err) {
+            console.error('Error al enviar:', err);
+        } finally {
+            setEnviando(false);
             setPaso(1);
             setForm({
-                origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
+                nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
                 caminata: '', parqueo: '', muebles: {}, otrosDetalle: '',
                 fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0, fecha: '',
             });
-        }, 800);
+        }
     };
 
     return (
@@ -349,6 +414,16 @@ ${mueblesList || '  (no especificado)'}${extras}
                                 <MapPin size={22} className={styles.titleIcon} />
                                 De donde a donde es la mudanza?
                             </h3>
+
+                            <div className={styles.field}>
+                                <label>Tu nombre completo</label>
+                                <input
+                                    type="text"
+                                    placeholder="Ej: Juan Perez"
+                                    value={form.nombre}
+                                    onChange={e => set('nombre')(e.target.value)}
+                                />
+                            </div>
 
                             <div className={styles.field}>
                                 <label>Direccion de origen</label>
@@ -605,10 +680,10 @@ ${mueblesList || '  (no especificado)'}${extras}
                                 type="button"
                                 className={styles.btnWa}
                                 onClick={enviarWhatsapp}
-                                disabled={!pasoValido[4]}
+                                disabled={!pasoValido[4] || enviando}
                             >
                                 <MessageCircle size={20} />
-                                Descargar PDF y abrir WhatsApp
+                                {enviando ? 'Generando PDF...' : 'Descargar PDF y abrir WhatsApp'}
                             </button>
                         )}
                     </div>
