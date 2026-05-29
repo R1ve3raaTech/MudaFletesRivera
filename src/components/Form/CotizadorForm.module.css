@@ -467,6 +467,68 @@
     font-weight: 700;
 }
 
+/* ── Autocomplete ── */
+.autocompleteWrap {
+    position: relative;
+}
+
+.autocompleteWrap input {
+    width: 100%;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #0f172a;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: white;
+    box-sizing: border-box;
+}
+
+.autocompleteWrap input:focus {
+    border-color: #0052cc;
+}
+
+.sugerencias {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    list-style: none;
+    padding: 0.4rem 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.sugerencias li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.83rem;
+    color: #334155;
+    cursor: pointer;
+    transition: background 0.15s;
+    line-height: 1.4;
+}
+
+.sugerencias li:hover {
+    background: #f0f7ff;
+    color: #0052cc;
+}
+
+.sugIcon {
+    color: #0052cc;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
 /* ── Nota PDF ── */
 .pdfNota {
     display: flex;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { jsPDF } from 'jspdf';
 import logoTruck from '../../assets/trucklogo.png';
 import supabase from '../../supabaseClient';
@@ -29,6 +29,70 @@ const MUEBLES = [
 ];
 
 const STEP_LABELS = ['Ubicación', 'Lo que movés', 'Extras', 'Fecha'];
+
+function AutocompleteInput({ value, onChange, placeholder }) {
+    const [sugerencias, setSugerencias] = useState([]);
+    const [abierto, setAbierto] = useState(false);
+    const timeoutRef = useRef(null);
+    const wrapRef = useRef(null);
+
+    useEffect(() => {
+        const handleClick = (e) => {
+            if (wrapRef.current && !wrapRef.current.contains(e.target)) {
+                setAbierto(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
+
+    const handleChange = (e) => {
+        const q = e.target.value;
+        onChange(q);
+        clearTimeout(timeoutRef.current);
+        if (q.length < 3) { setSugerencias([]); setAbierto(false); return; }
+        timeoutRef.current = setTimeout(async () => {
+            try {
+                const res = await fetch(
+                    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&countrycodes=cr&limit=5&addressdetails=1`,
+                    { headers: { 'Accept-Language': 'es' } }
+                );
+                const data = await res.json();
+                setSugerencias(data.map(d => d.display_name));
+                setAbierto(data.length > 0);
+            } catch { setSugerencias([]); }
+        }, 400);
+    };
+
+    const seleccionar = (s) => {
+        onChange(s);
+        setSugerencias([]);
+        setAbierto(false);
+    };
+
+    return (
+        <div ref={wrapRef} className={styles.autocompleteWrap}>
+            <input
+                type="text"
+                placeholder={placeholder}
+                value={value}
+                onChange={handleChange}
+                onFocus={() => sugerencias.length > 0 && setAbierto(true)}
+                autoComplete="off"
+            />
+            {abierto && (
+                <ul className={styles.sugerencias}>
+                    {sugerencias.map((s, i) => (
+                        <li key={i} onMouseDown={() => seleccionar(s)}>
+                            <MapPin size={13} className={styles.sugIcon} />
+                            <span>{s}</span>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+}
 const STEP_ICONS  = [MapPin, Package, Settings, Calendar];
 
 const OpcionBtn = ({ value, selected, onClick, children }) => (
@@ -427,21 +491,19 @@ ${mueblesList || '  (no especificado)'}${extras}
 
                             <div className={styles.field}>
                                 <label>Direccion de origen</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ej: San Jose, Barrio Amon"
+                                <AutocompleteInput
                                     value={form.origen}
-                                    onChange={e => set('origen')(e.target.value)}
+                                    onChange={v => set('origen')(v)}
+                                    placeholder="Ej: San Jose, Barrio Amon"
                                 />
                             </div>
 
                             <div className={styles.field}>
                                 <label>Direccion de destino</label>
-                                <input
-                                    type="text"
-                                    placeholder="Ej: Alajuela, La Guacima"
+                                <AutocompleteInput
                                     value={form.destino}
-                                    onChange={e => set('destino')(e.target.value)}
+                                    onChange={v => set('destino')(v)}
+                                    placeholder="Ej: Alajuela, La Guacima"
                                 />
                             </div>
 
