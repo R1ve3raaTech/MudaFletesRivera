@@ -139,7 +139,7 @@ const Conditions = () => {
                 >
                     <h2>7. Cotizaciones y Validez</h2>
                     <p>
-                        Todas las cotizaciones confirmadas tienen una validez de <strong>7 días naturales</strong>.
+                        Todas las cotizaciones confirmadas tienen una validez de <strong>3 días naturales</strong>.
                         Pasado ese plazo, los precios pueden estar sujetos a cambios según disponibilidad y
                         condiciones del servicio.
                     </p>
