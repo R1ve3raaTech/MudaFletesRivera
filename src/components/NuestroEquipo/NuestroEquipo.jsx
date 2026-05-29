@@ -131,7 +131,7 @@ const NuestroEquipo = () => {
                                     alt={images[page].title}
                                     className="truckSecMainImg"
                                     loading={page === 0 ? "eager" : "lazy"}
-                                    fetchpriority={page === 0 ? "high" : "low"}
+                                    fetchPriority={page === 0 ? "high" : "low"}
                                     decoding="async"
                                 />
                                 <div className="truckSecSlideOverlay">

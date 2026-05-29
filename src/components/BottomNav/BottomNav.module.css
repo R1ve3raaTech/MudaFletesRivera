@@ -83,6 +83,22 @@
         animation: pulse 2s infinite;
     }
 
+    .specialBlue {
+        background: linear-gradient(135deg, #0052cc, #0ea5e9);
+        color: white !important;
+        border-radius: 12px;
+        padding: 5px 0;
+        margin: 0 5px;
+        box-shadow: 0 4px 15px rgba(0, 82, 204, 0.3);
+        animation: pulseBlue 2s infinite;
+    }
+
+    @keyframes pulseBlue {
+        0%   { box-shadow: 0 0 0 0 rgba(0, 82, 204, 0.5); }
+        70%  { box-shadow: 0 0 0 10px rgba(0, 82, 204, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 82, 204, 0); }
+    }
+
     .special :global(.lucide) {
         color: white;
     }

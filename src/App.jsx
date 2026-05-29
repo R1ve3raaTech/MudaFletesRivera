@@ -11,6 +11,7 @@ import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import Conditions from './components/Conditions/Conditions';
 import Reseñas from './components/Resenhas/Resenhas';
+import CotizadorForm from './components/Form/CotizadorForm';
 
 import NuestroEquipo from './components/NuestroEquipo/NuestroEquipo';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -70,6 +71,7 @@ const AnimatedRoutes = () => {
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/condiciones" element={<Conditions />} />
+                <Route path="/cotizador" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
             </Routes>
         </AnimatePresence>
     );

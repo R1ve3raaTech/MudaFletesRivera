@@ -76,10 +76,15 @@
     padding: 0.6rem 0.8rem;
     position: relative;
     white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem;
     border-radius: 8px;
+}
+
+.navLinks a svg {
+    display: block !important;
+    flex-shrink: 0;
 }
 
 .navLinks a:hover {
@@ -101,6 +106,16 @@
 
 .navLinks a:hover::after {
     width: 100%;
+}
+
+.navActive {
+    color: var(--primary-brand) !important;
+    background: rgba(37, 99, 235, 0.07) !important;
+}
+
+.navActive::after {
+    width: 100% !important;
+    background: var(--primary-brand) !important;
 }
 
 .themeToggle {
@@ -247,4 +262,34 @@
         background: transparent;
         border-radius: 0;
     }
+}
+
+.navWhatsapp {
+    color: #25D366 !important;
+}
+
+.navWhatsapp:hover {
+    background: rgba(37, 211, 102, 0.08) !important;
+}
+
+.navWhatsapp::after {
+    background: #25D366 !important;
+}
+
+.navCotizar {
+    padding: 0.6rem 1.4rem;
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    color: white !important;
+    border-radius: 50px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 14px rgba(0, 82, 204, 0.3);
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.navCotizar:hover {
+    box-shadow: 0 8px 24px rgba(0, 82, 204, 0.4);
+    transform: translateY(-2px);
 }

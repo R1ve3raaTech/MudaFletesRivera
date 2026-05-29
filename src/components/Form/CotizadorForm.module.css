@@ -1,0 +1,597 @@
+/* ── Sección ── */
+.section {
+    padding: 6rem 1.5rem;
+    padding-top: 8rem;
+    background: var(--bg-neutral, #f8fafc);
+    position: relative;
+}
+
+.inner {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* ── Header ── */
+.header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.eyebrow {
+    display: inline-block;
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+}
+
+.header h2 {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 900;
+    color: var(--text-primary, #0f172a);
+    margin-bottom: 0.8rem;
+    line-height: 1.1;
+}
+
+.rule {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #0052cc, #0ea5e9);
+    border-radius: 2px;
+    margin: 0 auto 1.2rem;
+}
+
+.header p {
+    color: var(--text-secondary, #64748b);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* ── Card contenedor ── */
+.card {
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ── Progreso ── */
+.progress {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.progressItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;
+    flex: 1;
+}
+
+.progressDot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #94a3b8;
+    font-weight: 800;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    transition: background 0.3s, color 0.3s;
+    flex-shrink: 0;
+}
+
+.progressItem.active .progressDot {
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    color: white;
+    box-shadow: 0 4px 14px rgba(0, 82, 204, 0.35);
+}
+
+.progressItem.done .progressDot {
+    background: #22c55e;
+    color: white;
+}
+
+.progressLabel {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.progressItem.active .progressLabel {
+    color: #0052cc;
+}
+
+.progressItem.done .progressLabel {
+    color: #22c55e;
+}
+
+.progressLine {
+    position: absolute;
+    top: 18px;
+    left: calc(50% + 18px);
+    width: calc(100% - 36px);
+    height: 2px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.progressItem.done .progressLine {
+    background: #22c55e;
+}
+
+/* ── Paso ── */
+.step {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+}
+
+.stepTitle {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stepSub {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: -0.8rem 0 0;
+}
+
+/* ── Fields ── */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.field input[type="text"],
+.field input[type="date"] {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #0f172a;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: white;
+}
+
+.field input[type="text"]:focus,
+.field input[type="date"]:focus {
+    border-color: #0052cc;
+}
+
+.dateInput {
+    cursor: pointer;
+}
+
+.sub {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+/* ── Opciones (botones selector) ── */
+.opciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.opcion {
+    border: 1.5px solid #e2e8f0;
+    background: white;
+    color: #475569;
+    border-radius: 99px;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.18s, color 0.18s, background 0.18s, transform 0.12s;
+    font-family: inherit;
+}
+
+.opcion:hover {
+    border-color: #0052cc;
+    color: #0052cc;
+    transform: scale(1.03);
+}
+
+.opcionActiva {
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    border-color: transparent;
+    color: white !important;
+    transform: scale(1.03);
+}
+
+/* ── Avisos inline ── */
+.notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: #0052cc;
+    background: #eff6ff;
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.notice svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── Title icon ── */
+.titleIcon {
+    color: #0052cc;
+    flex-shrink: 0;
+}
+
+/* ── Grid de muebles ── */
+.mueblesGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.muebleCard {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1rem 0.75rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+.muebleActivo {
+    border-color: #0052cc;
+    background: #f0f7ff;
+    box-shadow: 0 2px 12px rgba(0, 82, 204, 0.12);
+}
+
+.muebleIcon {
+    color: #0052cc;
+    flex-shrink: 0;
+    opacity: 0.75;
+}
+
+.muebleActivo .muebleIcon {
+    opacity: 1;
+}
+
+.muebleLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #334155;
+    line-height: 1.3;
+    flex: 1;
+}
+
+.counter {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+}
+
+.counter button {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid #e2e8f0;
+    background: white;
+    color: #0052cc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.15s, border-color 0.15s;
+    font-family: inherit;
+}
+
+.counter button:hover:not(:disabled) {
+    background: #eff6ff;
+    border-color: #0052cc;
+}
+
+.counter button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.counter span {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0f172a;
+    min-width: 18px;
+    text-align: center;
+}
+
+.hint {
+    font-size: 0.85rem;
+    color: #ef4444;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+}
+
+/* ── Urgente ── */
+.urgente {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    background: #fff7ed;
+    border: 1.5px solid #fed7aa;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+}
+
+.urgenteIcon {
+    color: #c2410c;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.urgente strong {
+    display: block;
+    color: #c2410c;
+    font-size: 0.92rem;
+    margin-bottom: 0.2rem;
+}
+
+.urgente p {
+    color: #9a3412;
+    font-size: 0.82rem;
+    margin: 0;
+}
+
+.fechaOk {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    color: #15803d;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+/* ── Textarea ── */
+.textarea {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #0f172a;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: white;
+    resize: none;
+    width: 100%;
+}
+
+.textarea:focus {
+    border-color: #0052cc;
+}
+
+/* ── Number input ── */
+.numberInput {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    background: white;
+    width: 100px;
+}
+
+.numberInput:focus {
+    border-color: #0052cc;
+}
+
+/* ── Resumen ── */
+.resumen {
+    background: #f8fafc;
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.resumen h4 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 0.2rem;
+}
+
+.resumenItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+}
+
+.resumenItem span {
+    color: #64748b;
+}
+
+.resumenItem strong {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+/* ── Nota PDF ── */
+.pdfNota {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: #f0fdf4;
+    border: 1.5px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #15803d;
+    margin-top: 0.5rem;
+}
+
+.pdfNota svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── Navegación ── */
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.btnBack {
+    background: white;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 50px;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btnBack:hover {
+    border-color: #94a3b8;
+    color: #334155;
+}
+
+.btnNext {
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    border: none;
+    border-radius: 50px;
+    padding: 0.7rem 1.8rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 16px rgba(0, 82, 204, 0.3);
+    transition: box-shadow 0.2s, opacity 0.2s;
+}
+
+.btnNext:hover:not(:disabled) {
+    box-shadow: 0 8px 24px rgba(0, 82, 204, 0.4);
+}
+
+.btnNext:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btnWa {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #25d366;
+    border: none;
+    border-radius: 50px;
+    padding: 0.8rem 1.8rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+    transition: box-shadow 0.2s, opacity 0.2s;
+}
+
+.btnWa:hover:not(:disabled) {
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+}
+
+.btnWa:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .mueblesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .card {
+        padding: 1.8rem 1.2rem;
+    }
+
+    .progressLabel {
+        display: none;
+    }
+
+    .mueblesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nav {
+        flex-direction: column-reverse;
+    }
+
+    .btnNext,
+    .btnBack,
+    .btnWa {
+        width: 100%;
+        justify-content: center;
+    }
+}
