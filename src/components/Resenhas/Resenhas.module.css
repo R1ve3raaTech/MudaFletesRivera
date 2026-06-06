@@ -1,7 +1,9 @@
 /* ── Sección ── */
 .section {
     padding: 6rem 1.5rem;
-    background: transparent;
+    background: rgba(237,233,254,0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     position: relative;
 }
 

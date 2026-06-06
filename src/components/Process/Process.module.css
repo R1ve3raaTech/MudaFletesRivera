@@ -1,6 +1,9 @@
 .process {
     padding: 7rem 5%;
     text-align: center;
+    background: rgba(237,233,254,0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .sectionHeader {

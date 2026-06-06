@@ -1,6 +1,9 @@
 .services {
     padding: 7rem 5%;
     text-align: center;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .sectionHeader {
