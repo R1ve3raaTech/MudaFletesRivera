@@ -37,7 +37,7 @@ const Navbar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/cotizador" className={isActive('/cotizador') ? styles.navActive : ''}>
+                    <Link to="/mimudanza" className={isActive('/mimudanza') ? styles.navActive : ''}>
                         <FileText size={18} /> Mi mudanza
                     </Link>
                 </li>

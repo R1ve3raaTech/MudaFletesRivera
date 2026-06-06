@@ -24,7 +24,7 @@ const BottomNav = () => {
                 {currentPath === '/#inicio' && <motion.div layoutId="bubble" className={styles.activeIndicator} />}
             </Link>
 
-            <Link to="/cotizador" className={`${styles.navItem} ${styles.specialBlue}`}>
+            <Link to="/mimudanza" className={`${styles.navItem} ${styles.specialBlue}`}>
                 <motion.div whileTap={{ scale: 0.9 }} className={styles.iconWrapper}>
                     <MessageCircle size={24} />
                 </motion.div>

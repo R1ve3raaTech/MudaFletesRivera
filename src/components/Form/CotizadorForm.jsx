@@ -5,27 +5,28 @@ import supabase from '../../supabaseClient';
 import {
     MessageCircle, MapPin, Package, Settings, Calendar,
     AlertTriangle, Info, Zap, CheckCircle, ArrowRight, ArrowLeft,
-    Bed, DoorOpen, Sofa, UtensilsCrossed, Tv, Refrigerator,
-    WashingMachine, Wind, CookingPot, Monitor, Box, Truck, Plus, Minus, Check
+    BedSingle, BedDouble, Shirt, Armchair, UtensilsCrossed, Tv, Refrigerator,
+    WashingMachine, Drum, Flame, Laptop, Boxes, ShoppingBag, Package2, Plus, Minus, Check
 } from 'lucide-react';
 import styles from './CotizadorForm.module.css';
 
 const WA_NUMBER = '50670818306';
 
 const MUEBLES = [
-    { id: 'cama_individual',  Icon: Bed,             label: 'Cama individual' },
-    { id: 'cama_matrimonial', Icon: Bed,             label: 'Cama matrimonial / king' },
-    { id: 'ropero',           Icon: DoorOpen,        label: 'Ropero / closet' },
-    { id: 'sofa',             Icon: Sofa,            label: 'Sofá / sillón' },
+    { id: 'cama_individual',  Icon: BedSingle,       label: 'Cama individual' },
+    { id: 'cama_matrimonial', Icon: BedDouble,       label: 'Cama matrimonial / king' },
+    { id: 'ropero',           Icon: Shirt,           label: 'Ropero / closet' },
+    { id: 'sofa',             Icon: Armchair,        label: 'Sofá / sillón' },
     { id: 'comedor',          Icon: UtensilsCrossed, label: 'Comedor (mesa + sillas)' },
     { id: 'mueble_tv',        Icon: Tv,              label: 'Mueble de TV' },
     { id: 'refrigerador',     Icon: Refrigerator,    label: 'Refrigerador' },
     { id: 'lavadora',         Icon: WashingMachine,  label: 'Lavadora' },
-    { id: 'secadora',         Icon: Wind,            label: 'Secadora' },
-    { id: 'estufa',           Icon: CookingPot,      label: 'Estufa' },
-    { id: 'escritorio',       Icon: Monitor,         label: 'Escritorio' },
-    { id: 'cajas',            Icon: Box,             label: 'Cajas (aprox.)' },
-    { id: 'otros_grandes',    Icon: Truck,           label: 'Otros objetos grandes' },
+    { id: 'secadora',         Icon: Drum,            label: 'Secadora' },
+    { id: 'estufa',           Icon: Flame,           label: 'Estufa' },
+    { id: 'escritorio',       Icon: Laptop,          label: 'Escritorio' },
+    { id: 'cajas',            Icon: Boxes,           label: 'Cajas (aprox.)' },
+    { id: 'bolsas',           Icon: ShoppingBag,     label: 'Bolsas (aprox.)' },
+    { id: 'otros_grandes',    Icon: Package2,        label: 'Otros objetos grandes' },
 ];
 
 const STEP_LABELS = ['Ubicación', 'Lo que movés', 'Extras', 'Fecha'];

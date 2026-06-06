@@ -71,7 +71,7 @@ const AnimatedRoutes = () => {
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/condiciones" element={<Conditions />} />
-                <Route path="/cotizador" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
+                <Route path="/mimudanza" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
             </Routes>
         </AnimatePresence>
     );
