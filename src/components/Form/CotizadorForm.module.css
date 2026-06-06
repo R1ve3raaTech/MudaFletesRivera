@@ -2,8 +2,11 @@
 .section {
     padding: 6rem 1.5rem;
     padding-top: 8rem;
-    background: var(--bg-neutral, #f8fafc);
+    background: rgba(219,234,254,0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     position: relative;
+    min-height: 100vh;
 }
 
 .inner {
@@ -54,11 +57,13 @@
 
 /* ── Card contenedor ── */
 .card {
-    background: white;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(32px) saturate(180%);
+    -webkit-backdrop-filter: blur(32px) saturate(180%);
     border-radius: 24px;
     padding: 2.5rem;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
+    border: 1px solid rgba(255,255,255,0.75);
 }
 
 /* ── Progreso ── */
@@ -176,7 +181,7 @@
 
 .field input[type="text"],
 .field input[type="date"] {
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid rgba(255,255,255,0.7);
     border-radius: 10px;
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
@@ -184,7 +189,9 @@
     outline: none;
     font-family: inherit;
     transition: border-color 0.2s;
-    background: white;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .field input[type="text"]:focus,
@@ -210,8 +217,8 @@
 }
 
 .opcion {
-    border: 1.5px solid #e2e8f0;
-    background: white;
+    border: 1.5px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.5);
     color: #475569;
     border-radius: 99px;
     padding: 0.5rem 1.1rem;
@@ -268,22 +275,24 @@
 }
 
 .muebleCard {
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid rgba(255,255,255,0.7);
     border-radius: 14px;
     padding: 1rem 0.75rem 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.4rem;
-    background: white;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     transition: border-color 0.2s, box-shadow 0.2s;
     text-align: center;
 }
 
 .muebleActivo {
     border-color: #0052cc;
-    background: #f0f7ff;
-    box-shadow: 0 2px 12px rgba(0, 82, 204, 0.12);
+    background: rgba(239,246,255,0.75);
+    box-shadow: 0 2px 12px rgba(0, 82, 204, 0.15);
 }
 
 .muebleIcon {
@@ -315,8 +324,8 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 1.5px solid #e2e8f0;
-    background: white;
+    border: 1.5px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.6);
     color: #0052cc;
     cursor: pointer;
     display: flex;
@@ -398,7 +407,7 @@
 
 /* ── Textarea ── */
 .textarea {
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid rgba(255,255,255,0.7);
     border-radius: 10px;
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
@@ -406,7 +415,9 @@
     outline: none;
     font-family: inherit;
     transition: border-color 0.2s;
-    background: white;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     resize: none;
     width: 100%;
 }
@@ -417,7 +428,7 @@
 
 /* ── Number input ── */
 .numberInput {
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid rgba(255,255,255,0.7);
     border-radius: 10px;
     padding: 0.75rem 1rem;
     font-size: 1rem;
@@ -426,7 +437,9 @@
     outline: none;
     font-family: inherit;
     transition: border-color 0.2s;
-    background: white;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     width: 100px;
 }
 
@@ -436,7 +449,10 @@
 
 /* ── Resumen ── */
 .resumen {
-    background: #f8fafc;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.7);
     border-radius: 14px;
     padding: 1.2rem 1.4rem;
     display: flex;
@@ -474,7 +490,7 @@
 
 .autocompleteWrap input {
     width: 100%;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid rgba(255,255,255,0.7);
     border-radius: 10px;
     padding: 0.75rem 1rem;
     font-size: 0.95rem;
@@ -482,7 +498,9 @@
     outline: none;
     font-family: inherit;
     transition: border-color 0.2s;
-    background: white;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     box-sizing: border-box;
 }
 
@@ -495,8 +513,10 @@
     top: calc(100% + 4px);
     left: 0;
     right: 0;
-    background: white;
-    border: 1.5px solid #e2e8f0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.75);
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     z-index: 100;
@@ -560,8 +580,8 @@
 }
 
 .btnBack {
-    background: white;
-    border: 1.5px solid #e2e8f0;
+    background: rgba(255,255,255,0.6);
+    border: 1.5px solid rgba(255,255,255,0.7);
     border-radius: 50px;
     padding: 0.7rem 1.4rem;
     font-size: 0.92rem;
