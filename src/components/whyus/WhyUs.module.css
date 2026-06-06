@@ -1,167 +1,149 @@
 .section {
-    padding: 8rem 5%;
-    position: relative;
-    background: white;
+    padding: 7rem 5%;
+    text-align: center;
 }
 
 .inner {
-    position: relative;
-    z-index: 2;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
 .header {
-    text-align: center;
-    margin-bottom: 5rem;
+    margin: 0 auto 3.5rem;
+    max-width: 560px;
 }
 
 .eyebrow {
-    color: var(--primary-brand);
-    background: white;
-    border: 1px solid var(--border-neutral);
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
+    display: block;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.8rem;
-    display: inline-block;
-    margin-bottom: 1.5rem;
+    letter-spacing: 0.18em;
+    color: var(--primary-brand);
+    margin-bottom: 0.9rem;
 }
 
 .header h2 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
     font-weight: 800;
-    line-height: 1.1;
     color: var(--text-primary);
-    margin-bottom: 1.5rem;
-    letter-spacing: -1px;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
 }
 
-.rule {
-    width: 60px;
-    height: 4px;
-    background: var(--primary-brand);
-    border-radius: 2px;
-    margin: 0 auto 2rem;
-}
+.rule { display: none; }
 
 .header p {
-    font-size: 1.1rem;
+    font-size: 0.97rem;
     color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
 }
 
 .card {
-    background: var(--surface-color);
-    padding: 3rem 2rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    position: relative;
-    overflow: hidden;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+    padding: 2.2rem 1.8rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    box-shadow: var(--shadow-card);
-    transition: var(--transition-smooth);
+    gap: 0.8rem;
+    text-align: left;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-hover);
-    border-color: rgba(37, 99, 235, 0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.highlight {
+    border-top: 2px solid var(--primary-brand);
 }
 
 .iconBg {
-    width: 64px;
-    height: 64px;
-    border-radius: 4px;
+    width: 48px;
+    height: 48px;
+    background: rgba(37,99,235,0.1);
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
-    transition: var(--transition-smooth);
+    margin-bottom: 0.4rem;
+    transition: background 0.2s;
 }
 
-.card:hover .iconBg {
-    transform: scale(1.1) rotate(5deg);
+.card:hover .iconBg { background: var(--primary-brand); }
+
+.iconBg .material-symbols-outlined {
+    font-size: 22px;
+    color: var(--primary-brand);
+    transition: color 0.2s;
 }
+
+.card:hover .iconBg .material-symbols-outlined { color: #fff; }
 
 .card h3 {
-    font-size: 1.5rem;
-    font-weight: 800;
+    font-size: 1rem;
+    font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 0.8rem;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.2px;
 }
 
 .card p {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 0.86rem;
     color: var(--text-secondary);
+    line-height: 1.65;
     flex: 1;
 }
 
 .actions {
-    margin-top: 2rem;
+    margin-top: 0.8rem;
     display: flex;
-    gap: 1.2rem;
-    align-items: center;
-    width: 100%;
+    flex-direction: column;
+    gap: 0.6rem;
 }
+
+.linkSecondary {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+}
+.linkSecondary:hover { color: var(--primary-brand); }
 
 .btnCta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.2rem;
     background: var(--primary-brand);
-    color: white;
-    padding: 0.8rem 1.8rem;
-    border-radius: 4px;
+    color: #fff;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.83rem;
     text-decoration: none;
-    transition: var(--transition-smooth);
-    width: 100%;
-    text-align: center;
+    border-radius: 100px;
+    transition: background 0.2s, transform 0.2s;
+}
+.btnCta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+@media (max-width: 860px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-.btnCta:hover {
-    background: #1e40af;
-    transform: scale(1.02);
-}
-
-.cardGlow {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle at top right, var(--card-color), transparent 70%);
-    opacity: 0.1;
-    pointer-events: none;
-}
-
-@media (max-width: 768px) {
-    .section {
-        padding: 5rem 1.2rem;
-    }
-
-    .header {
-        margin-bottom: 3.5rem;
-    }
-
-    .grid {
-        gap: 1.5rem;
-    }
-
-    .card {
-        padding: 2.5rem 1.5rem;
-    }
+@media (max-width: 540px) {
+    .section { padding: 5rem 1.4rem; }
+    .grid { grid-template-columns: 1fr; }
+    .card { padding: 2rem 1.6rem; }
 }

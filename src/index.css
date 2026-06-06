@@ -46,6 +46,8 @@ html {
     box-sizing: border-box !important;
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 
@@ -56,11 +58,11 @@ img, video, canvas, svg {
 
 body {
     font-family: 'Outfit', sans-serif;
-    background-color: var(--bg-color);
+    background: linear-gradient(160deg, #dbeafe 0%, #ede9fe 40%, #fce7f3 70%, #dbeafe 100%);
+    background-attachment: fixed;
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
-    transition: background-color 0.4s ease, color 0.4s ease;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

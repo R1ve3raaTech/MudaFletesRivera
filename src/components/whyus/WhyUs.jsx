@@ -1,72 +1,63 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Clock, Handshake, Shield, Gem } from 'lucide-react';
 import styles from './WhyUs.module.css';
 
 const values = [
     {
-        Icon: Clock,
-        title: "Puntualidad Innegociable",
-        description: "Honramos su tiempo como el recurso más valioso. Llegamos cuando decimos, sin excusas ni retrasos.",
-        color: "#3B82F6"
+        icon: "schedule",
+        title: "Llegamos a Tiempo",
+        description: "Respetamos su agenda. Si decimos una hora, cumplimos esa hora, siempre.",
     },
     {
-        Icon: Handshake,
-        title: "Trato Preferencial",
-        description: "Sus bienes son tratados con la misma integridad y cuidado que si fueran nuestros. Ética en cada paso.",
-        color: "#10B981"
+        icon: "verified_user",
+        title: "Bienes Protegidos",
+        description: "Embalamos, cargamos y transportamos sus cosas como si fueran nuestras. Con cuidado real.",
     },
     {
-        Icon: Shield,
-        title: "Seguridad Certificada",
-        description: "Protocolos rigurosos de protección. Trabajamos incansablemente para garantizar que todo llegue impecable.",
-        color: "#8B5CF6"
+        icon: "workspace_premium",
+        title: "Experiencia Comprobada",
+        description: "Más de 20 años movilizando hogares y empresas en Costa Rica. Sabemos lo que hacemos.",
     },
     {
-        Icon: Gem,
-        title: "Precio Justo",
-        description: "Cotizaciones claras y honestas. Calidad premium sin cargos ocultos ni sorpresas.",
-        color: "#F59E0B",
+        icon: "payments",
+        title: "Precio Sin Sorpresas",
+        description: "La cotización que recibe es el precio que paga. Sin extras de último momento.",
         highlight: true
     }
 ];
 
-const ValueCard = ({ Icon, title, description, color, highlight, index }) => (
+const ValueCard = ({ icon, title, description, highlight, index }) => (
     <motion.div
         className={`${styles.card} ${highlight ? styles.highlight : ''}`}
-        initial={{ opacity: 0, y: 60 }}
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.12, type: 'spring', stiffness: 100 }}
-        whileHover={{ y: -12 }}
-        style={{ '--card-color': color }}
+        transition={{ delay: index * 0.1, type: 'spring', stiffness: 90, damping: 16 }}
     >
-        <div className={styles.iconBg} style={{ background: `${color}15` }}>
-            <Icon size={36} style={{ color }} />
+        <div className={styles.iconBg}>
+            <span className="material-symbols-outlined">{icon}</span>
         </div>
         <h3>{title}</h3>
         <p>{description}</p>
         {highlight && (
             <div className={styles.actions}>
-                <Link to="/condiciones" className={styles.linkSecondary}>Condiciones</Link>
+                <Link to="/condiciones" className={styles.linkSecondary}>Ver condiciones</Link>
                 <a href="#contacto" className={styles.btnCta}>Cotizar ahora</a>
             </div>
         )}
-        <div className={styles.cardGlow} style={{ background: `${color}10` }} />
     </motion.div>
 );
 
 const WhyUs = () => (
     <section id="nosotros" className={styles.section}>
-        <div className={styles.bg} />
         <div className={styles.inner}>
             <div className={styles.header}>
                 <motion.span
                     className={styles.eyebrow}
                     initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
                 >
-                    Nuestra Esencia
+                    Por qué confiar en nosotros
                 </motion.span>
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
@@ -77,7 +68,7 @@ const WhyUs = () => (
                 <motion.p
                     initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
                 >
-                    Somos la opción líder en Costa Rica porque combinamos décadas de experiencia con un compromiso inquebrantable por un servicio de excelencia.
+                    Con más de 20 años y 20,000 viajes realizados, sabemos cómo hacer que su mudanza sea tranquila, puntual y sin contratiempos.
                 </motion.p>
             </div>
 
