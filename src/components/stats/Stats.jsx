@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Stats.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const data = [
     { icon: "route",              display: "20K", suffix: "+", label: "Viajes Realizados" },
@@ -38,16 +42,20 @@ const CountUp = ({ display, suffix, started }) => {
 
 const StatItem = ({ icon, display, suffix, label, index }) => {
     const ref = useRef(null);
-    const inView = useInView(ref, { once: true, margin: '-40px' });
+    const [inView, setInView] = useState(false);
+
+    useGSAP(() => {
+        gsap.from(ref.current, {
+            opacity: 0, y: 28, duration: 0.6, delay: index * 0.12, ease: 'back.out(1.7)',
+            scrollTrigger: {
+                trigger: ref.current, start: 'top 90%', once: true,
+                onEnter: () => setInView(true),
+            },
+        });
+    }, { scope: ref });
 
     return (
-        <motion.div
-            ref={ref}
-            className={styles.statItem}
-            initial={{ opacity: 0, y: 28 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: index * 0.12, type: 'spring', stiffness: 90, damping: 16 }}
-        >
+        <div ref={ref} className={styles.statItem}>
             <div className={styles.iconWrap}>
                 <span className="material-symbols-outlined">{icon}</span>
             </div>
@@ -55,7 +63,7 @@ const StatItem = ({ icon, display, suffix, label, index }) => {
                 <CountUp display={display} suffix={suffix} started={inView} />
             </div>
             <div className={styles.label}>{label}</div>
-        </motion.div>
+        </div>
     );
 };
 

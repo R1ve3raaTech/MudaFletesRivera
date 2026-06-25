@@ -178,6 +178,10 @@
     transition: var(--transition-smooth);
 }
 
+.truckSecFeature:hover {
+    transform: translateX(10px);
+}
+
 .truckSecFeature:hover .truckSecFeatureIcon {
     background: var(--primary-brand);
     color: white;

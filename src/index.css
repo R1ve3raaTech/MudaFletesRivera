@@ -58,7 +58,7 @@ img, video, canvas, svg {
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: linear-gradient(160deg, #dbeafe 0%, #ede9fe 40%, #fce7f3 70%, #dbeafe 100%);
+    background: linear-gradient(160deg, #dbeafe 0%, #eff6ff 35%, #fef3c7 70%, #dbeafe 100%);
     background-attachment: fixed;
     color: var(--text-primary);
     line-height: 1.6;

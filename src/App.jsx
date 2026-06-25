@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import Navbar from './components/navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import Services from './components/NuestrosServicios/NuestrosServicios';
@@ -38,16 +39,15 @@ const ScrollToTop = () => {
     return null;
 };
 
-const PageWrapper = ({ children }) => (
-    <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-    >
-        {children}
-    </motion.div>
-);
+const PageWrapper = ({ children }) => {
+    const ref = useRef(null);
+
+    useGSAP(() => {
+        gsap.from(ref.current, { opacity: 0, duration: 0.3 });
+    }, { scope: ref });
+
+    return <div ref={ref}>{children}</div>;
+};
 
 const HomePage = () => {
     return (
@@ -67,13 +67,11 @@ const HomePage = () => {
 const AnimatedRoutes = () => {
     const location = useLocation();
     return (
-        <AnimatePresence mode="wait">
-            <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/condiciones" element={<Conditions />} />
-                <Route path="/mimudanza" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
-            </Routes>
-        </AnimatePresence>
+        <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/condiciones" element={<Conditions />} />
+            <Route path="/mimudanza" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
+        </Routes>
     );
 };
 

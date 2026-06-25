@@ -1,47 +1,42 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Conditions.module.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Conditions = () => {
+    const containerRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.from(containerRef.current, { opacity: 0, duration: 0.4 });
+        gsap.from(`.${styles.termsCard}`, { opacity: 0, y: 30, scale: 0.98, duration: 0.5, ease: 'power2.out' });
+
+        gsap.utils.toArray(`.${styles.termsSection}`).forEach((section) => {
+            gsap.from(section, {
+                opacity: 0, y: 15, duration: 0.4,
+                scrollTrigger: { trigger: section, start: 'top 90%', once: true },
+            });
+        });
+    }, { scope: containerRef });
+
     return (
-        <motion.div 
-            className={styles.termsContainer}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-        >
-            <motion.div 
-                className={styles.termsCard}
-                initial={{ opacity: 0, y: 30, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-            >
+        <div className={styles.termsContainer} ref={containerRef}>
+            <div className={styles.termsCard}>
                 <h1>Condiciones de Uso</h1>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>1. Introducción</h2>
                     <p>
                         Bienvenido a MudaFletesRivera. Al utilizar nuestros servicios de transporte, mudanzas y logística
                         especializada en Costa Rica, usted acepta cumplir con los siguientes términos y condiciones,
                         establecidos para garantizar la seguridad de su patrimonio y una experiencia de servicio transparente.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>2. Servicios de Transporte y Mudanza</h2>
                     <p>
                         Nos comprometemos a manejar sus pertenencias con el mayor cuidado posible. El cliente es
@@ -52,15 +47,9 @@ const Conditions = () => {
                     <p>
                         <strong>No transportamos:</strong> arena, grava, arcilla, escombros ni ninguna de sus variantes.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>3. Cotizador y Solicitudes</h2>
                     <p>
                         El cotizador disponible en nuestro sitio web genera una <strong>solicitud de cotización</strong>,
@@ -73,15 +62,9 @@ const Conditions = () => {
                         accesibilidad, distancia, escaleras, entre otros) difieren de las condiciones reales al
                         momento del servicio.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.35 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>4. Servicios Adicionales</h2>
                     <p>
                         Los siguientes servicios tienen un costo adicional al flete base y deben ser solicitados
@@ -97,30 +80,18 @@ const Conditions = () => {
                         El cobro por escaleras aplica cuando el origen o destino tiene uno o más pisos de escaleras
                         que dificulten la carga y descarga.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>5. Mudanzas Urgentes</h2>
                     <p>
                         Las solicitudes con menos de <strong>3 días de anticipación</strong> a la fecha deseada se
                         consideran urgentes y aplica un cargo adicional. Este cargo será informado y confirmado
                         por WhatsApp antes de concretar el servicio.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.45 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>6. Puntualidad y Acceso</h2>
                     <p>
                         Nuestro compromiso es la puntualidad. El cliente debe asegurar que los accesos al origen y
@@ -128,30 +99,18 @@ const Conditions = () => {
                         con espacio para parquear un camión grande en la vía pública, el cliente debe informarlo
                         con anticipación para coordinar la logística.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>7. Cotizaciones y Validez</h2>
                     <p>
                         Todas las cotizaciones confirmadas tienen una validez de <strong>3 días naturales</strong>.
                         Pasado ese plazo, los precios pueden estar sujetos a cambios según disponibilidad y
                         condiciones del servicio.
                     </p>
-                </motion.div>
+                </div>
 
-                <motion.div
-                    className={styles.termsSection}
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.55 }}
-                >
+                <div className={styles.termsSection}>
                     <h2>8. Privacidad y Datos</h2>
                     <p>
                         Los datos personales ingresados en el cotizador (nombre, dirección de origen y destino,
@@ -163,13 +122,13 @@ const Conditions = () => {
                         El PDF generado por el cotizador también se guarda en nuestro sistema para referencia
                         interna del equipo. Si desea que sus datos sean eliminados, puede solicitarlo por WhatsApp.
                     </p>
-                </motion.div>
+                </div>
 
                 <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                     <Link to="/" className={styles.btnPrimary}>Volver al Inicio</Link>
                 </div>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     );
 };
 

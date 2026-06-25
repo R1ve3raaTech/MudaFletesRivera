@@ -1,9 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // eslint-disable-line no-unused-vars
+import React, { useState, useEffect, useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Quote, X, Send, ThumbsUp } from 'lucide-react';
 import supabase from '../../supabaseClient';
 import styles from './Resenhas.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const NIVELES = [
     { label: 'Pésimo',    color: '#ef4444' },
@@ -58,62 +62,67 @@ const MiniTermometro = ({ calificacion }) => {
 };
 
 // Termómetro interactivo para el formulario
-const Termometro = ({ value, onChange }) => (
-    <div className={styles.thermo}>
-        <div className={styles.thermoBulb} style={{ background: value ? NIVELES[value - 1].color : '#e2e8f0' }} />
-        <div className={styles.thermoTrack}>
-            {NIVELES.map((nivel, i) => {
-                const active = i < value;
-                return (
-                    <button
+const Termometro = ({ value, onChange }) => {
+    const labelRef = useRef(null);
+
+    useGSAP(() => {
+        if (!value) return;
+        gsap.fromTo(labelRef.current, { opacity: 0, y: -4 }, { opacity: 1, y: 0, duration: 0.25 });
+    }, [value]);
+
+    return (
+        <div className={styles.thermo}>
+            <div className={styles.thermoBulb} style={{ background: value ? NIVELES[value - 1].color : '#e2e8f0' }} />
+            <div className={styles.thermoTrack}>
+                {NIVELES.map((nivel, i) => {
+                    const active = i < value;
+                    return (
+                        <button
+                            key={i}
+                            type="button"
+                            className={`${styles.thermoSegment} ${active ? styles.thermoSegmentActive : ''}`}
+                            style={active ? { background: nivel.color } : {}}
+                            onClick={() => onChange(i + 1)}
+                            aria-label={nivel.label}
+                        />
+                    );
+                })}
+            </div>
+            <div className={styles.thermoLabels}>
+                {NIVELES.map((nivel, i) => (
+                    <span
                         key={i}
-                        type="button"
-                        className={`${styles.thermoSegment} ${active ? styles.thermoSegmentActive : ''}`}
-                        style={active ? { background: nivel.color } : {}}
+                        className={`${styles.thermoLabelItem} ${i + 1 === value ? styles.thermoLabelActive : ''}`}
+                        style={i + 1 === value ? { color: nivel.color } : {}}
                         onClick={() => onChange(i + 1)}
-                        aria-label={nivel.label}
-                    />
-                );
-            })}
+                    >
+                        {i + 1}
+                    </span>
+                ))}
+            </div>
+            {value > 0 && (
+                <p ref={labelRef} className={styles.thermoSelected} style={{ color: NIVELES[value - 1].color }}>
+                    {NIVELES[value - 1].label}
+                </p>
+            )}
         </div>
-        <div className={styles.thermoLabels}>
-            {NIVELES.map((nivel, i) => (
-                <span
-                    key={i}
-                    className={`${styles.thermoLabelItem} ${i + 1 === value ? styles.thermoLabelActive : ''}`}
-                    style={i + 1 === value ? { color: nivel.color } : {}}
-                    onClick={() => onChange(i + 1)}
-                >
-                    {i + 1}
-                </span>
-            ))}
-        </div>
-        {value > 0 && (
-            <motion.p
-                key={value}
-                className={styles.thermoSelected}
-                style={{ color: NIVELES[value - 1].color }}
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-            >
-                {NIVELES[value - 1].label}
-            </motion.p>
-        )}
-    </div>
-);
+    );
+};
 
 const ReseñaCard = ({ nombre, calificacion, texto, fecha, aspectos, index }) => {
     const tags = aspectos ? aspectos.split(',').map(t => t.trim()).filter(Boolean) : [];
     const color = NIVELES[calificacion - 1]?.color ?? '#0052cc';
+    const ref = useRef(null);
+
+    useGSAP(() => {
+        gsap.from(ref.current, {
+            opacity: 0, y: 40, duration: 0.5, delay: index * 0.1,
+            scrollTrigger: { trigger: ref.current, start: 'top 90%', once: true },
+        });
+    }, { scope: ref });
+
     return (
-        <motion.div
-            className={styles.card}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-            whileHover={{ y: -6 }}
-        >
+        <div ref={ref} className={styles.card}>
             <Quote size={28} className={styles.quoteIcon} />
             <p className={styles.texto}>{texto}</p>
             {tags.length > 0 && (
@@ -132,11 +141,25 @@ const ReseñaCard = ({ nombre, calificacion, texto, fecha, aspectos, index }) =>
                     <p className={styles.meta}>{fecha}</p>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
 const Modal = ({ onClose }) => {
+    const overlayRef = useRef(null);
+    const modalRef = useRef(null);
+    const tagsFieldRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.from(overlayRef.current, { opacity: 0, duration: 0.25 });
+        gsap.from(modalRef.current, { opacity: 0, scale: 0.92, y: 30, duration: 0.4, ease: 'back.out(1.4)' });
+    }, { scope: overlayRef });
+
+    const closeAnimated = (recargar) => {
+        gsap.to(modalRef.current, { opacity: 0, scale: 0.92, y: 30, duration: 0.25, ease: 'power2.in' });
+        gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, delay: 0.05, onComplete: () => onClose(recargar) });
+    };
+
     const [form, setForm] = useState({
         nombre: '',
         dia: todayParts().dia,
@@ -175,6 +198,11 @@ const Modal = ({ onClose }) => {
         setTagsSeleccionados([]);
     };
 
+    useGSAP(() => {
+        if (!tagsFieldRef.current) return;
+        gsap.fromTo(tagsFieldRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2 });
+    }, [form.calificacion <= 3]);
+
     const fechaFormateada = `${form.dia}/${form.mes}/${form.anio}`;
 
     const validate = () => {
@@ -210,21 +238,13 @@ const Modal = ({ onClose }) => {
     };
 
     return (
-        <motion.div
+        <div
+            ref={overlayRef}
             className={styles.overlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={(e) => e.target === e.currentTarget && onClose()}
+            onClick={(e) => e.target === e.currentTarget && closeAnimated()}
         >
-            <motion.div
-                className={styles.modal}
-                initial={{ opacity: 0, scale: 0.92, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.92, y: 30 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-            >
-                <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">
+            <div ref={modalRef} className={styles.modal}>
+                <button className={styles.closeBtn} onClick={() => closeAnimated()} aria-label="Cerrar">
                     <X size={20} />
                 </button>
 
@@ -233,7 +253,7 @@ const Modal = ({ onClose }) => {
                         <ThumbsUp size={48} style={{ color: '#16a34a' }} />
                         <h3>¡Gracias por tu reseña!</h3>
                         <p>Ya aparece en la página.</p>
-                        <button className={styles.submitBtn} onClick={() => onClose(true)}>Cerrar</button>
+                        <button className={styles.submitBtn} onClick={() => closeAnimated(true)}>Cerrar</button>
                     </div>
                 ) : (
                     <>
@@ -297,14 +317,10 @@ const Modal = ({ onClose }) => {
                             </div>
 
                             {form.calificacion > 0 && (
-                                <AnimatePresence mode="wait">
-                                    <motion.div
+                                    <div
+                                        ref={tagsFieldRef}
                                         key={form.calificacion <= 3 ? 'neg' : 'pos'}
                                         className={styles.tagsField}
-                                        initial={{ opacity: 0, y: 8 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -8 }}
-                                        transition={{ duration: 0.2 }}
                                     >
                                         <p className={styles.tagsHint}>
                                             {form.calificacion <= 3
@@ -328,8 +344,7 @@ const Modal = ({ onClose }) => {
                                                 );
                                             })}
                                         </div>
-                                    </motion.div>
-                                </AnimatePresence>
+                                    </div>
                             )}
 
                             <div className={styles.field}>
@@ -355,8 +370,8 @@ const Modal = ({ onClose }) => {
                         </form>
                     </>
                 )}
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     );
 };
 
@@ -388,46 +403,42 @@ const Reseñas = () => {
         document.getElementById('resenas')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
+    const headerRef = useRef(null);
+    const emptyRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
+            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 })
+            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 }, 0.1)
+            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.2)
+            .from(`.${styles.ctaBtn}`, { opacity: 0, y: 10, duration: 0.4 }, 0.3);
+    }, { scope: headerRef });
+
+    useGSAP(() => {
+        if (!cargando && reseñas.length === 0) {
+            gsap.from(emptyRef.current, { opacity: 0, y: 20, duration: 0.5 });
+        }
+    }, [cargando, reseñas.length]);
+
     return (
         <section id="resenas" className={styles.section}>
-            <div className={styles.sectionHeader}>
-                <motion.span
-                    className={styles.eyebrow}
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                >
+            <div className={styles.sectionHeader} ref={headerRef}>
+                <span className={styles.eyebrow}>
                     Lo que dicen nuestros clientes
-                </motion.span>
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                >
+                </span>
+                <h2>
                     Reseñas y Testimonios
-                </motion.h2>
+                </h2>
                 <div className={styles.rule} />
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                >
+                <p>
                     Más de 20 años generando confianza en Costa Rica. Aquí están las experiencias de quienes ya confiaron en nosotros.
-                </motion.p>
-                <motion.button
+                </p>
+                <button
                     className={styles.ctaBtn}
                     onClick={() => setModalOpen(true)}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
                 >
                     Dejá tu reseña
-                </motion.button>
+                </button>
             </div>
 
             <div className={styles.grid}>
@@ -436,16 +447,11 @@ const Reseñas = () => {
                         <p className={styles.emptySub}>Cargando reseñas...</p>
                     </div>
                 ) : reseñas.length === 0 ? (
-                    <motion.div
-                        className={styles.emptyState}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                    >
+                    <div ref={emptyRef} className={styles.emptyState}>
                         <span className={styles.emptyIcon}>⭐</span>
                         <p className={styles.emptyTitle}>¡Muy pronto más reseñas!</p>
                         <p className={styles.emptySub}>Sé el primero en compartir tu experiencia con nosotros.</p>
-                    </motion.div>
+                    </div>
                 ) : reseñasPagina.map((r, i) => (
                     <ReseñaCard key={r.id ?? i} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
                 ))}
@@ -471,15 +477,13 @@ const Reseñas = () => {
                 </div>
             )}
 
-            <AnimatePresence>
-                {modalOpen && <Modal onClose={(recargar) => {
-                    setModalOpen(false);
-                    if (recargar) {
-                        setPagina(1);
-                        cargarReseñas();
-                    }
-                }} />}
-            </AnimatePresence>
+            {modalOpen && <Modal onClose={(recargar) => {
+                setModalOpen(false);
+                if (recargar) {
+                    setPagina(1);
+                    cargarReseñas();
+                }
+            }} />}
         </section>
     );
 };

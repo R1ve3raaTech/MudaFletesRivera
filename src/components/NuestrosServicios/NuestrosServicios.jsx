@@ -1,7 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MessageCircle } from 'lucide-react';
 import styles from './NuestrosServicios.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     {
@@ -27,22 +31,26 @@ const services = [
     }
 ];
 
-const ServiceCard = ({ icon, num, title, description, benefits, index }) => (
-    <motion.div
-        className={styles.card}
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ delay: index * 0.13, type: 'spring', stiffness: 80, damping: 16 }}
-    >
-        <div className={styles.cardInner}>
-            <div className={styles.cardTop}>
-                <div className={styles.iconWrap}>
-                    <span className="material-symbols-outlined">{icon}</span>
-                </div>
-                <span className={styles.num}>{num}</span>
-            </div>
+const ServiceCard = ({ icon, num, title, description, benefits, index }) => {
+    const ref = useRef(null);
 
+    useGSAP(() => {
+        gsap.from(ref.current, {
+            opacity: 0, y: 50, duration: 0.6, delay: index * 0.13, ease: 'back.out(1.7)',
+            scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
+        });
+    }, { scope: ref });
+
+    return (
+    <div ref={ref} className={styles.row}>
+        <div className={styles.rail}>
+            <span className={styles.num}>{num}</span>
+            <div className={styles.iconWrap}>
+                <span className="material-symbols-outlined">{icon}</span>
+            </div>
+        </div>
+
+        <div className={styles.content}>
             <h3>{title}</h3>
             <p className={styles.desc}>{description}</p>
 
@@ -54,49 +62,50 @@ const ServiceCard = ({ icon, num, title, description, benefits, index }) => (
                     </li>
                 ))}
             </ul>
-
-            <div className={styles.cardActions}>
-                <a
-                    href={`https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20${encodeURIComponent(title)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.btnService}
-                >
-                    <MessageCircle size={16} /> Cotizar este servicio
-                </a>
-            </div>
         </div>
 
-        <div className={styles.borderAccent} />
-    </motion.div>
-);
+        <a
+            href={`https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20${encodeURIComponent(title)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.btnService}
+        >
+            <MessageCircle size={16} /> Cotizar
+        </a>
+    </div>
+    );
+};
 
-const Services = () => (
+const Services = () => {
+    const headerRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
+            .from(`.${styles.topLabel}`, { opacity: 0, duration: 0.4 })
+            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 }, 0.1)
+            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.2);
+    }, { scope: headerRef });
+
+    return (
     <section id="servicios" className={styles.services}>
-        <div className={styles.sectionHeader}>
-            <motion.span
-                className={styles.topLabel}
-                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            >
+        <div className={styles.sectionHeader} ref={headerRef}>
+            <span className={styles.topLabel}>
                 Nuestros Servicios
-            </motion.span>
-            <motion.h2
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            >
+            </span>
+            <h2>
                 Servicios que Resuelven su Vida
-            </motion.h2>
+            </h2>
             <div className={styles.headerLine} />
-            <motion.p
-                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            >
+            <p>
                 Nuestra misión es su tranquilidad. Ofrecemos soluciones de transporte personalizadas con garantía real de cumplimiento.
-            </motion.p>
+            </p>
         </div>
 
-        <div className={styles.cardsGrid}>
+        <div className={styles.list}>
             {services.map((s, i) => <ServiceCard key={i} {...s} index={i} />)}
         </div>
     </section>
-);
+    );
+};
 
 export default Services;

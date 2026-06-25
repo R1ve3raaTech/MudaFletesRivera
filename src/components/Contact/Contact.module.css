@@ -145,7 +145,8 @@ a.cardValue:hover { color: var(--primary-brand); }
     text-decoration: none;
     transition: background 0.2s, transform 0.2s;
 }
-.btnWa:hover { background: #1faf53; transform: translateY(-2px); }
+.btnWa:hover { background: #1faf53; transform: translateY(-2px) scale(1.04); }
+.btnWa:active { transform: scale(0.97); }
 
 @media (max-width: 640px) {
     .contact { padding: 5rem 1.4rem; }

@@ -38,134 +38,142 @@
     line-height: 1.65;
 }
 
-.cardsGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.card {
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.75);
-    border-radius: 20px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
-    overflow: hidden;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    text-align: left;
-}
-
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.9);
-}
-
-.cardInner {
-    padding: 2.2rem 1.8rem;
+.list {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(15, 23, 42, 0.1);
 }
 
-.cardTop {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 1.4rem;
+.row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 2.6rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.1);
+    transition: background 0.3s ease;
 }
 
-.iconWrap {
-    width: 48px;
-    height: 48px;
-    background: rgba(37,99,235,0.1);
-    border-radius: 14px;
+.row:hover {
+    background: linear-gradient(90deg, rgba(37,99,235,0.05), transparent 70%);
+}
+
+.rail {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
+    height: 80px;
 }
 
-.card:hover .iconWrap { background: var(--primary-brand); }
+.num {
+    position: absolute;
+    font-size: 4.2rem;
+    font-weight: 900;
+    color: rgba(15, 23, 42, 0.06);
+    letter-spacing: -3px;
+    line-height: 1;
+    user-select: none;
+    transition: color 0.3s;
+}
+
+.row:hover .num { color: rgba(37,99,235,0.12); }
+
+.iconWrap {
+    width: 52px;
+    height: 52px;
+    background: #fff;
+    border: 1.5px solid rgba(37,99,235,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.1);
+    transition: background 0.25s, transform 0.25s, border-color 0.25s;
+    z-index: 1;
+}
+
+.row:hover .iconWrap {
+    background: var(--primary-brand);
+    border-color: var(--primary-brand);
+    transform: scale(1.08);
+}
 
 .iconWrap .material-symbols-outlined {
-    font-size: 22px;
+    font-size: 24px;
     color: var(--primary-brand);
     transition: color 0.2s;
 }
 
-.card:hover .iconWrap .material-symbols-outlined { color: #fff; }
+.row:hover .iconWrap .material-symbols-outlined { color: #fff; }
 
-.num {
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: rgba(0,0,0,0.05);
-    letter-spacing: -2px;
-    line-height: 1;
-}
-
-.cardInner h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
+.content h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
     color: var(--text-primary);
-    margin-bottom: 0.55rem;
-    letter-spacing: -0.2px;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.3px;
 }
 
 .desc {
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    line-height: 1.65;
-    flex: 1;
+    line-height: 1.6;
+    max-width: 460px;
+    margin-bottom: 0.8rem;
 }
 
 .benefits {
     list-style: none;
-    margin-top: auto;
-    padding-top: 1.2rem;
-    border-top: 1px solid rgba(0,0,0,0.06);
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
 }
 
 .benefits li {
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 
 .check {
     font-size: 14px !important;
-    color: var(--primary-brand);
+    color: var(--accent-color);
 }
-
-.cardActions { margin-top: 1.4rem; }
 
 .btnService {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.7rem 1.2rem;
+    padding: 0.7rem 1.3rem;
     background: var(--primary-brand);
     color: white;
     font-weight: 700;
     font-size: 0.83rem;
     text-decoration: none;
     border-radius: 100px;
+    white-space: nowrap;
     transition: background 0.2s, transform 0.2s;
 }
 
-.btnService:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.btnService:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
-.borderAccent { display: none; }
-
-@media (max-width: 860px) {
-    .cardsGrid { grid-template-columns: 1fr; max-width: 500px; }
+@media (max-width: 720px) {
+    .row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+        padding: 2.2rem 0.5rem;
+    }
+    .rail { margin: 0 auto; }
+    .content { display: flex; flex-direction: column; align-items: center; }
+    .benefits { justify-content: center; }
+    .btnService { justify-self: center; }
     .services { padding: 5rem 1.4rem; }
 }

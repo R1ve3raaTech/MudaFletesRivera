@@ -1,30 +1,38 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MessageCircle, Package, Mail, MapPin } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
 import styles from './Footer.module.css';
 
-const Footer = () => (
+gsap.registerPlugin(ScrollTrigger);
+
+const Footer = () => {
+    const innerRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.from(`.${styles.brand}, .${styles.links}, .${styles.contact}`, {
+            opacity: 0, y: 20, duration: 0.5, stagger: 0.1, ease: 'power2.out',
+            scrollTrigger: { trigger: innerRef.current, start: 'top 90%', once: true },
+        });
+    }, { scope: innerRef });
+
+    return (
     <footer className={styles.footer}>
-        <div className={styles.inner}>
+        <div className={styles.inner} ref={innerRef}>
             {/* Brand */}
-            <motion.div
-                className={styles.brand}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            >
+            <div className={styles.brand}>
                 <div className={styles.logo}>
                     <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
                     MudaFletesRivera
                 </div>
                 <p>Soluciones de transporte, mudanzas y materiales de construcción en todo Costa Rica.</p>
-            </motion.div>
+            </div>
 
             {/* Links */}
-            <motion.div
-                className={styles.links}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            >
+            <div className={styles.links}>
                 <h4>Navegación</h4>
                 <ul>
                     <li><a href="#inicio">Inicio</a></li>
@@ -33,13 +41,10 @@ const Footer = () => (
                     <li><a href="#contacto">Contáctenos</a></li>
                     <li><Link to="/condiciones">Condiciones</Link></li>
                 </ul>
-            </motion.div>
+            </div>
 
             {/* Contact */}
-            <motion.div
-                className={styles.contact}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            >
+            <div className={styles.contact}>
                 <h4>Contacto Directo</h4>
                 <ul>
                     <li>
@@ -59,7 +64,7 @@ const Footer = () => (
                     </li>
                     <li><MapPin size={18} /> San José, Costa Rica</li>
                 </ul>
-            </motion.div>
+            </div>
         </div>
 
         <div className={styles.bottom}>
@@ -67,6 +72,7 @@ const Footer = () => (
             <Link to="/condiciones" className={styles.bottomLink}>Condiciones de Uso</Link>
         </div>
     </footer>
-);
+    );
+};
 
 export default Footer;

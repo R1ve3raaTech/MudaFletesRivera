@@ -1,6 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Process.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
     { step: "01", icon: "phone_in_talk", title: "Contáctenos Hoy", description: "Escríbanos por WhatsApp o llámenos. En minutos sabremos qué necesita y cómo ayudarle." },
@@ -9,59 +13,62 @@ const steps = [
     { step: "04", icon: "home_pin", title: "Llega en Perfecto Estado", description: "Su hogar o negocio en el nuevo destino, tal como lo dejó. Sin estrés, sin sorpresas." }
 ];
 
-const Process = () => (
-    <section id="proceso" className={styles.process}>
-        <div className={styles.sectionHeader}>
-            <motion.span
-                className={styles.eyebrow}
-                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            >
-                Nuestro proceso
-            </motion.span>
-            <motion.h2
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-            >
-                Así de Fácil es Mudarse con Nosotros
-            </motion.h2>
-            <motion.p
-                initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-            >
-                Cuatro pasos. Sin complicaciones. Con la tranquilidad que merece.
-            </motion.p>
-        </div>
+const Process = () => {
+    const headerRef = useRef(null);
+    const stepsRef = useRef(null);
 
-        <div className={styles.stepsRow}>
-            {steps.map((s, i) => (
-                <React.Fragment key={i}>
-                    <motion.div
-                        className={styles.step}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.12, type: 'spring', stiffness: 90 }}
-                    >
-                        <div className={styles.iconWrap}>
-                            <span className="material-symbols-outlined">{s.icon}</span>
-                            <span className={styles.badge}>{s.step}</span>
+    useGSAP(() => {
+        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
+            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 })
+            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 }, 0.1)
+            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.2);
+    }, { scope: headerRef });
+
+    useGSAP(() => {
+        gsap.from(`.${styles.step}`, {
+            opacity: 0, y: 30, duration: 0.5, stagger: 0.12, ease: 'back.out(1.7)',
+            scrollTrigger: { trigger: stepsRef.current, start: 'top 85%', once: true },
+        });
+        gsap.from(`.${styles.connector}`, {
+            scaleX: 0, transformOrigin: 'left center', duration: 0.4, stagger: 0.12, delay: 0.2,
+            scrollTrigger: { trigger: stepsRef.current, start: 'top 85%', once: true },
+        });
+    }, { scope: stepsRef });
+
+    return (
+        <section id="proceso" className={styles.process}>
+            <div className={styles.sectionHeader} ref={headerRef}>
+                <span className={styles.eyebrow}>
+                    Nuestro proceso
+                </span>
+                <h2>
+                    Así de Fácil es Mudarse con Nosotros
+                </h2>
+                <p>
+                    Cuatro pasos. Sin complicaciones. Con la tranquilidad que merece.
+                </p>
+            </div>
+
+            <div className={styles.stepsRow} ref={stepsRef}>
+                {steps.map((s, i) => (
+                    <React.Fragment key={i}>
+                        <div className={styles.step}>
+                            <div className={styles.iconWrap}>
+                                <span className="material-symbols-outlined">{s.icon}</span>
+                                <span className={styles.badge}>{s.step}</span>
+                            </div>
+                            <h3>{s.title}</h3>
+                            <p>{s.description}</p>
                         </div>
-                        <h3>{s.title}</h3>
-                        <p>{s.description}</p>
-                    </motion.div>
 
-                    {i < steps.length - 1 && (
-                        <motion.div
-                            className={styles.connector}
-                            initial={{ scaleX: 0 }}
-                            whileInView={{ scaleX: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.12 + 0.2, duration: 0.4 }}
-                            style={{ originX: 0 }}
-                        />
-                    )}
-                </React.Fragment>
-            ))}
-        </div>
-    </section>
-);
+                        {i < steps.length - 1 && (
+                            <div className={styles.connector} />
+                        )}
+                    </React.Fragment>
+                ))}
+            </div>
+        </section>
+    );
+};
 
 export default Process;

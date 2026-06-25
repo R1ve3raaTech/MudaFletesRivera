@@ -1,5 +1,7 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState, useEffect } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ShieldCheck, TruckIcon, Route, Box, ChevronLeft, ChevronRight, MessageCircle, Send } from 'lucide-react';
 import './NuestroEquipo.css';
 import mudanza1 from '../../assets/mudanza1.webp';
@@ -10,6 +12,8 @@ import mudanza5 from '../../assets/mudanza5.webp';
 import truck1 from '../../assets/truck1.webp';
 import truck2 from '../../assets/truck2.webp';
 import logoNew from '../../assets/trucklogo.png';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const images = [
     {
@@ -57,15 +61,19 @@ const images = [
 ];
 
 const NuestroEquipo = () => {
-    const [[page, direction], setPage] = React.useState([0, 0]);
-    const [isHovered, setIsHovered] = React.useState(false);
+    const [[page, direction], setPage] = useState([0, 0]);
+    const [displayPage, setDisplayPage] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const slideRef = useRef(null);
+    const overlayRef = useRef(null);
+    const visualRef = useRef(null);
+    const contentRef = useRef(null);
 
     const paginate = (newDirection) => {
-        setPage([(page + newDirection + images.length) % images.length, newDirection]);
+        setPage(([p]) => [(p + newDirection + images.length) % images.length, newDirection]);
     };
 
-    React.useEffect(() => {
-        // Preload images
+    useEffect(() => {
         images.forEach(image => {
             const img = new Image();
             img.src = image.url;
@@ -78,88 +86,79 @@ const NuestroEquipo = () => {
         return () => clearInterval(timer);
     }, [page, isHovered]);
 
-    const variants = {
-        enter: (direction) => ({
-            x: direction > 0 ? "100%" : "-100%",
-            opacity: 0
-        }),
-        center: {
-            zIndex: 1,
-            x: 0,
-            opacity: 1
-        },
-        exit: (direction) => ({
-            zIndex: 0,
-            x: direction < 0 ? "100%" : "-100%",
+    useGSAP(() => {
+        gsap.from(visualRef.current, {
+            opacity: 0, x: -50, duration: 0.7,
+            scrollTrigger: { trigger: visualRef.current, start: 'top 80%', once: true },
+        });
+        gsap.from(contentRef.current.children, {
+            opacity: 0, y: 20, duration: 0.5, stagger: 0.1,
+            scrollTrigger: { trigger: contentRef.current, start: 'top 80%', once: true },
+        });
+    }, { scope: contentRef });
+
+    // Exit animation when target page changes
+    useGSAP(() => {
+        if (page === displayPage) return;
+        gsap.to(slideRef.current, {
+            x: direction > 0 ? '-15%' : '15%',
             opacity: 0,
-            transition: { opacity: { duration: 0.2 } }
-        })
-    };
+            duration: 0.25,
+            ease: 'power2.in',
+            onComplete: () => setDisplayPage(page),
+        });
+    }, [page]);
+
+    // Enter animation once the displayed slide content updates
+    useGSAP(() => {
+        gsap.fromTo(slideRef.current,
+            { x: direction > 0 ? '15%' : '-15%', opacity: 0 },
+            { x: '0%', opacity: 1, duration: 0.4, ease: 'power2.out' }
+        );
+        gsap.fromTo(overlayRef.current,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.4, delay: 0.15, ease: 'power2.out' }
+        );
+    }, [displayPage]);
 
     return (
         <section className="truckSecContainer" id="nuestro-equipo">
             <div className="truckSecBlob"></div>
-            
+
             <div className="truckSecWrapper">
                 {/* Visual Side - CAROUSEL */}
-                <motion.div 
+                <div
                     className="truckSecVisual"
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.7 }}
+                    ref={visualRef}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                 >
                     <div className="truckSecCarouselContainer">
-                        <AnimatePresence initial={false} custom={direction}>
-                            <motion.div
-                                key={page}
-                                custom={direction}
-                                variants={variants}
-                                initial="enter"
-                                animate="center"
-                                exit="exit"
-                                transition={{
-                                    x: { type: "spring", stiffness: 300, damping: 30 },
-                                    opacity: { duration: 0.3 }
-                                }}
-                                className="truckSecSlide"
-                            >
-                                <img 
-                                    src={images[page].url} 
-                                    alt={images[page].title}
-                                    className="truckSecMainImg"
-                                    loading={page === 0 ? "eager" : "lazy"}
-                                    fetchPriority={page === 0 ? "high" : "low"}
-                                    decoding="async"
-                                />
-                                <div className="truckSecSlideOverlay">
-                                    <motion.div 
-                                        initial={{ y: 20, opacity: 0 }}
-                                        animate={{ y: 0, opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
-                                        className="truckSecOverlayContent"
-                                    >
-                                        <h3>{images[page].title}</h3>
-                                        <p>{images[page].subtitle}</p>
-                                    </motion.div>
+                        <div ref={slideRef} className="truckSecSlide">
+                            <img
+                                src={images[displayPage].url}
+                                alt={images[displayPage].title}
+                                className="truckSecMainImg"
+                                loading={displayPage === 0 ? "eager" : "lazy"}
+                                fetchPriority={displayPage === 0 ? "high" : "low"}
+                                decoding="async"
+                            />
+                            <div className="truckSecSlideOverlay">
+                                <div ref={overlayRef} className="truckSecOverlayContent">
+                                    <h3>{images[displayPage].title}</h3>
+                                    <p>{images[displayPage].subtitle}</p>
                                 </div>
-                            </motion.div>
-                        </AnimatePresence>
+                            </div>
+                        </div>
 
                         <button className="truckSecNavBtn prev" onClick={() => paginate(-1)}><ChevronLeft /></button>
                         <button className="truckSecNavBtn next" onClick={() => paginate(1)}><ChevronRight /></button>
                     </div>
-                </motion.div>
+                </div>
 
                 {/* Content Side */}
-                <div className="truckSecContent">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                    >
+                <div className="truckSecContent" ref={contentRef}>
+                    <div>
                         <div className="truckSecSubtitle">
                             <img src={logoNew} alt="Logo" className="truckSecSubLogo" />
                             Elite & Profesional
@@ -170,48 +169,42 @@ const NuestroEquipo = () => {
                         <p className="truckSecDesc">
                             Combinamos la mejor tecnología en transporte con un equipo humano excepcional. Cada mudanza es tratada con precisión logística para garantizar la integridad absoluta de sus bienes.
                         </p>
-                    </motion.div>
+                    </div>
 
                     <div className="truckSecGrid">
-                        <motion.div className="truckSecFeature" whileHover={{ x: 10 }} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
+                        <div className="truckSecFeature">
                             <div className="truckSecFeatureIcon"><ShieldCheck size={22} /></div>
                             <div>
                                 <h4>Seguridad Total</h4>
                                 <p>Furgones cerrados y acondicionados.</p>
                             </div>
-                        </motion.div>
+                        </div>
 
-                        <motion.div className="truckSecFeature" whileHover={{ x: 10 }} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
+                        <div className="truckSecFeature">
                             <div className="truckSecFeatureIcon"><Box size={22} /></div>
                             <div>
                                 <h4>Interior Especializado</h4>
                                 <p>Rieles y protección de madera.</p>
                             </div>
-                        </motion.div>
+                        </div>
 
-                        <motion.div className="truckSecFeature" whileHover={{ x: 10 }} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
+                        <div className="truckSecFeature">
                             <div className="truckSecFeatureIcon"><Route size={22} /></div>
                             <div>
                                 <h4>Cobertura Nacional</h4>
                                 <p>Llegamos a todo Costa Rica.</p>
                             </div>
-                        </motion.div>
+                        </div>
                     </div>
 
-                    <motion.div 
-                        className="truckSecActions"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.5 }}
-                    >
+                    <div className="truckSecActions">
                         <a href="#contacto" className="truckSecBtnForm">
                             <Send size={18} /> Cotizar Ahora
                         </a>
                         <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer" className="truckSecBtnWa">
                             <MessageCircle size={20} /> WhatsApp
                         </a>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

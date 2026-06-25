@@ -1,7 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
 import styles from './WhyUs.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const values = [
     {
@@ -27,14 +31,8 @@ const values = [
     }
 ];
 
-const ValueCard = ({ icon, title, description, highlight, index }) => (
-    <motion.div
-        className={`${styles.card} ${highlight ? styles.highlight : ''}`}
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: index * 0.1, type: 'spring', stiffness: 90, damping: 16 }}
-    >
+const ValueCard = ({ icon, title, description, highlight }) => (
+    <div className={`${styles.card} ${highlight ? styles.highlight : ''}`}>
         <div className={styles.iconBg}>
             <span className="material-symbols-outlined">{icon}</span>
         </div>
@@ -46,37 +44,49 @@ const ValueCard = ({ icon, title, description, highlight, index }) => (
                 <a href="#contacto" className={styles.btnCta}>Cotizar ahora</a>
             </div>
         )}
-    </motion.div>
+    </div>
 );
 
-const WhyUs = () => (
-    <section id="nosotros" className={styles.section}>
-        <div className={styles.inner}>
-            <div className={styles.header}>
-                <motion.span
-                    className={styles.eyebrow}
-                    initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-                >
-                    Por qué confiar en nosotros
-                </motion.span>
-                <motion.h2
-                    initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                >
-                    ¿Por qué elegirnos?
-                </motion.h2>
-                <div className={styles.rule} />
-                <motion.p
-                    initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                >
-                    Con más de 20 años y 20,000 viajes realizados, sabemos cómo hacer que su mudanza sea tranquila, puntual y sin contratiempos.
-                </motion.p>
-            </div>
+const WhyUs = () => {
+    const headerRef = useRef(null);
+    const gridRef = useRef(null);
 
-            <div className={styles.grid}>
-                {values.map((v, i) => <ValueCard key={i} {...v} index={i} />)}
+    useGSAP(() => {
+        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
+            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 })
+            .from(`.${styles.header} h2`, { opacity: 0, y: 30, duration: 0.4 }, 0.1)
+            .from(`.${styles.header} p`, { opacity: 0, duration: 0.4 }, 0.2);
+    }, { scope: headerRef });
+
+    useGSAP(() => {
+        gsap.from(`.${styles.card}`, {
+            opacity: 0, y: 40, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)',
+            scrollTrigger: { trigger: gridRef.current, start: 'top 85%', once: true },
+        });
+    }, { scope: gridRef });
+
+    return (
+        <section id="nosotros" className={styles.section}>
+            <div className={styles.inner}>
+                <div className={styles.header} ref={headerRef}>
+                    <span className={styles.eyebrow}>
+                        Por qué confiar en nosotros
+                    </span>
+                    <h2>
+                        ¿Por qué elegirnos?
+                    </h2>
+                    <div className={styles.rule} />
+                    <p>
+                        Con más de 20 años y 20,000 viajes realizados, sabemos cómo hacer que su mudanza sea tranquila, puntual y sin contratiempos.
+                    </p>
+                </div>
+
+                <div className={styles.grid} ref={gridRef}>
+                    {values.map((v, i) => <ValueCard key={i} {...v} />)}
+                </div>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
 
 export default WhyUs;

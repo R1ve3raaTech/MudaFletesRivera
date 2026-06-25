@@ -1,5 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import { Home, MessageCircle, Info } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import styles from './BottomNav.module.css';
@@ -13,42 +14,58 @@ const WA_ICON = (
 const BottomNav = () => {
     const location = useLocation();
     const currentPath = location.pathname + location.hash;
+    const navRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.from(`.${styles.active}`, { scale: 0.9, duration: 0.25, ease: 'back.out(2)' });
+    }, { scope: navRef, dependencies: [currentPath] });
 
     return (
-        <nav className={styles.bottomNav}>
-            <Link to="/#inicio" className={`${styles.navItem} ${currentPath === '/#inicio' ? styles.active : ''}`}>
-                <motion.div whileTap={{ scale: 0.9 }} className={styles.iconWrapper}>
-                    <Home size={24} />
-                </motion.div>
-                <span>Inicio</span>
-                {currentPath === '/#inicio' && <motion.div layoutId="bubble" className={styles.activeIndicator} />}
+        <nav className={styles.bottomNav} ref={navRef}>
+            <Link
+                to="/#inicio"
+                aria-label="Inicio"
+                className={`${styles.navItem} ${currentPath === '/#inicio' ? styles.active : ''}`}
+            >
+                <div className={styles.iconWrapper}>
+                    <Home size={22} />
+                </div>
+                <span className={styles.navLabel}>Inicio</span>
             </Link>
 
-            <Link to="/mimudanza" className={`${styles.navItem} ${styles.specialBlue}`}>
-                <motion.div whileTap={{ scale: 0.9 }} className={styles.iconWrapper}>
-                    <MessageCircle size={24} />
-                </motion.div>
-                <span>Mi mudanza</span>
+            <Link
+                to="/mimudanza"
+                aria-label="Mi mudanza"
+                className={`${styles.navItem} ${styles.specialBlue} ${currentPath.startsWith('/mimudanza') ? styles.active : ''}`}
+            >
+                <div className={styles.iconWrapper}>
+                    <MessageCircle size={22} />
+                </div>
+                <span className={styles.navLabel}>Mi mudanza</span>
             </Link>
 
             <a
                 href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="WhatsApp"
                 className={`${styles.navItem} ${styles.special}`}
             >
-                <motion.div whileTap={{ scale: 0.9 }} className={styles.iconWrapper}>
+                <div className={styles.iconWrapper}>
                     {WA_ICON}
-                </motion.div>
-                <span>WhatsApp</span>
+                </div>
+                <span className={styles.navLabel}>WhatsApp</span>
             </a>
 
-            <Link to="/condiciones" className={`${styles.navItem} ${currentPath === '/condiciones' ? styles.active : ''}`}>
-                <motion.div whileTap={{ scale: 0.9 }} className={styles.iconWrapper}>
-                    <Info size={24} />
-                </motion.div>
-                <span>Legal</span>
-                {currentPath === '/condiciones' && <motion.div layoutId="bubble" className={styles.activeIndicator} />}
+            <Link
+                to="/condiciones"
+                aria-label="Legal"
+                className={`${styles.navItem} ${currentPath === '/condiciones' ? styles.active : ''}`}
+            >
+                <div className={styles.iconWrapper}>
+                    <Info size={22} />
+                </div>
+                <span className={styles.navLabel}>Legal</span>
             </Link>
         </nav>
     );

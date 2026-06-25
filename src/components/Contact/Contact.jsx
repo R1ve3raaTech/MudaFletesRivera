@@ -1,7 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 import styles from './Contact.module.css';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const WA_NUMBER = "50670818306";
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hola, deseo cotizar un servicio de mudanza.")}`;
@@ -33,51 +37,57 @@ const cards = [
     },
 ];
 
-const Contact = () => (
+const Contact = () => {
+    const headerRef = useRef(null);
+    const gridRef = useRef(null);
+    const ctaRef = useRef(null);
+
+    useGSAP(() => {
+        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
+            .from(`.${styles.badge}`, { opacity: 0, scale: 0.8, duration: 0.4 })
+            .from(`.${styles.header} h2`, { opacity: 0, y: 30, duration: 0.4 }, 0.1)
+            .from(`.${styles.header} p`, { opacity: 0, duration: 0.4 }, 0.2);
+    }, { scope: headerRef });
+
+    useGSAP(() => {
+        gsap.from(`.${styles.card}`, {
+            opacity: 0, y: 40, duration: 0.5, stagger: 0.1, ease: 'back.out(1.7)',
+            scrollTrigger: { trigger: gridRef.current, start: 'top 85%', once: true },
+        });
+    }, { scope: gridRef });
+
+    useGSAP(() => {
+        gsap.from(ctaRef.current, {
+            opacity: 0, y: 30, duration: 0.5, delay: 0.1,
+            scrollTrigger: { trigger: ctaRef.current, start: 'top 90%', once: true },
+        });
+    }, { scope: ctaRef });
+
+    return (
     <section id="contacto" className={styles.contact}>
         <div className={styles.inner}>
 
             {/* Header */}
-            <div className={styles.header}>
-                <motion.span
-                    className={styles.badge}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                >
+            <div className={styles.header} ref={headerRef}>
+                <span className={styles.badge}>
                     Hablemos
-                </motion.span>
+                </span>
 
-                <motion.h2
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                >
+                <h2>
                     Cotice su <span className={styles.accent}>servicio ideal</span> hoy mismo
-                </motion.h2>
+                </h2>
 
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                >
+                <p>
                     Le respondemos en minutos. Sin complicaciones, sin cargos ocultos.
-                </motion.p>
+                </p>
             </div>
 
             {/* Cards grid */}
-            <div className={styles.grid}>
+            <div className={styles.grid} ref={gridRef}>
                 {cards.map(({ Icon, label, value, href, cta }, i) => (
-                    <motion.div
+                    <div
                         key={i}
                         className={`${styles.card} ${cta ? styles.cardCta : ''}`}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1, type: 'spring', stiffness: 90, damping: 16 }}
-                        whileHover={{ y: -6 }}
                     >
                         <div className={`${styles.iconWrap} ${cta ? styles.iconWrapCta : ''}`}>
                             <Icon size={22} />
@@ -90,34 +100,27 @@ const Contact = () => (
                         ) : (
                             <span className={styles.cardValue}>{value}</span>
                         )}
-                    </motion.div>
+                    </div>
                 ))}
             </div>
 
             {/* Big WhatsApp CTA */}
-            <motion.div
-                className={styles.ctaBlock}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-            >
+            <div className={styles.ctaBlock} ref={ctaRef}>
                 <p>¿Listo para su mudanza? Escríbanos ahora y reciba su cotización en minutos.</p>
-                <motion.a
+                <a
                     href={WA_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.btnWa}
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.97 }}
                 >
                     <MessageCircle size={20} />
                     Escribir por WhatsApp
-                </motion.a>
-            </motion.div>
+                </a>
+            </div>
 
         </div>
     </section>
-);
+    );
+};
 
 export default Contact;
