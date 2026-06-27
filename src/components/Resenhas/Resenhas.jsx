@@ -375,7 +375,7 @@ const Modal = ({ onClose }) => {
     );
 };
 
-const POR_PAGINA = 6;
+const POR_PAGINA = 3;
 
 const Reseñas = () => {
     const [modalOpen, setModalOpen] = useState(false);
