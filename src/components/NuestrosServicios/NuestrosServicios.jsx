@@ -13,7 +13,7 @@ const services = [
         num: "01",
         title: "Logística de Carga",
         description: "Soluciones logísticas de alto nivel. Su mercancía llega intacta, a tiempo y respaldada por nuestra experiencia de décadas.",
-        benefits: ["Carga Asegurada", "Seguimiento en Tiempo Real", "Conductores Expertos"],
+        benefits: ["Carga Protegida", "Seguimiento en Tiempo Real", "Conductores Expertos"],
     },
     {
         icon: "inventory_2",
