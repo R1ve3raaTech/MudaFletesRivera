@@ -8,8 +8,14 @@
 
 .mapa {
     width: 100%;
-    height: 280px;
+    height: 300px;
     z-index: 0;
+}
+
+/* Controles de MapLibre acordes a la paleta */
+.mapa :global(.maplibregl-ctrl-group) {
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(27, 36, 55, 0.14);
 }
 
 .velo {

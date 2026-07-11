@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { Navigation, Clock, LoaderCircle, MapPinOff } from 'lucide-react';
 import styles from './RutaMapa.module.css';
 
-const CENTRO_CR = [9.7489, -83.7534];
+const CENTRO_CR = [-84.08, 9.93]; // [lon, lat]
+const ESTILO = 'https://tiles.openfreemap.org/styles/positron';
 
 const geocodificar = async (q) => {
     const res = await fetch(
@@ -13,15 +14,19 @@ const geocodificar = async (q) => {
     );
     const data = await res.json();
     if (!data[0]) return null;
-    return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    return [parseFloat(data[0].lat), parseFloat(data[0].lon)]; // [lat, lon]
 };
 
-const pin = (color, letra) => L.divIcon({
-    className: '',
-    html: `<div style="width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${color};border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;"><span style="transform:rotate(45deg);color:#fff;font-weight:800;font-size:13px;font-family:sans-serif;">${letra}</span></div>`,
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-});
+// Marcadores estilo app de transporte: origen = punto verde, destino = pin azul
+const crearMarcador = (tipo) => {
+    const el = document.createElement('div');
+    if (tipo === 'origen') {
+        el.innerHTML = `<div style="width:18px;height:18px;border-radius:50%;background:#16a34a;border:3.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);"></div>`;
+    } else {
+        el.innerHTML = `<div style="width:16px;height:16px;background:#2563EB;border:3.5px solid #fff;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.35);"></div>`;
+    }
+    return el;
+};
 
 const formatearDuracion = (min) => {
     if (min < 60) return `${min} min`;
@@ -33,24 +38,80 @@ const formatearDuracion = (min) => {
 export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino, onRuta }) {
     const mapDivRef = useRef(null);
     const mapRef = useRef(null);
-    const capaRef = useRef(null);
+    const listoRef = useRef(false);
+    const marcadoresRef = useRef([]);
+    const animRef = useRef(null);
     const [info, setInfo] = useState(null);
     const [estado, setEstado] = useState('idle');
 
     useEffect(() => {
         if (!mapDivRef.current || mapRef.current) return;
-        const map = L.map(mapDivRef.current, {
+        const map = new maplibregl.Map({
+            container: mapDivRef.current,
+            style: ESTILO,
             center: CENTRO_CR,
-            zoom: 8,
-            scrollWheelZoom: false,
+            zoom: 7,
+            attributionControl: { compact: true },
+            scrollZoom: false,
+            pitchWithRotate: false,
         });
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        }).addTo(map);
-        capaRef.current = L.layerGroup().addTo(map);
+        map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+        map.on('load', () => {
+            map.addSource('ruta', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: [] } } });
+            // Borde blanco debajo + línea azul encima, puntas redondeadas (look Uber/DiDi)
+            map.addLayer({
+                id: 'ruta-borde', type: 'line', source: 'ruta',
+                layout: { 'line-cap': 'round', 'line-join': 'round' },
+                paint: { 'line-color': '#ffffff', 'line-width': 9, 'line-opacity': 0.9 },
+            });
+            map.addLayer({
+                id: 'ruta-linea', type: 'line', source: 'ruta',
+                layout: { 'line-cap': 'round', 'line-join': 'round' },
+                paint: { 'line-color': '#2563EB', 'line-width': 5 },
+            });
+            listoRef.current = true;
+        });
+
         mapRef.current = map;
-        return () => { map.remove(); mapRef.current = null; };
+        return () => {
+            cancelAnimationFrame(animRef.current);
+            map.remove();
+            mapRef.current = null;
+            listoRef.current = false;
+        };
     }, []);
+
+    const limpiar = () => {
+        cancelAnimationFrame(animRef.current);
+        marcadoresRef.current.forEach(m => m.remove());
+        marcadoresRef.current = [];
+        if (listoRef.current) {
+            mapRef.current?.getSource('ruta')?.setData({ type: 'Feature', geometry: { type: 'LineString', coordinates: [] } });
+        }
+    };
+
+    // Dibuja la ruta progresivamente, como el trazado animado de las apps de transporte
+    const animarRuta = (coords) => {
+        const src = mapRef.current?.getSource('ruta');
+        if (!src) return;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion || coords.length < 2) {
+            src.setData({ type: 'Feature', geometry: { type: 'LineString', coordinates: coords } });
+            return;
+        }
+        const duracion = 900;
+        let inicio = null;
+        const paso = (t) => {
+            if (!inicio) inicio = t;
+            const p = Math.min((t - inicio) / duracion, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            const n = Math.max(2, Math.round(eased * coords.length));
+            src.setData({ type: 'Feature', geometry: { type: 'LineString', coordinates: coords.slice(0, n) } });
+            if (p < 1) animRef.current = requestAnimationFrame(paso);
+        };
+        animRef.current = requestAnimationFrame(paso);
+    };
 
     useEffect(() => {
         const o = origen?.trim();
@@ -58,7 +119,7 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
         if (!o || !d || o.length < 4 || d.length < 4) {
             setEstado('idle');
             setInfo(null);
-            capaRef.current?.clearLayers();
+            limpiar();
             onRuta?.(null);
             return;
         }
@@ -66,8 +127,6 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
         let cancelado = false;
         setEstado('cargando');
 
-        // Con coordenadas exactas (sugerencia elegida) la ruta sale casi al instante;
-        // solo se geocodifica el texto cuando se escribió a mano.
         const espera = (coordsOrigen && coordsDestino) ? 150 : 900;
         const timer = setTimeout(async () => {
             try {
@@ -87,13 +146,27 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
                 const ruta = data.routes?.[0];
                 if (!ruta) { setEstado('error'); setInfo(null); onRuta?.(null); return; }
 
-                const coords = ruta.geometry.coordinates.map(([lon, lat]) => [lat, lon]);
-                const capa = capaRef.current;
-                capa.clearLayers();
-                L.marker(pA, { icon: pin('#16a34a', 'A') }).addTo(capa);
-                L.marker(pB, { icon: pin('#2563EB', 'B') }).addTo(capa);
-                const linea = L.polyline(coords, { color: '#2563EB', weight: 5, opacity: 0.85 }).addTo(capa);
-                mapRef.current?.fitBounds(linea.getBounds(), { padding: [40, 40] });
+                // Espera a que el estilo del mapa termine de cargar
+                const dibujar = () => {
+                    if (cancelado) return;
+                    if (!listoRef.current) { setTimeout(dibujar, 120); return; }
+                    const map = mapRef.current;
+                    limpiar();
+
+                    marcadoresRef.current = [
+                        new maplibregl.Marker({ element: crearMarcador('origen') }).setLngLat([pA[1], pA[0]]).addTo(map),
+                        new maplibregl.Marker({ element: crearMarcador('destino') }).setLngLat([pB[1], pB[0]]).addTo(map),
+                    ];
+
+                    const coords = ruta.geometry.coordinates; // [lon, lat]
+                    const bounds = coords.reduce(
+                        (b, c) => b.extend(c),
+                        new maplibregl.LngLatBounds(coords[0], coords[0])
+                    );
+                    map.fitBounds(bounds, { padding: 52, duration: 800 });
+                    animarRuta(coords);
+                };
+                dibujar();
 
                 const km = Math.round((ruta.distance / 1000) * 10) / 10;
                 const min = Math.round(ruta.duration / 60);
