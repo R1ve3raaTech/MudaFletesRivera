@@ -17,6 +17,8 @@ const BottomNav = () => {
     const navRef = useRef(null);
 
     useGSAP(() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) return;
         gsap.from(`.${styles.active}`, { scale: 0.9, duration: 0.25, ease: 'back.out(2)' });
     }, { scope: navRef, dependencies: [currentPath] });
 

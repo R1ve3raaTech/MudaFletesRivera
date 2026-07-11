@@ -61,7 +61,7 @@
     font-size: clamp(2.6rem, 6vw, 4.2rem);
     font-weight: 800;
     line-height: 1.05;
-    letter-spacing: -2px;
+    letter-spacing: -0.03em;
     color: var(--text-primary);
     margin-bottom: 1.4rem;
 }
@@ -93,10 +93,11 @@
     font-weight: 700;
     font-size: 0.92rem;
     border-radius: 100px;
-    transition: background 0.2s, transform 0.2s;
+    transition: background 0.2s ease, transform 0.15s ease;
     text-decoration: none;
 }
 .btnPrimary:hover { background: #1faf53; transform: translateY(-2px); }
+.btnPrimary:active { transform: scale(0.96); transition-duration: 0.08s; }
 
 .btnSecondary {
     display: inline-flex;
@@ -109,7 +110,7 @@
     font-weight: 600;
     font-size: 0.92rem;
     border-radius: 100px;
-    transition: background 0.2s, transform 0.2s;
+    transition: background 0.2s ease, transform 0.15s ease;
     text-decoration: none;
 }
 .btnSecondary:hover {
@@ -117,6 +118,13 @@
     border-color: var(--accent-color);
     color: var(--accent-color);
     transform: translateY(-2px);
+}
+.btnSecondary:active { transform: scale(0.96); transition-duration: 0.08s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .btnPrimary:hover, .btnSecondary:hover, .btnPrimary:active, .btnSecondary:active {
+        transform: none;
+    }
 }
 
 @media (max-width: 640px) {

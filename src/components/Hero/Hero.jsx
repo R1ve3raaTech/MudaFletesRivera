@@ -9,13 +9,16 @@ const Hero = () => {
     const contentRef = useRef(null);
 
     useGSAP(() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const y = reduceMotion ? 0 : 24;
+
         gsap.timeline()
-            .from(`.${styles.content}`, { opacity: 0, y: 24, duration: 0.7, ease: 'power2.out' })
+            .from(`.${styles.content}`, { opacity: 0, y, duration: 0.7, ease: 'power2.out' })
             .from(`.${styles.logo}`, { opacity: 0, duration: 0.5, ease: 'power2.out' }, '<')
             .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 }, 0.3)
-            .from(`.${styles.hero} h1`, { opacity: 0, y: 16, duration: 0.4 }, 0.45)
+            .from(`.${styles.hero} h1`, { opacity: 0, y: reduceMotion ? 0 : 16, duration: 0.4 }, 0.45)
             .from(`.${styles.sub}`, { opacity: 0, duration: 0.4 }, 0.6)
-            .from(`.${styles.actions}`, { opacity: 0, y: 12, duration: 0.4 }, 0.75);
+            .from(`.${styles.actions}`, { opacity: 0, y: reduceMotion ? 0 : 12, duration: 0.4 }, 0.75);
     }, { scope: contentRef });
 
     return (
