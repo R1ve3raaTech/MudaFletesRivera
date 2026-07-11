@@ -2,20 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Navigation, Clock, LoaderCircle, MapPinOff } from 'lucide-react';
+import { geocodificar, CENTRO_CR } from './geo';
 import styles from './RutaMapa.module.css';
 
-const CENTRO_CR = [-84.08, 9.93]; // [lon, lat]
 const ESTILO = 'https://tiles.openfreemap.org/styles/positron';
-
-const geocodificar = async (q) => {
-    const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&countrycodes=cr&limit=1`,
-        { headers: { 'Accept-Language': 'es' } }
-    );
-    const data = await res.json();
-    if (!data[0]) return null;
-    return [parseFloat(data[0].lat), parseFloat(data[0].lon)]; // [lat, lon]
-};
 
 // Marcadores estilo app de transporte: origen = punto verde, destino = pin azul
 const crearMarcador = (tipo) => {
