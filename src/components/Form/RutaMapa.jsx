@@ -30,7 +30,7 @@ const formatearDuracion = (min) => {
     return m > 0 ? `${h} h ${m} min` : `${h} h`;
 };
 
-export default function RutaMapa({ origen, destino, onRuta }) {
+export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino, onRuta }) {
     const mapDivRef = useRef(null);
     const mapRef = useRef(null);
     const capaRef = useRef(null);
@@ -66,10 +66,15 @@ export default function RutaMapa({ origen, destino, onRuta }) {
         let cancelado = false;
         setEstado('cargando');
 
-        // Espera a que el usuario termine de escribir antes de geocodificar
+        // Con coordenadas exactas (sugerencia elegida) la ruta sale casi al instante;
+        // solo se geocodifica el texto cuando se escribió a mano.
+        const espera = (coordsOrigen && coordsDestino) ? 150 : 900;
         const timer = setTimeout(async () => {
             try {
-                const [pA, pB] = await Promise.all([geocodificar(o), geocodificar(d)]);
+                const [pA, pB] = await Promise.all([
+                    coordsOrigen ?? geocodificar(o),
+                    coordsDestino ?? geocodificar(d),
+                ]);
                 if (cancelado) return;
                 if (!pA || !pB) { setEstado('error'); setInfo(null); onRuta?.(null); return; }
 
@@ -98,11 +103,11 @@ export default function RutaMapa({ origen, destino, onRuta }) {
             } catch {
                 if (!cancelado) { setEstado('error'); setInfo(null); onRuta?.(null); }
             }
-        }, 900);
+        }, espera);
 
         return () => { cancelado = true; clearTimeout(timer); };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [origen, destino]);
+    }, [origen, destino, coordsOrigen, coordsDestino]);
 
     return (
         <div className={styles.wrap}>

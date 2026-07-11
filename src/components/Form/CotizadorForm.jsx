@@ -35,7 +35,60 @@ const MUEBLES = [
 
 const STEP_LABELS = ['Ubicación', 'Lo que movés', 'Extras', 'Fecha'];
 
-function AutocompleteInput({ value, onChange, placeholder }) {
+// Costa Rica: bbox y centro para sesgar la búsqueda
+const CR_BBOX = '-86.1,7.9,-82.5,11.3';
+const CR_LAT = 9.93;
+const CR_LON = -84.08;
+
+// Nombre corto y legible a partir de las propiedades de Photon
+const etiquetaPhoton = (p) => {
+    const partes = [
+        p.name,
+        p.street && p.housenumber ? `${p.street} ${p.housenumber}` : p.street,
+        p.district,
+        p.city || p.town || p.village,
+        p.county,
+        p.state,
+    ].filter(Boolean);
+    return [...new Set(partes)].slice(0, 4).join(', ');
+};
+
+// Photon (komoot): tolera errores de escritura y busca por prefijo.
+// Si no devuelve nada, se intenta con Nominatim como respaldo.
+const buscarDirecciones = async (q) => {
+    try {
+        const res = await fetch(
+            `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=8&lat=${CR_LAT}&lon=${CR_LON}&bbox=${CR_BBOX}`
+        );
+        const data = await res.json();
+        const vistos = new Set();
+        const items = (data.features || [])
+            .filter(f => (f.properties.countrycode || '').toUpperCase() === 'CR')
+            .map(f => ({
+                label: etiquetaPhoton(f.properties),
+                lat: f.geometry.coordinates[1],
+                lon: f.geometry.coordinates[0],
+            }))
+            .filter(s => s.label && !vistos.has(s.label) && vistos.add(s.label))
+            .slice(0, 6);
+        if (items.length > 0) return items;
+    } catch { /* cae al respaldo */ }
+
+    try {
+        const res = await fetch(
+            `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&countrycodes=cr&limit=5`,
+            { headers: { 'Accept-Language': 'es' } }
+        );
+        const data = await res.json();
+        return data.map(d => ({
+            label: d.display_name.split(',').slice(0, 4).join(','),
+            lat: parseFloat(d.lat),
+            lon: parseFloat(d.lon),
+        }));
+    } catch { return []; }
+};
+
+function AutocompleteInput({ value, onChange, onCoords, placeholder }) {
     const [sugerencias, setSugerencias] = useState([]);
     const [abierto, setAbierto] = useState(false);
     const timeoutRef = useRef(null);
@@ -54,23 +107,19 @@ function AutocompleteInput({ value, onChange, placeholder }) {
     const handleChange = (e) => {
         const q = e.target.value;
         onChange(q);
+        onCoords?.(null); // texto editado a mano: las coordenadas dejan de ser confiables
         clearTimeout(timeoutRef.current);
         if (q.length < 3) { setSugerencias([]); setAbierto(false); return; }
         timeoutRef.current = setTimeout(async () => {
-            try {
-                const res = await fetch(
-                    `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&countrycodes=cr&limit=5&addressdetails=1`,
-                    { headers: { 'Accept-Language': 'es' } }
-                );
-                const data = await res.json();
-                setSugerencias(data.map(d => d.display_name));
-                setAbierto(data.length > 0);
-            } catch { setSugerencias([]); }
-        }, 400);
+            const items = await buscarDirecciones(q);
+            setSugerencias(items);
+            setAbierto(items.length > 0);
+        }, 300);
     };
 
     const seleccionar = (s) => {
-        onChange(s);
+        onChange(s.label);
+        onCoords?.([s.lat, s.lon]);
         setSugerencias([]);
         setAbierto(false);
     };
@@ -90,7 +139,7 @@ function AutocompleteInput({ value, onChange, placeholder }) {
                     {sugerencias.map((s, i) => (
                         <li key={i} onMouseDown={() => seleccionar(s)}>
                             <MapPin size={13} className={styles.sugIcon} />
-                            <span>{s}</span>
+                            <span>{s.label}</span>
                         </li>
                     ))}
                 </ul>
@@ -131,6 +180,8 @@ export default function CotizadorForm() {
     const [enviando, setEnviando] = useState(false);
     const [enviado, setEnviado] = useState(false);
     const [ruta, setRuta] = useState(null);
+    const [coordsOrigen, setCoordsOrigen] = useState(null);
+    const [coordsDestino, setCoordsDestino] = useState(null);
     const [errorEnvio, setErrorEnvio] = useState(false);
     const cardRef = useRef(null);
     const stepRef = useRef(null);
@@ -154,6 +205,8 @@ export default function CotizadorForm() {
         setEnviado(false);
         setErrorEnvio(false);
         setRuta(null);
+        setCoordsOrigen(null);
+        setCoordsDestino(null);
         setPaso(1);
         setForm({
             nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
@@ -560,6 +613,7 @@ ${mueblesList || '  (no especificado)'}${extras}
                                 <AutocompleteInput
                                     value={form.origen}
                                     onChange={v => set('origen')(v)}
+                                    onCoords={setCoordsOrigen}
                                     placeholder="Ej: San Jose, Barrio Amon"
                                 />
                             </div>
@@ -569,13 +623,20 @@ ${mueblesList || '  (no especificado)'}${extras}
                                 <AutocompleteInput
                                     value={form.destino}
                                     onChange={v => set('destino')(v)}
+                                    onCoords={setCoordsDestino}
                                     placeholder="Ej: Alajuela, La Guacima"
                                 />
                             </div>
 
                             <div className={styles.field}>
                                 <label>Ruta de tu mudanza</label>
-                                <RutaMapa origen={form.origen} destino={form.destino} onRuta={setRuta} />
+                                <RutaMapa
+                                    origen={form.origen}
+                                    destino={form.destino}
+                                    coordsOrigen={coordsOrigen}
+                                    coordsDestino={coordsDestino}
+                                    onRuta={setRuta}
+                                />
                             </div>
 
                             <div className={styles.field}>
