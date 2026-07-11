@@ -18,6 +18,7 @@ import styles from './CotizadorForm.module.css';
 
 const WA_NUMBER = '50670818306';
 const EMAIL_AVISOS = 'thecamil999@gmail.com';
+const EMAIL_MUDANZAS = 'camiloritrujillo@gmail.com';
 
 const MUEBLES = [
     { id: 'cama_individual',  Icon: BedSingle,       label: 'Cama individual' },
@@ -493,6 +494,7 @@ export default function CotizadorForm() {
                     body: JSON.stringify({
                         _subject: `Nueva solicitud de mudanza: ${form.nombre.trim()} (${form.fecha})${esUrgente ? ' [URGENTE]' : ''}`,
                         _template: 'table',
+                        _cc: EMAIL_MUDANZAS,
                         Cliente: form.nombre.trim(),
                         'Cargar en (origen)': form.origen.trim(),
                         'Mapa de carga': mapLink(coordsOrigen),

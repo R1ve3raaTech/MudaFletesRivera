@@ -20,10 +20,7 @@
 
 .eyebrow {
     display: inline-block;
-    background: linear-gradient(135deg, #0052cc, #0ea5e9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #0052cc;
     font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
