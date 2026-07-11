@@ -66,7 +66,6 @@ export default function CotizadorForm() {
         embalaje: '',
         ayudantes: 0,
         mascotas: '',
-        horaMascotas: '',
         fecha: '',
         infoAdicional: '',
     });
@@ -108,7 +107,7 @@ export default function CotizadorForm() {
             nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
             caminata: '', parqueo: '', muebles: {}, otrosDetalle: '',
             fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0,
-            mascotas: '', horaMascotas: '', fecha: '', infoAdicional: '',
+            mascotas: '', fecha: '', infoAdicional: '',
         });
     };
 
@@ -287,7 +286,7 @@ export default function CotizadorForm() {
             doc.setTextColor(...AZUL);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
-            doc.text(`Distancia aproximada: ${ruta.km} km  ·  ~${ruta.min} min en carro`, ML + 6, y + cardH - 4.5);
+            doc.text(`Distancia aproximada: ${ruta.km} km  ·  ~${ruta.min} min en camión`, ML + 6, y + cardH - 4.5);
         }
 
         y += cardH + 9;
@@ -358,7 +357,7 @@ export default function CotizadorForm() {
         fila('Embalaje', form.embalaje === 'si' ? 'Sí  (+costo)' : 'No');
         fila('Ayudantes adicionales', form.ayudantes > 0 ? `${form.ayudantes}  (+costo)` : 'Ninguno');
         fila('Mascotas', form.mascotas === 'si'
-            ? `Sí${form.horaMascotas ? `  (traslado a las ${form.horaMascotas})` : ''}`
+            ? 'Sí'
             : 'No');
         y += 4;
 
@@ -408,7 +407,7 @@ export default function CotizadorForm() {
     };
 
     const construirMensajeWa = () =>
-        `Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.`;
+        `Hola! Soy ${form.nombre.trim()}. Adjunto el PDF con los detalles de mi mudanza para cotizar.`;
 
     // En móvil, comparte el PDF como archivo adjunto real (menú nativo del sistema)
     const compartirPdf = async () => {
@@ -467,7 +466,6 @@ export default function CotizadorForm() {
                     embalaje: form.embalaje === 'si',
                     ayudantes: form.ayudantes,
                     mascotas: form.mascotas === 'si',
-                    hora_mascotas: form.mascotas === 'si' ? (form.horaMascotas || null) : null,
                     info_adicional: form.infoAdicional.trim() || null,
                 },
                 acceso: {
@@ -496,12 +494,11 @@ export default function CotizadorForm() {
                         'Mapa de carga': mapLink(coordsOrigen),
                         'Descargar en (destino)': form.destino.trim(),
                         'Mapa de descarga': mapLink(coordsDestino),
-                        Distancia: ruta ? `${ruta.km} km (~${ruta.min} min en carro)` : 'No calculada',
+                        Distancia: ruta ? `${ruta.km} km (~${ruta.min} min en camión)` : 'No calculada',
                         'Fecha de mudanza': form.fecha + (esUrgente ? ' (URGENTE, menos de 3 dias)' : ''),
                         'Total de articulos': totalMuebles,
                         Mascotas: form.mascotas === 'si'
-                            ? `Si${form.horaMascotas ? ` (traslado a las ${form.horaMascotas})` : ''}`
-                            : 'No',
+                            ? 'Si' : 'No',
                         'Informacion adicional': form.infoAdicional.trim() || 'Ninguna',
                         'PDF con la informacion completa': pdfUrl || 'No se pudo subir el PDF',
                     }),
@@ -781,19 +778,10 @@ export default function CotizadorForm() {
                                     <OpcionBtn value="si" selected={form.mascotas === 'si'} onClick={set('mascotas')}>Si, llevo mascotas</OpcionBtn>
                                 </div>
                                 {form.mascotas === 'si' && (
-                                    <>
-                                        <label className={styles.subLabel}>A que hora prefieres trasladarlas?</label>
-                                        <input
-                                            type="time"
-                                            value={form.horaMascotas}
-                                            onChange={e => set('horaMascotas')(e.target.value)}
-                                            className={styles.dateInput}
-                                        />
-                                        <div className={styles.notice}>
-                                            <Info size={15} />
-                                            Coordinamos el traslado para que tus mascotas viajen seguras y sin estres.
-                                        </div>
-                                    </>
+                                    <div className={styles.notice}>
+                                        <Info size={15} />
+                                        Coordinamos el traslado para que tus mascotas viajen seguras y sin estres.
+                                    </div>
                                 )}
                             </div>
 
@@ -875,7 +863,7 @@ export default function CotizadorForm() {
                                     {ruta && <div className={styles.resumenItem}><span>Distancia</span><strong>{ruta.km} km aprox.</strong></div>}
                                     <div className={styles.resumenItem}><span>Articulos</span><strong>{totalMuebles} item(s)</strong></div>
                                     <div className={styles.resumenItem}><span>Fecha</span><strong>{form.fecha}</strong></div>
-                                    {form.mascotas === 'si' && <div className={styles.resumenItem}><span>Mascotas</span><strong>Si{form.horaMascotas ? ` (${form.horaMascotas})` : ''}</strong></div>}
+                                    {form.mascotas === 'si' && <div className={styles.resumenItem}><span>Mascotas</span><strong>Si</strong></div>}
                                     {form.desmontaje === 'si' && <div className={styles.resumenItem}><span>Desmontaje</span><strong>Si (+costo)</strong></div>}
                                     {form.embalaje === 'si' && <div className={styles.resumenItem}><span>Embalaje</span><strong>Si (+costo)</strong></div>}
                                     {form.ayudantes > 0 && <div className={styles.resumenItem}><span>Ayudantes extra</span><strong>{form.ayudantes} (+costo)</strong></div>}

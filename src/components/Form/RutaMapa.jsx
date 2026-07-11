@@ -159,7 +159,9 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
                 dibujar();
 
                 const km = Math.round((ruta.distance / 1000) * 10) / 10;
-                const min = Math.round(ruta.duration / 60);
+                // OSRM calcula tiempos de carro; un camión de mudanzas va más lento
+                const FACTOR_CAMION = 1.35;
+                const min = Math.round((ruta.duration / 60) * FACTOR_CAMION);
                 setInfo({ km, min });
                 setEstado('ok');
                 onRuta?.({ km, min });
@@ -201,7 +203,7 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
                 <div className={styles.infoBar}>
                     <span><Navigation size={15} /> {info.km.toLocaleString('es-CR')} km</span>
                     <span className={styles.sep} />
-                    <span><Clock size={15} /> {formatearDuracion(info.min)} aprox.</span>
+                    <span><Clock size={15} /> {formatearDuracion(info.min)} en camión</span>
                 </div>
             )}
         </div>
