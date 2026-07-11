@@ -7,74 +7,79 @@ import styles from './Stats.module.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const data = [
-    { icon: "route",              display: "20K", suffix: "+", label: "Viajes Realizados" },
-    { icon: "history_edu",        display: "20",  suffix: "+", label: "Años de Experiencia" },
-    { icon: "sentiment_satisfied",display: "5K",  suffix: "+", label: "Clientes Felices" },
+    { target: 20000, format: true,  suffix: "+", label: "viajes realizados" },
+    { target: 20,    format: false, suffix: "+", label: "años de experiencia" },
+    { target: 5000,  format: true,  suffix: "+", label: "clientes felices" },
 ];
 
-/* Silueta de Costa Rica — coordenadas geográficas reales convertidas a SVG
-   Bounding box: lon 82.55W–85.95W, lat 8.03N–11.22N
-   Escala: x=(85.95-lon)*88,  y=(11.22-lat)*82
-*/
+const fmt = (n, format) => (format ? n.toLocaleString('es-CR') : String(n));
 
-const CountUp = ({ display, suffix, started }) => {
+const CountUp = ({ target, format, suffix, started }) => {
     const [shown, setShown] = useState("0");
-    const target = parseInt(display.replace("K", ""));
 
     useEffect(() => {
         if (!started) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setShown(fmt(target, format));
+            return;
+        }
         let start = 0;
-        const duration = 1400;
+        const duration = 1600;
+        let raf;
         const step = (timestamp) => {
             if (!start) start = timestamp;
             const progress = Math.min((timestamp - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            const current = Math.floor(eased * target);
-            setShown(display.includes("K") ? (current >= 1000 ? `${Math.floor(current / 1000)}K` : `${current}`) : `${current}`);
-            if (progress < 1) requestAnimationFrame(step);
-            else setShown(display);
+            const eased = 1 - Math.pow(2, -10 * progress); // easeOutExpo
+            setShown(fmt(Math.round(eased * target), format));
+            if (progress < 1) raf = requestAnimationFrame(step);
+            else setShown(fmt(target, format));
         };
-        requestAnimationFrame(step);
-    }, [started]);
+        raf = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(raf);
+    }, [started, target, format]);
 
-    return <>{suffix}{shown}</>;
+    return <>{shown}<em>{suffix}</em></>;
 };
 
-const StatItem = ({ icon, display, suffix, label, index }) => {
-    const ref = useRef(null);
+const Stats = () => {
+    const rootRef = useRef(null);
     const [inView, setInView] = useState(false);
 
     useGSAP(() => {
-        gsap.from(ref.current, {
-            opacity: 0, y: 28, duration: 0.6, delay: index * 0.12, ease: 'back.out(1.7)',
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        gsap.timeline({
             scrollTrigger: {
-                trigger: ref.current, start: 'top 90%', once: true,
+                trigger: rootRef.current, start: 'top 78%', once: true,
                 onEnter: () => setInView(true),
             },
-        });
-    }, { scope: ref });
+            defaults: { ease: 'power3.out' },
+        })
+            .from(`.${styles.heading}`, { opacity: 0, y: reduceMotion ? 0 : 22, duration: 0.55 })
+            .from(`.${styles.statItem}`, { opacity: 0, y: reduceMotion ? 0 : 26, duration: 0.55, stagger: 0.12 }, 0.15);
+    }, { scope: rootRef });
 
     return (
-        <div ref={ref} className={styles.statItem}>
-            <div className={styles.number}>
-                <CountUp display={display} suffix={suffix} started={inView} />
+        <section className={styles.stats} ref={rootRef}>
+            <div className={styles.container}>
+                <div className={styles.heading}>
+                    <h2>La confianza se gana kilómetro a kilómetro.</h2>
+                    <p>Cada número es una familia o una empresa que llegó tranquila a su destino.</p>
+                </div>
+
+                <div className={styles.row}>
+                    {data.map((item, i) => (
+                        <div key={i} className={styles.statItem}>
+                            <div className={styles.number}>
+                                <CountUp {...item} started={inView} />
+                            </div>
+                            <div className={styles.label}>{item.label}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <div className={styles.label}>{label}</div>
-        </div>
+        </section>
     );
 };
-
-const Stats = () => (
-    <section className={styles.stats}>
-        <div className={styles.container}>
-            {data.map((item, i) => (
-                <React.Fragment key={i}>
-                    <StatItem {...item} index={i} />
-                    {i < data.length - 1 && <div className={styles.divider} />}
-                </React.Fragment>
-            ))}
-        </div>
-    </section>
-);
 
 export default Stats;

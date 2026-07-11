@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import { jsPDF } from 'jspdf';
 import logoTruck from '../../assets/trucklogo.png';
 import supabase from '../../supabaseClient';
@@ -6,7 +8,8 @@ import {
     MessageCircle, MapPin, Package, Settings, Calendar,
     AlertTriangle, Info, Zap, CheckCircle, ArrowRight, ArrowLeft,
     BedSingle, BedDouble, Shirt, Armchair, UtensilsCrossed, Tv, Refrigerator,
-    WashingMachine, Drum, Flame, Laptop, Boxes, ShoppingBag, Package2, Plus, Minus, Check
+    WashingMachine, Drum, Flame, Laptop, Boxes, ShoppingBag, Package2, Plus, Minus, Check,
+    PartyPopper, RotateCcw
 } from 'lucide-react';
 import styles from './CotizadorForm.module.css';
 
@@ -125,8 +128,36 @@ export default function CotizadorForm() {
         fecha: '',
     });
     const [enviando, setEnviando] = useState(false);
+    const [enviado, setEnviado] = useState(false);
+    const [errorEnvio, setErrorEnvio] = useState(false);
+    const cardRef = useRef(null);
+    const stepRef = useRef(null);
+    const primeraCarga = useRef(true);
+
+    // Animación de entrada al cambiar de paso + scroll al inicio de la tarjeta
+    useGSAP(() => {
+        if (primeraCarga.current) { primeraCarga.current = false; return; }
+        if (!stepRef.current) return;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        gsap.fromTo(stepRef.current,
+            { opacity: 0, x: reduceMotion ? 0 : 26 },
+            { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }
+        );
+        cardRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }, { dependencies: [paso, enviado], scope: cardRef });
 
     const set = (k) => (v) => setForm(f => ({ ...f, [k]: v }));
+
+    const reiniciar = () => {
+        setEnviado(false);
+        setErrorEnvio(false);
+        setPaso(1);
+        setForm({
+            nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
+            caminata: '', parqueo: '', muebles: {}, otrosDetalle: '',
+            fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0, fecha: '',
+        });
+    };
 
     const setMueble = (id, delta) => setForm(f => {
         const prev = f.muebles[id] || 0;
@@ -375,6 +406,7 @@ ${mueblesList || '  (no especificado)'}${extras}
 
     const enviarWhatsapp = async () => {
         setEnviando(true);
+        setErrorEnvio(false);
         try {
             const doc = await generarPDF();
             const blob = doc.output('blob');
@@ -431,16 +463,12 @@ ${mueblesList || '  (no especificado)'}${extras}
                 window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
             }, 600);
 
+            setEnviado(true);
         } catch (err) {
             console.error('Error al enviar:', err);
+            setErrorEnvio(true);
         } finally {
             setEnviando(false);
-            setPaso(1);
-            setForm({
-                nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
-                caminata: '', parqueo: '', muebles: {}, otrosDetalle: '',
-                fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0, fecha: '',
-            });
         }
     };
 
@@ -454,7 +482,37 @@ ${mueblesList || '  (no especificado)'}${extras}
                     <p>Responde estas preguntas y recibe una cotizacion personalizada por WhatsApp en minutos.</p>
                 </div>
 
-                <div className={styles.card}>
+                <div className={styles.card} ref={cardRef}>
+                    {enviado ? (
+                        <div className={styles.exito} ref={stepRef}>
+                            <div className={styles.exitoIcon}>
+                                <PartyPopper size={34} />
+                            </div>
+                            <h3>¡Listo, {form.nombre.trim().split(' ')[0]}!</h3>
+                            <p>
+                                Tu PDF se descargó y se abrió WhatsApp. Adjunta el PDF en el chat
+                                y en minutos te confirmamos el precio de tu mudanza.
+                            </p>
+                            <div className={styles.exitoPasos}>
+                                <span><Check size={15} /> PDF generado con tus datos</span>
+                                <span><Check size={15} /> Solicitud registrada</span>
+                                <span><MessageCircle size={15} /> Solo falta adjuntarlo en WhatsApp</span>
+                            </div>
+                            <div className={styles.exitoAcciones}>
+                                <a
+                                    href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.`)}`}
+                                    target="_blank" rel="noopener noreferrer"
+                                    className={styles.btnWa}
+                                >
+                                    <MessageCircle size={18} /> Abrir WhatsApp de nuevo
+                                </a>
+                                <button type="button" className={styles.btnBack} onClick={reiniciar}>
+                                    <RotateCcw size={15} /> Hacer otra cotización
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                    <>
                     {/* Progreso */}
                     <div className={styles.progress}>
                         {STEP_LABELS.map((label, i) => {
@@ -472,6 +530,7 @@ ${mueblesList || '  (no especificado)'}${extras}
                         })}
                     </div>
 
+                    <div ref={stepRef}>
                     {/* PASO 1: Ubicacion */}
                     {paso === 1 && (
                         <div className={styles.step}>
@@ -551,6 +610,9 @@ ${mueblesList || '  (no especificado)'}${extras}
                             <h3 className={styles.stepTitle}>
                                 <Package size={22} className={styles.titleIcon} />
                                 Que vas a mover?
+                                {totalMuebles > 0 && (
+                                    <span className={styles.countChip}>{totalMuebles} {totalMuebles === 1 ? 'artículo' : 'artículos'}</span>
+                                )}
                             </h3>
                             <p className={styles.stepSub}>Agrega todos los articulos que llevas. Esto ayuda a calcular el precio correctamente.</p>
                             <div className={styles.mueblesGrid}>
@@ -713,11 +775,20 @@ ${mueblesList || '  (no especificado)'}${extras}
                         </div>
                     )}
 
+                    </div>
+
                     {/* Nota PDF - solo en paso 4 con fecha */}
                     {paso === 4 && form.fecha && (
                         <div className={styles.pdfNota}>
                             <Info size={15} />
                             Se descargara un PDF con tu informacion. Adjuntalo en WhatsApp para que podamos darte el precio.
+                        </div>
+                    )}
+
+                    {errorEnvio && (
+                        <div className={styles.errorNota}>
+                            <AlertTriangle size={15} />
+                            Algo falló al enviar. Tus respuestas siguen aquí, intenta de nuevo.
                         </div>
                     )}
 
@@ -750,6 +821,8 @@ ${mueblesList || '  (no especificado)'}${extras}
                             </button>
                         )}
                     </div>
+                    </>
+                    )}
                 </div>
             </div>
         </section>
