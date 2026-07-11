@@ -19,9 +19,8 @@ const Process = () => {
 
     useGSAP(() => {
         gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
-            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 })
-            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 }, 0.1)
-            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.2);
+            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 })
+            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.15);
     }, { scope: headerRef });
 
     useGSAP(() => {
@@ -38,11 +37,8 @@ const Process = () => {
     return (
         <section id="proceso" className={styles.process}>
             <div className={styles.sectionHeader} ref={headerRef}>
-                <span className={styles.eyebrow}>
-                    Nuestro proceso
-                </span>
                 <h2>
-                    Así de Fácil es Mudarse con Nosotros
+                    Mudarse con nosotros es así de simple
                 </h2>
                 <p>
                     Cuatro pasos. Sin complicaciones. Con la tranquilidad que merece.

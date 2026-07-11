@@ -1,9 +1,7 @@
 .contact {
     padding: 7rem 5%;
     text-align: center;
-    background: rgba(252,231,243,0.35);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: var(--bg-neutral);
 }
 
 .inner {
@@ -17,21 +15,11 @@
 
 .header { max-width: 560px; }
 
-.badge {
-    display: block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--primary-brand);
-    margin-bottom: 0.9rem;
-}
-
 .header h2 {
-    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-size: clamp(2rem, 4.2vw, 2.9rem);
     font-weight: 800;
-    letter-spacing: -0.5px;
-    line-height: 1.15;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
     color: var(--text-primary);
     margin-bottom: 0.8rem;
 }
@@ -46,18 +34,16 @@
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
     width: 100%;
 }
 
 .card {
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.75);
+    background: var(--surface-color);
+    border: 1px solid var(--border-neutral);
     border-radius: 20px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+    box-shadow: 0 4px 18px rgba(27, 36, 55, 0.05);
     padding: 2rem 1.6rem;
     display: flex;
     flex-direction: column;
@@ -112,12 +98,10 @@ a.cardValue:hover { color: var(--primary-brand); }
 
 .ctaBlock {
     width: 100%;
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.75);
+    background: var(--surface-color);
+    border: 1px solid var(--border-neutral);
     border-radius: 20px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
+    box-shadow: 0 4px 18px rgba(27, 36, 55, 0.05);
     padding: 2.8rem 2.4rem;
     display: flex;
     flex-direction: column;

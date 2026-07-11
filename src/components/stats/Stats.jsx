@@ -56,9 +56,6 @@ const StatItem = ({ icon, display, suffix, label, index }) => {
 
     return (
         <div ref={ref} className={styles.statItem}>
-            <div className={styles.iconWrap}>
-                <span className="material-symbols-outlined">{icon}</span>
-            </div>
             <div className={styles.number}>
                 <CountUp display={display} suffix={suffix} started={inView} />
             </div>

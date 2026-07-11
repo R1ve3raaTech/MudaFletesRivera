@@ -44,9 +44,8 @@ const Contact = () => {
 
     useGSAP(() => {
         gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
-            .from(`.${styles.badge}`, { opacity: 0, scale: 0.8, duration: 0.4 })
-            .from(`.${styles.header} h2`, { opacity: 0, y: 30, duration: 0.4 }, 0.1)
-            .from(`.${styles.header} p`, { opacity: 0, duration: 0.4 }, 0.2);
+            .from(`.${styles.header} h2`, { opacity: 0, y: 30, duration: 0.4 })
+            .from(`.${styles.header} p`, { opacity: 0, duration: 0.4 }, 0.15);
     }, { scope: headerRef });
 
     useGSAP(() => {
@@ -69,10 +68,6 @@ const Contact = () => {
 
             {/* Header */}
             <div className={styles.header} ref={headerRef}>
-                <span className={styles.badge}>
-                    Hablemos
-                </span>
-
                 <h2>
                     Cotice su <span className={styles.accent}>servicio ideal</span> hoy mismo
                 </h2>

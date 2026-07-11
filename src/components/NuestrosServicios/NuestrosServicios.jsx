@@ -81,23 +81,18 @@ const Services = () => {
 
     useGSAP(() => {
         gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
-            .from(`.${styles.topLabel}`, { opacity: 0, duration: 0.4 })
-            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 }, 0.1)
-            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.2);
+            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 })
+            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.15);
     }, { scope: headerRef });
 
     return (
     <section id="servicios" className={styles.services}>
         <div className={styles.sectionHeader} ref={headerRef}>
-            <span className={styles.topLabel}>
-                Nuestros Servicios
-            </span>
             <h2>
-                Servicios que Resuelven su Vida
+                Movemos su casa,<br />su oficina y su carga.
             </h2>
-            <div className={styles.headerLine} />
             <p>
-                Nuestra misión es su tranquilidad. Ofrecemos soluciones de transporte personalizadas con garantía real de cumplimiento.
+                Tres servicios, una sola promesa: todo llega completo, a tiempo y al precio acordado.
             </p>
         </div>
 

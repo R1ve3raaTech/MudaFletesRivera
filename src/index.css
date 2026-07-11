@@ -1,11 +1,11 @@
 :root {
-    --bg-color: #FDFDFD;
+    --bg-color: #FAF7F1;
     --surface-color: #FFFFFF;
-    --text-primary: #1E293B;
-    --text-secondary: #64748B;
-    --text-muted: #94A3B8;
-    --border-neutral: #E2E8F0;
-    --bg-neutral: #F8FAFC;
+    --text-primary: #1B2437;
+    --text-secondary: #4E5A70;
+    --text-muted: #8A93A6;
+    --border-neutral: #E7E1D6;
+    --bg-neutral: #F4EFE6;
     --primary-brand: #2563EB;
     --primary-dark: #1E40AF;
     --accent-color: #F59E0B;
@@ -59,8 +59,10 @@ img, video, canvas, svg {
 
 body {
     font-family: 'Outfit', sans-serif;
-    background: linear-gradient(160deg, #dbeafe 0%, #eff6ff 35%, #fef3c7 70%, #dbeafe 100%);
-    background-attachment: fixed;
+    background:
+        radial-gradient(1100px 620px at 85% -8%, rgba(37, 99, 235, 0.07), transparent 60%),
+        radial-gradient(900px 560px at -10% 12%, rgba(245, 158, 11, 0.06), transparent 55%),
+        var(--bg-color);
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;

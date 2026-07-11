@@ -24,36 +24,30 @@
     color: white;
 }
 
-.iconWrap {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
-    background: var(--accent-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-}
-
-.iconWrap .material-symbols-outlined {
-    font-size: 18px;
-    color: #fff;
-}
-
 .number {
-    font-size: 2.2rem;
+    font-size: clamp(2.6rem, 5vw, 3.4rem);
     font-weight: 800;
     color: white;
     line-height: 1;
-    letter-spacing: -1px;
+    letter-spacing: -0.03em;
+}
+
+.number::after {
+    content: '';
+    display: block;
+    width: 34px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent-color);
+    margin: 0.7rem auto 0;
 }
 
 .label {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.65);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.85);
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.02em;
+    margin-top: 0.3rem;
 }
 
 .divider {
