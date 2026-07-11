@@ -65,7 +65,10 @@ export default function CotizadorForm() {
         desmontaje: '',
         embalaje: '',
         ayudantes: 0,
+        mascotas: '',
+        horaMascotas: '',
         fecha: '',
+        infoAdicional: '',
     });
     const [enviando, setEnviando] = useState(false);
     const [enviado, setEnviado] = useState(false);
@@ -104,7 +107,8 @@ export default function CotizadorForm() {
         setForm({
             nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
             caminata: '', parqueo: '', muebles: {}, otrosDetalle: '',
-            fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0, fecha: '',
+            fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0,
+            mascotas: '', horaMascotas: '', fecha: '', infoAdicional: '',
         });
     };
 
@@ -131,47 +135,9 @@ export default function CotizadorForm() {
         false,
         form.nombre.trim() && form.origen.trim() && form.destino.trim() && form.escalerasOrigen && form.escalerasDestino && form.caminata && form.parqueo,
         totalMuebles > 0,
-        form.fragiles && form.desmontaje && form.embalaje,
+        form.fragiles && form.desmontaje && form.embalaje && form.mascotas,
         form.fecha,
     ];
-
-    const construirMensaje = () => {
-        const escStr = (lugar, val) => {
-            if (val === 'no')  return `${lugar}: Sin escaleras`;
-            if (val === '1')   return `${lugar}: 1 piso de escaleras`;
-            if (val === '2+')  return `${lugar}: 2+ pisos de escaleras`;
-            return '';
-        };
-        const mueblesList = MUEBLES
-            .filter(m => (form.muebles[m.id] || 0) > 0)
-            .map(m => `  - ${m.label}: ${form.muebles[m.id]}`)
-            .join('\n');
-
-        const extras = form.otrosDetalle.trim() ? `\n  - Detalle adicional: ${form.otrosDetalle.trim()}` : '';
-
-        return (
-`Hola, quiero cotizar una mudanza.
-
-*Origen:* ${form.origen}
-*Destino:* ${form.destino}${ruta ? `\n*Distancia aproximada:* ${ruta.km} km (~${ruta.min} min en carro)` : ''}
-
-*Acceso:*
-  - ${escStr('Origen', form.escalerasOrigen)}
-  - ${escStr('Destino', form.escalerasDestino)}
-  - Caminata larga (+20 m) al camion: ${form.caminata === 'si' ? 'Si' : 'No'}
-  - Parqueo para camion grande: ${form.parqueo === 'si' ? 'Si' : form.parqueo === 'no' ? 'No' : 'No se'}
-
-*Lo que voy a mover:*
-${mueblesList || '  (no especificado)'}${extras}
-
-*Articulos fragiles o especiales:* ${form.fragiles === 'si' ? 'Si' : 'No'}
-*Desmontaje / armado de muebles:* ${form.desmontaje === 'si' ? 'Si (cobro adicional)' : 'No'}
-*Embalaje:* ${form.embalaje === 'si' ? 'Si (cobro adicional)' : 'No'}
-*Ayudantes adicionales:* ${form.ayudantes}
-
-*Fecha deseada:* ${form.fecha}${esUrgente ? ' (menos de 3 dias - aplica cargo adicional)' : ''}`
-        );
-    };
 
     const cargarImagen = (src) => new Promise((resolve) => {
         const img = new Image();
@@ -391,7 +357,22 @@ ${mueblesList || '  (no especificado)'}${extras}
         fila('Desmontaje y armado', form.desmontaje === 'si' ? 'Sí  (+costo)' : 'No');
         fila('Embalaje', form.embalaje === 'si' ? 'Sí  (+costo)' : 'No');
         fila('Ayudantes adicionales', form.ayudantes > 0 ? `${form.ayudantes}  (+costo)` : 'Ninguno');
+        fila('Mascotas', form.mascotas === 'si'
+            ? `Sí${form.horaMascotas ? `  (traslado a las ${form.horaMascotas})` : ''}`
+            : 'No');
         y += 4;
+
+        // ── INFORMACIÓN ADICIONAL ────────────────────────────────
+        if (form.infoAdicional.trim()) {
+            seccion('Información adicional');
+            salto(16);
+            doc.setTextColor(...INK);
+            doc.setFontSize(8.5);
+            doc.setFont('helvetica', 'normal');
+            const infoLineas = doc.splitTextToSize(form.infoAdicional.trim(), ancho - 4);
+            doc.text(infoLineas, ML + 2, y);
+            y += infoLineas.length * 4.4 + 4;
+        }
 
         // ── AVISO DE URGENCIA ────────────────────────────────────
         if (esUrgente) {
@@ -426,11 +407,8 @@ ${mueblesList || '  (no especificado)'}${extras}
         return doc;
     };
 
-    const construirMensajeWa = (pdfUrl) =>
-        `Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web.` +
-        (pdfUrl
-            ? `\n\nAqui esta el PDF con todos los detalles de mi mudanza:\n${pdfUrl}`
-            : `\n\nLes adjunto el PDF con todos los detalles de mi mudanza.`);
+    const construirMensajeWa = () =>
+        `Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.`;
 
     // En móvil, comparte el PDF como archivo adjunto real (menú nativo del sistema)
     const compartirPdf = async () => {
@@ -440,12 +418,12 @@ ${mueblesList || '  (no especificado)'}${extras}
             try {
                 await navigator.share({
                     files: [file],
-                    text: construirMensajeWa(null),
+                    text: construirMensajeWa(),
                 });
                 return;
             } catch { /* usuario canceló o falló: cae al enlace */ }
         }
-        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa(pdfListo.url))}`, '_blank');
+        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`, '_blank');
     };
 
     const enviarWhatsapp = async () => {
@@ -488,6 +466,9 @@ ${mueblesList || '  (no especificado)'}${extras}
                     desmontaje: form.desmontaje === 'si',
                     embalaje: form.embalaje === 'si',
                     ayudantes: form.ayudantes,
+                    mascotas: form.mascotas === 'si',
+                    hora_mascotas: form.mascotas === 'si' ? (form.horaMascotas || null) : null,
+                    info_adicional: form.infoAdicional.trim() || null,
                 },
                 acceso: {
                     escaleras_origen: form.escalerasOrigen,
@@ -518,6 +499,10 @@ ${mueblesList || '  (no especificado)'}${extras}
                         Distancia: ruta ? `${ruta.km} km (~${ruta.min} min en carro)` : 'No calculada',
                         'Fecha de mudanza': form.fecha + (esUrgente ? ' (URGENTE, menos de 3 dias)' : ''),
                         'Total de articulos': totalMuebles,
+                        Mascotas: form.mascotas === 'si'
+                            ? `Si${form.horaMascotas ? ` (traslado a las ${form.horaMascotas})` : ''}`
+                            : 'No',
+                        'Informacion adicional': form.infoAdicional.trim() || 'Ninguna',
                         'PDF con la informacion completa': pdfUrl || 'No se pudo subir el PDF',
                     }),
                 });
@@ -530,10 +515,9 @@ ${mueblesList || '  (no especificado)'}${extras}
             doc.save(filename2);
             setPdfListo({ blob, filename: filename2, url: pdfUrl });
 
-            // Abrir WhatsApp con el enlace al PDF incluido en el mensaje
-            const msg = construirMensajeWa(pdfUrl);
+            // Abrir WhatsApp
             setTimeout(() => {
-                window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+                window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`, '_blank');
             }, 600);
 
             setEnviado(true);
@@ -563,14 +547,13 @@ ${mueblesList || '  (no especificado)'}${extras}
                             </div>
                             <h3>¡Listo, {form.nombre.trim().split(' ')[0]}!</h3>
                             <p>
-                                {pdfListo?.url
-                                    ? 'Se abrió WhatsApp con tu solicitud y el enlace al PDF ya incluido en el mensaje. Solo tienes que enviarlo.'
-                                    : 'Tu PDF se descargó y se abrió WhatsApp. Adjunta el PDF en el chat y en minutos te confirmamos el precio.'}
+                                Tu PDF se descargó y se abrió WhatsApp. Adjunta el PDF en el chat
+                                y en minutos te confirmamos el precio de tu mudanza.
                             </p>
                             <div className={styles.exitoPasos}>
                                 <span><Check size={15} /> PDF generado con tus datos</span>
                                 <span><Check size={15} /> Solicitud registrada</span>
-                                <span><MessageCircle size={15} /> {pdfListo?.url ? 'El enlace al PDF va en el mensaje' : 'Solo falta adjuntarlo en WhatsApp'}</span>
+                                <span><MessageCircle size={15} /> Solo falta adjuntarlo en WhatsApp</span>
                             </div>
                             <div className={styles.exitoAcciones}>
                                 <button type="button" className={styles.btnWa} onClick={compartirPdf}>
@@ -792,15 +775,40 @@ ${mueblesList || '  (no especificado)'}${extras}
                             </div>
 
                             <div className={styles.field}>
+                                <label>Llevas mascotas en la mudanza?</label>
+                                <div className={styles.opciones}>
+                                    <OpcionBtn value="no" selected={form.mascotas === 'no'} onClick={set('mascotas')}>No</OpcionBtn>
+                                    <OpcionBtn value="si" selected={form.mascotas === 'si'} onClick={set('mascotas')}>Si, llevo mascotas</OpcionBtn>
+                                </div>
+                                {form.mascotas === 'si' && (
+                                    <>
+                                        <label className={styles.subLabel}>A que hora prefieres trasladarlas?</label>
+                                        <input
+                                            type="time"
+                                            value={form.horaMascotas}
+                                            onChange={e => set('horaMascotas')(e.target.value)}
+                                            className={styles.dateInput}
+                                        />
+                                        <div className={styles.notice}>
+                                            <Info size={15} />
+                                            Coordinamos el traslado para que tus mascotas viajen seguras y sin estres.
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+
+                            <div className={styles.field}>
                                 <label>Cuantos ayudantes adicionales necesitas?</label>
-                                <input
-                                    type="number"
-                                    min={0}
-                                    max={10}
+                                <select
                                     value={form.ayudantes}
-                                    onChange={e => set('ayudantes')(Math.max(0, Math.min(10, parseInt(e.target.value) || 0)))}
-                                    className={styles.numberInput}
-                                />
+                                    onChange={e => set('ayudantes')(parseInt(e.target.value))}
+                                    className={styles.selectInput}
+                                >
+                                    <option value={0}>Ninguno</option>
+                                    {[1,2,3,4,5,6,7,8,9,10].map(n => (
+                                        <option key={n} value={n}>{n} {n === 1 ? 'ayudante' : 'ayudantes'}</option>
+                                    ))}
+                                </select>
                                 {form.ayudantes > 0 && (
                                     <div className={styles.notice}>
                                         <Info size={15} />
@@ -848,6 +856,17 @@ ${mueblesList || '  (no especificado)'}${extras}
                                 </div>
                             )}
 
+                            <div className={styles.field}>
+                                <label>Informacion adicional <span className={styles.sub}>(opcional)</span></label>
+                                <textarea
+                                    placeholder="Cualquier detalle extra que debamos saber: horarios, indicaciones para llegar, condiciones especiales..."
+                                    value={form.infoAdicional}
+                                    onChange={e => set('infoAdicional')(e.target.value)}
+                                    rows={3}
+                                    className={styles.textarea}
+                                />
+                            </div>
+
                             {form.fecha && (
                                 <div className={styles.resumen}>
                                     <h4>Resumen de tu solicitud</h4>
@@ -856,6 +875,7 @@ ${mueblesList || '  (no especificado)'}${extras}
                                     {ruta && <div className={styles.resumenItem}><span>Distancia</span><strong>{ruta.km} km aprox.</strong></div>}
                                     <div className={styles.resumenItem}><span>Articulos</span><strong>{totalMuebles} item(s)</strong></div>
                                     <div className={styles.resumenItem}><span>Fecha</span><strong>{form.fecha}</strong></div>
+                                    {form.mascotas === 'si' && <div className={styles.resumenItem}><span>Mascotas</span><strong>Si{form.horaMascotas ? ` (${form.horaMascotas})` : ''}</strong></div>}
                                     {form.desmontaje === 'si' && <div className={styles.resumenItem}><span>Desmontaje</span><strong>Si (+costo)</strong></div>}
                                     {form.embalaje === 'si' && <div className={styles.resumenItem}><span>Embalaje</span><strong>Si (+costo)</strong></div>}
                                     {form.ayudantes > 0 && <div className={styles.resumenItem}><span>Ayudantes extra</span><strong>{form.ayudantes} (+costo)</strong></div>}
