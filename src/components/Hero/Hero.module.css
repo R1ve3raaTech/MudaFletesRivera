@@ -82,7 +82,7 @@
     font-size: 0.95rem;
     border-radius: 100px;
     box-shadow: 0 8px 22px rgba(37, 211, 102, 0.28);
-    transition: background 0.2s ease, transform 0.35s var(--spring-bounce), box-shadow 0.35s ease;
+    transition: background 0.2s ease, transform 0.3s var(--spring-bounce), box-shadow 0.3s ease;
     text-decoration: none;
 }
 .btnPrimary:hover {
@@ -102,7 +102,7 @@
     font-weight: 600;
     font-size: 0.95rem;
     border-radius: 100px;
-    transition: border-color 0.2s ease, color 0.2s ease, transform 0.35s var(--spring-bounce);
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.3s var(--spring-bounce);
     text-decoration: none;
 }
 .btnSecondary:hover {
@@ -187,4 +187,9 @@
 @media (max-width: 480px) {
     .actions { flex-direction: column; width: 100%; }
     .btnPrimary, .btnSecondary { justify-content: center; }
+}
+
+/* En táctil el hover es "pegajoso": sin transformaciones de hover */
+@media (hover: none) {
+    .btnPrimary:hover, .btnSecondary:hover { transform: none; }
 }

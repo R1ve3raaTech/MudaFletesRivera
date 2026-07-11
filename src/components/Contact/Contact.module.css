@@ -136,3 +136,7 @@ a.cardValue:hover { color: var(--primary-brand); }
     .contact { padding: 5rem 1.4rem; }
     .grid { grid-template-columns: 1fr; }
 }
+
+@media (hover: none) {
+    .card:hover, .btnWa:hover { transform: none; }
+}

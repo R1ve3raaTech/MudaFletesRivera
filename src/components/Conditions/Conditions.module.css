@@ -56,7 +56,7 @@
     text-decoration: none;
     border-radius: 50px;
     font-weight: 700;
-    transition: all 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.25s ease, color 0.2s ease;
 }
 
 .btnPrimary:hover {

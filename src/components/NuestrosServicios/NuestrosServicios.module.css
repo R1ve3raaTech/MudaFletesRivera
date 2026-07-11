@@ -164,3 +164,7 @@
     .btnService { justify-self: center; }
     .services { padding: 5rem 1.4rem; }
 }
+
+@media (hover: none) {
+    .row:hover .iconWrap, .btnService:hover { transform: none; }
+}
