@@ -16,6 +16,7 @@ import SelectorRuta from './SelectorRuta';
 import styles from './CotizadorForm.module.css';
 
 const WA_NUMBER = '50670818306';
+const EMAIL_AVISOS = 'thecamil999@gmail.com';
 
 const MUEBLES = [
     { id: 'cama_individual',  Icon: BedSingle,       label: 'Cama individual' },
@@ -189,14 +190,21 @@ ${mueblesList || '  (no especificado)'}${extras}
 
         const doc = new jsPDF({ unit: 'mm', format: 'a4' });
         const W  = 210;
-        const ML = 22;   // margen izquierdo
-        const MR = 188;  // margen derecho
-        const cx = W / 2;
+        const H  = 297;
+        const ML = 16;
+        const MR = W - 16;
+        const ancho = MR - ML;
 
-        const C_AZUL  = [37, 99, 235];
-        const C_NEGRO = [17, 24, 39];
-        const C_GRIS  = [107, 114, 128];
-        const C_LGRIS = [209, 213, 219];
+        const AZUL   = [30, 64, 175];
+        const AZUL2  = [37, 99, 235];
+        const CELESTE= [191, 219, 254];
+        const INK    = [27, 36, 55];
+        const GRIS   = [78, 90, 112];
+        const LGRIS  = [222, 216, 205];
+        const CREMA  = [250, 247, 241];
+        const VERDE  = [22, 163, 74];
+        const AMBAR  = [180, 83, 9];
+        const AMBARBG= [254, 243, 199];
 
         const escStr = (val) => {
             if (val === 'no')  return 'Sin escaleras';
@@ -205,148 +213,213 @@ ${mueblesList || '  (no especificado)'}${extras}
             return '-';
         };
 
-        let y = 22;
+        // ── CABECERA: banda azul ─────────────────────────────────
+        doc.setFillColor(...AZUL);
+        doc.rect(0, 0, W, 40, 'F');
 
-        // ── CABECERA ─────────────────────────────────────────────
-        // Logo alineado a la izquierda
         if (b64Truck) {
-            doc.addImage(b64Truck, 'PNG', ML, y - 4, 22, 22);
+            doc.setFillColor(255, 255, 255);
+            doc.roundedRect(ML, 8, 24, 24, 3.5, 3.5, 'F');
+            doc.addImage(b64Truck, 'PNG', ML + 2, 10, 20, 20);
         }
 
-        // Nombre empresa junto al logo
-        doc.setTextColor(...C_AZUL);
-        doc.setFontSize(16);
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(17);
         doc.setFont('helvetica', 'bold');
-        doc.text('MudaFletesRivera', ML + 26, y + 6);
+        doc.text('MudaFletesRivera', ML + 30, 19);
 
-        doc.setTextColor(...C_GRIS);
-        doc.setFontSize(8);
+        doc.setTextColor(...CELESTE);
+        doc.setFontSize(8.5);
         doc.setFont('helvetica', 'normal');
-        doc.text('Transportes y Mudanzas — Costa Rica', ML + 26, y + 12);
+        doc.text('Transportes y Mudanzas · Costa Rica', ML + 30, 25);
 
-        // Fecha alineada a la derecha
         const fechaHoy = new Date().toLocaleDateString('es-CR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        doc.setTextColor(...C_GRIS);
-        doc.setFontSize(8);
-        doc.text(fechaHoy, MR, y + 6, { align: 'right' });
-
-        y += 26;
-
-        // Línea separadora gruesa
-        doc.setDrawColor(...C_AZUL);
-        doc.setLineWidth(0.6);
-        doc.line(ML, y, MR, y);
-        y += 8;
-
-        // Título del documento
-        doc.setTextColor(...C_NEGRO);
-        doc.setFontSize(13);
+        doc.setFontSize(7.5);
+        doc.text('SOLICITUD DE COTIZACIÓN', MR, 16, { align: 'right' });
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10.5);
         doc.setFont('helvetica', 'bold');
-        doc.text('Solicitud de cotizacion', ML, y);
-        y += 14;
+        doc.text(fechaHoy, MR, 22, { align: 'right' });
 
-        // ── HELPERS ─────────────────────────────────────────────
-        const lineaFina = () => {
-            doc.setDrawColor(...C_LGRIS);
-            doc.setLineWidth(0.2);
-            doc.line(ML, y, MR, y);
-            y += 5;
+        let y = 50;
+
+        // ── CLIENTE + FECHA DE MUDANZA ───────────────────────────
+        doc.setTextColor(...GRIS);
+        doc.setFontSize(7.5);
+        doc.setFont('helvetica', 'bold');
+        doc.text('CLIENTE', ML, y);
+        doc.text('FECHA DESEADA', MR, y, { align: 'right' });
+        y += 5.5;
+        doc.setTextColor(...INK);
+        doc.setFontSize(12);
+        doc.text(form.nombre, ML, y);
+        doc.text(form.fecha, MR, y, { align: 'right' });
+        y += 9;
+
+        // ── TARJETA DE RUTA (cargar / descargar) ─────────────────
+        const dirW = ancho - 30;
+        doc.setFontSize(9.5);
+        const linsA = doc.splitTextToSize(form.origen, dirW);
+        const linsB = doc.splitTextToSize(form.destino, dirW);
+        const altoA = linsA.length * 4.6;
+        const altoB = linsB.length * 4.6;
+        const linkA = coordsOrigen ? 4.5 : 0;
+        const linkB = coordsDestino ? 4.5 : 0;
+        const cardH = 12 + altoA + linkA + 8 + altoB + linkB + (ruta ? 10 : 6);
+
+        doc.setFillColor(...CREMA);
+        doc.roundedRect(ML, y, ancho, cardH, 4, 4, 'F');
+
+        let ry = y + 9;
+        // Punto A
+        doc.setFillColor(...VERDE);
+        doc.circle(ML + 8, ry - 1, 1.9, 'F');
+        doc.setTextColor(...GRIS);
+        doc.setFontSize(6.8);
+        doc.setFont('helvetica', 'bold');
+        doc.text('CARGAR EN', ML + 14, ry - 2.4);
+        doc.setTextColor(...INK);
+        doc.setFontSize(9.5);
+        doc.text(linsA, ML + 14, ry + 2);
+        ry += 2 + altoA;
+        if (coordsOrigen) {
+            doc.setTextColor(...AZUL2);
+            doc.setFontSize(7);
+            doc.setFont('helvetica', 'normal');
+            doc.textWithLink('Ver en Google Maps', ML + 14, ry + 1.5, { url: `https://www.google.com/maps?q=${coordsOrigen[0]},${coordsOrigen[1]}` });
+            ry += linkA;
+        }
+
+        // Conector
+        doc.setDrawColor(...LGRIS);
+        doc.setLineWidth(0.5);
+        doc.line(ML + 8, ry - altoA - linkA + 2, ML + 8, ry + 3.5);
+        ry += 8;
+
+        // Punto B
+        doc.setFillColor(...AZUL2);
+        doc.rect(ML + 6.3, ry - 2.7, 3.4, 3.4, 'F');
+        doc.setTextColor(...GRIS);
+        doc.setFontSize(6.8);
+        doc.setFont('helvetica', 'bold');
+        doc.text('DESCARGAR EN', ML + 14, ry - 2.4);
+        doc.setTextColor(...INK);
+        doc.setFontSize(9.5);
+        doc.text(linsB, ML + 14, ry + 2);
+        ry += 2 + altoB;
+        if (coordsDestino) {
+            doc.setTextColor(...AZUL2);
+            doc.setFontSize(7);
+            doc.setFont('helvetica', 'normal');
+            doc.textWithLink('Ver en Google Maps', ML + 14, ry + 1.5, { url: `https://www.google.com/maps?q=${coordsDestino[0]},${coordsDestino[1]}` });
+            ry += linkB;
+        }
+
+        if (ruta) {
+            doc.setTextColor(...AZUL);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`Distancia aproximada: ${ruta.km} km  ·  ~${ruta.min} min en carro`, ML + 6, y + cardH - 4.5);
+        }
+
+        y += cardH + 9;
+
+        // ── HELPERS de secciones ─────────────────────────────────
+        const salto = (necesario = 10) => {
+            if (y + necesario > H - 30) { doc.addPage(); y = 20; }
         };
 
         const seccion = (label) => {
-            doc.setTextColor(...C_AZUL);
+            salto(14);
+            doc.setTextColor(...AZUL2);
             doc.setFontSize(7.5);
             doc.setFont('helvetica', 'bold');
             doc.text(label.toUpperCase(), ML, y);
-            y += 3;
-            doc.setDrawColor(...C_AZUL);
+            doc.setDrawColor(...LGRIS);
             doc.setLineWidth(0.3);
-            doc.line(ML, y, MR, y);
-            y += 5;
+            const tw = doc.getTextWidth(label.toUpperCase());
+            doc.line(ML + tw + 4, y - 1, MR, y - 1);
+            y += 6;
         };
 
+        let zebra = false;
         const fila = (label, valor) => {
-            if (y > 265) { doc.addPage(); y = 22; }
-            doc.setTextColor(...C_GRIS);
+            salto(8);
+            if (zebra) {
+                doc.setFillColor(...CREMA);
+                doc.rect(ML, y - 4, ancho, 6.5, 'F');
+            }
+            zebra = !zebra;
+            doc.setTextColor(...GRIS);
             doc.setFontSize(8.5);
             doc.setFont('helvetica', 'normal');
-            doc.text(label, ML, y);
-            doc.setTextColor(...C_NEGRO);
+            doc.text(label, ML + 2, y);
+            doc.setTextColor(...INK);
             doc.setFont('helvetica', 'bold');
-            const lineas = doc.splitTextToSize(String(valor), 90);
-            doc.text(lineas, MR, y, { align: 'right' });
-            y += lineas.length * 5.5;
+            const lineas = doc.splitTextToSize(String(valor), 95);
+            doc.text(lineas, MR - 2, y, { align: 'right' });
+            y += Math.max(6.5, lineas.length * 5);
         };
 
-        // ── CLIENTE ──────────────────────────────────────────────
-        seccion('Cliente');
-        fila('Nombre', form.nombre);
-        y += 4; lineaFina();
-
-        // ── UBICACION ────────────────────────────────────────────
-        seccion('Ubicacion');
-        fila('Origen', form.origen);
-        fila('Destino', form.destino);
-        if (ruta) fila('Distancia aproximada', `${ruta.km} km (~${ruta.min} min en carro)`);
+        // ── ACCESO ───────────────────────────────────────────────
+        seccion('Acceso');
+        zebra = false;
         fila('Escaleras en origen', escStr(form.escalerasOrigen));
         fila('Escaleras en destino', escStr(form.escalerasDestino));
-        fila('Caminata mayor a 20 m', form.caminata === 'si' ? 'Si' : 'No');
-        fila('Parqueo para camion grande', form.parqueo === 'si' ? 'Si' : form.parqueo === 'no' ? 'No' : 'No se');
-        y += 4; lineaFina();
+        fila('Caminata mayor a 20 m', form.caminata === 'si' ? 'Sí' : 'No');
+        fila('Parqueo para camión grande', form.parqueo === 'si' ? 'Sí' : form.parqueo === 'no' ? 'No' : 'No sabe');
+        y += 5;
 
-        // ── ARTICULOS ────────────────────────────────────────────
-        seccion('Articulos a mover');
+        // ── ARTÍCULOS ────────────────────────────────────────────
+        seccion('Artículos a mover');
+        zebra = false;
         const mueblesList = MUEBLES.filter(m => (form.muebles[m.id] || 0) > 0);
         if (mueblesList.length === 0) {
-            fila('Articulos', 'No especificado');
+            fila('Artículos', 'No especificado');
         } else {
             mueblesList.forEach(m => fila(m.label, `x${form.muebles[m.id]}`));
         }
         if (form.otrosDetalle.trim()) fila('Detalle adicional', form.otrosDetalle.trim());
-        y += 4; lineaFina();
+        y += 5;
 
         // ── SERVICIOS ────────────────────────────────────────────
         seccion('Servicios adicionales');
-        fila('Articulos fragiles o especiales', form.fragiles === 'si' ? 'Si' : 'No');
-        fila('Desmontaje y armado', form.desmontaje === 'si' ? 'Si  (+costo)' : 'No');
-        fila('Embalaje', form.embalaje === 'si' ? 'Si  (+costo)' : 'No');
+        zebra = false;
+        fila('Artículos frágiles o especiales', form.fragiles === 'si' ? 'Sí' : 'No');
+        fila('Desmontaje y armado', form.desmontaje === 'si' ? 'Sí  (+costo)' : 'No');
+        fila('Embalaje', form.embalaje === 'si' ? 'Sí  (+costo)' : 'No');
         fila('Ayudantes adicionales', form.ayudantes > 0 ? `${form.ayudantes}  (+costo)` : 'Ninguno');
-        y += 4; lineaFina();
+        y += 4;
 
-        // ── FECHA ────────────────────────────────────────────────
-        seccion('Fecha deseada');
-        fila('Fecha de la mudanza', form.fecha);
+        // ── AVISO DE URGENCIA ────────────────────────────────────
         if (esUrgente) {
-            y += 2;
-            doc.setTextColor(180, 60, 10);
+            salto(14);
+            doc.setFillColor(...AMBARBG);
+            doc.roundedRect(ML, y, ancho, 11, 3, 3, 'F');
+            doc.setTextColor(...AMBAR);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
-            doc.text('Atencion: menos de 3 dias de anticipacion — aplica cargo adicional', ML, y);
-            y += 6;
+            doc.text('Atención: menos de 3 días de anticipación · aplica cargo adicional', ML + 6, y + 7);
+            y += 16;
         }
-        y += 6;
 
-        // ── LÍNEA FINAL + NOTA ───────────────────────────────────
-        doc.setDrawColor(...C_AZUL);
+        // ── PIE DE PÁGINA ────────────────────────────────────────
+        const fy = H - 24;
+        doc.setDrawColor(...AZUL2);
         doc.setLineWidth(0.6);
-        doc.line(ML, y, MR, y);
-        y += 6;
-
-        doc.setTextColor(...C_GRIS);
+        doc.line(ML, fy, MR, fy);
+        doc.setTextColor(...GRIS);
         doc.setFontSize(7.5);
         doc.setFont('helvetica', 'normal');
-        doc.text('Adjunta este PDF en WhatsApp para recibir tu cotizacion:', ML, y);
-        y += 5;
-        doc.setTextColor(...C_AZUL);
-        doc.setFontSize(9);
+        doc.text('Adjunta este PDF en WhatsApp para recibir tu cotización:', ML, fy + 6);
+        doc.setTextColor(...AZUL2);
+        doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
-        doc.text('7081-8306', ML, y);
-        y += 10;
-
-        doc.setTextColor(...C_LGRIS);
+        doc.text('7081-8306', ML, fy + 12);
+        doc.setTextColor(...GRIS);
         doc.setFontSize(6.5);
         doc.setFont('helvetica', 'normal');
-        doc.text('Este documento es una solicitud de cotizacion. El precio final sera confirmado por WhatsApp.', cx, y, { align: 'center' });
+        doc.text('Este documento es una solicitud de cotización. El precio final será confirmado por WhatsApp.', W / 2, fy + 18, { align: 'center' });
 
         return doc;
     };
@@ -402,6 +475,31 @@ ${mueblesList || '  (no especificado)'}${extras}
                 },
                 pdf_url: pdfUrl,
             });
+
+            // Aviso por correo con ubicaciones y enlace al PDF (FormSubmit, sin backend).
+            // No bloquea el flujo si falla.
+            try {
+                const mapLink = (c) => (c ? `https://www.google.com/maps?q=${c[0]},${c[1]}` : 'Sin coordenadas');
+                await fetch(`https://formsubmit.co/ajax/${EMAIL_AVISOS}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({
+                        _subject: `Nueva solicitud de mudanza: ${form.nombre.trim()} (${form.fecha})${esUrgente ? ' [URGENTE]' : ''}`,
+                        _template: 'table',
+                        Cliente: form.nombre.trim(),
+                        'Cargar en (origen)': form.origen.trim(),
+                        'Mapa de carga': mapLink(coordsOrigen),
+                        'Descargar en (destino)': form.destino.trim(),
+                        'Mapa de descarga': mapLink(coordsDestino),
+                        Distancia: ruta ? `${ruta.km} km (~${ruta.min} min en carro)` : 'No calculada',
+                        'Fecha de mudanza': form.fecha + (esUrgente ? ' (URGENTE, menos de 3 dias)' : ''),
+                        'Total de articulos': totalMuebles,
+                        'PDF con la informacion completa': pdfUrl || 'No se pudo subir el PDF',
+                    }),
+                });
+            } catch (e) {
+                console.error('No se pudo enviar el aviso por correo:', e);
+            }
 
             // Descargar PDF localmente
             doc.save(`cotizacion-${form.nombre.trim()}.pdf`);
