@@ -34,10 +34,9 @@ export default async function handler(req, res) {
 
     const cuerpo = {};
     mudanzas.forEach((m, i) => {
-        const tel = m.acceso?.telefono_cliente ? ` · WhatsApp: ${m.acceso.telefono_cliente}` : '';
         const pdf = m.pdf_url ? ` · PDF: ${m.pdf_url}` : '';
         cuerpo[`${i + 1}. ${m.fecha_mudanza}${m.urgente ? ' (URGENTE)' : ''}`] =
-            `${m.nombre}${tel} — Cargar: ${m.origen} — Descargar: ${m.destino}${pdf}`;
+            `${m.nombre} — Cargar: ${m.origen} — Descargar: ${m.destino}${pdf}`;
     });
 
     const envio = await fetch(`https://formsubmit.co/ajax/${EMAIL_PRINCIPAL}`, {

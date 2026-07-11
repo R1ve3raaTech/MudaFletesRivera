@@ -31,9 +31,8 @@ export default async function handler(req, res) {
 
     const cuerpo = {};
     solicitudes.forEach((s, i) => {
-        const tel = s.acceso?.telefono_cliente || 'sin teléfono';
         const est = s.acceso?.estimacion ? ` · Estimado: ₡${s.acceso.estimacion}` : '';
-        cuerpo[`${i + 1}. ${s.nombre} (WhatsApp: ${tel})`] =
+        cuerpo[`${i + 1}. ${s.nombre}`] =
             `Mudanza ${s.fecha_mudanza}${s.urgente ? ' URGENTE' : ''} — ${s.origen} → ${s.destino}${est}${s.pdf_url ? ` · PDF: ${s.pdf_url}` : ''}`;
     });
 
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
             _subject: `Seguimiento: ${solicitudes.length} solicitud(es) de ayer por confirmar`,
             _template: 'table',
-            'Que hacer': 'Verifica si estos clientes escribieron por WhatsApp; si no, contactalos al numero indicado.',
+            'Que hacer': 'Verifica en WhatsApp si estos clientes ya escribieron y quedaron cotizados.',
             ...cuerpo,
         }),
     });
