@@ -777,12 +777,6 @@ export default function CotizadorForm() {
                                     <OpcionBtn value="no" selected={form.mascotas === 'no'} onClick={set('mascotas')}>No</OpcionBtn>
                                     <OpcionBtn value="si" selected={form.mascotas === 'si'} onClick={set('mascotas')}>Si, llevo mascotas</OpcionBtn>
                                 </div>
-                                {form.mascotas === 'si' && (
-                                    <div className={styles.notice}>
-                                        <Info size={15} />
-                                        Coordinamos el traslado para que tus mascotas viajen seguras y sin estres.
-                                    </div>
-                                )}
                             </div>
 
                             <div className={styles.field}>
