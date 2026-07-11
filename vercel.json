@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    { "path": "/api/recordatorios", "schedule": "0 12 * * *" },
+    { "path": "/api/seguimiento", "schedule": "30 12 * * *" }
+  ]
 }

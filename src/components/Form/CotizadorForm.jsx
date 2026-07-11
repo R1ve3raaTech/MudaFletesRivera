@@ -11,6 +11,7 @@ import {
     WashingMachine, Drum, Flame, Laptop, Boxes, ShoppingBag, Package2, Plus, Minus, Check,
     PartyPopper, RotateCcw
 } from 'lucide-react';
+import { calcularEstimacion, fmtCRC } from './tarifas';
 import RutaMapa from './RutaMapa';
 import SelectorRuta from './SelectorRuta';
 import styles from './CotizadorForm.module.css';
@@ -53,6 +54,7 @@ export default function CotizadorForm() {
     const [paso, setPaso] = useState(1);
     const [form, setForm] = useState({
         nombre: '',
+        telefono: '',
         origen: '',
         destino: '',
         escalerasOrigen: '',
@@ -104,7 +106,7 @@ export default function CotizadorForm() {
         setCoordsDestino(null);
         setPaso(1);
         setForm({
-            nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
+            nombre: '', telefono: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
             caminata: '', parqueo: '', muebles: {}, otrosDetalle: '',
             fragiles: '', desmontaje: '', embalaje: '', ayudantes: 0,
             mascotas: '', fecha: '', infoAdicional: '',
@@ -130,9 +132,11 @@ export default function CotizadorForm() {
 
     const totalMuebles = Object.values(form.muebles).reduce((a, b) => a + b, 0);
 
+    const estimacion = calcularEstimacion({ form, km: ruta?.km, totalMuebles, esUrgente });
+
     const pasoValido = [
         false,
-        form.nombre.trim() && form.origen.trim() && form.destino.trim() && form.escalerasOrigen && form.escalerasDestino && form.caminata && form.parqueo,
+        form.nombre.trim() && form.telefono.trim().replace(/\D/g, '').length >= 8 && form.origen.trim() && form.destino.trim() && form.escalerasOrigen && form.escalerasDestino && form.caminata && form.parqueo,
         totalMuebles > 0,
         form.fragiles && form.desmontaje && form.embalaje && form.mascotas,
         form.fecha,
@@ -221,7 +225,13 @@ export default function CotizadorForm() {
         doc.setFontSize(12);
         doc.text(form.nombre, ML, y);
         doc.text(form.fecha, MR, y, { align: 'right' });
-        y += 9;
+        y += 5;
+        doc.setTextColor(...GRIS);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`WhatsApp: ${form.telefono}`, ML, y);
+        doc.setFont('helvetica', 'bold');
+        y += 6;
 
         // ── TARJETA DE RUTA (cargar / descargar) ─────────────────
         const dirW = ancho - 30;
@@ -475,6 +485,8 @@ export default function CotizadorForm() {
                     parqueo: form.parqueo,
                     distancia_km: ruta?.km ?? null,
                     duracion_min: ruta?.min ?? null,
+                    telefono_cliente: form.telefono.trim(),
+                    estimacion: estimacion ? `${estimacion.min}-${estimacion.max}` : null,
                 },
                 pdf_url: pdfUrl,
             });
@@ -490,6 +502,7 @@ export default function CotizadorForm() {
                         _subject: `Nueva solicitud de mudanza: ${form.nombre.trim()} (${form.fecha})${esUrgente ? ' [URGENTE]' : ''}`,
                         _template: 'table',
                         Cliente: form.nombre.trim(),
+                        'WhatsApp del cliente': form.telefono.trim(),
                         'Cargar en (origen)': form.origen.trim(),
                         'Mapa de carga': mapLink(coordsOrigen),
                         'Descargar en (destino)': form.destino.trim(),
@@ -500,6 +513,7 @@ export default function CotizadorForm() {
                         Mascotas: form.mascotas === 'si'
                             ? 'Si' : 'No',
                         'Informacion adicional': form.infoAdicional.trim() || 'Ninguna',
+                        'Precio estimado mostrado': estimacion ? `${fmtCRC(estimacion.min)} - ${fmtCRC(estimacion.max)}` : 'No calculado',
                         'PDF con la informacion completa': pdfUrl || 'No se pudo subir el PDF',
                     }),
                 });
@@ -596,6 +610,16 @@ export default function CotizadorForm() {
                                     placeholder="Ej: Juan Perez"
                                     value={form.nombre}
                                     onChange={e => set('nombre')(e.target.value)}
+                                />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label>Tu numero de WhatsApp</label>
+                                <input
+                                    type="tel"
+                                    placeholder="Ej: 8888-8888"
+                                    value={form.telefono}
+                                    onChange={e => set('telefono')(e.target.value)}
                                 />
                             </div>
 
@@ -848,6 +872,19 @@ export default function CotizadorForm() {
                                     className={styles.textarea}
                                 />
                             </div>
+
+                            {form.fecha && estimacion && (
+                                <div className={styles.estimacion}>
+                                    <span className={styles.estimacionLabel}>Precio estimado</span>
+                                    <span className={styles.estimacionRango}>
+                                        {fmtCRC(estimacion.min)} – {fmtCRC(estimacion.max)}
+                                    </span>
+                                    <span className={styles.estimacionNota}>
+                                        Estimacion preliminar segun distancia, acceso y articulos.
+                                        El precio final se confirma por WhatsApp.
+                                    </span>
+                                </div>
+                            )}
 
                             {form.fecha && (
                                 <div className={styles.resumen}>
