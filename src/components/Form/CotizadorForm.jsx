@@ -11,6 +11,7 @@ import {
     WashingMachine, Drum, Flame, Laptop, Boxes, ShoppingBag, Package2, Plus, Minus, Check,
     PartyPopper, RotateCcw
 } from 'lucide-react';
+import RutaMapa from './RutaMapa';
 import styles from './CotizadorForm.module.css';
 
 const WA_NUMBER = '50670818306';
@@ -129,6 +130,7 @@ export default function CotizadorForm() {
     });
     const [enviando, setEnviando] = useState(false);
     const [enviado, setEnviado] = useState(false);
+    const [ruta, setRuta] = useState(null);
     const [errorEnvio, setErrorEnvio] = useState(false);
     const cardRef = useRef(null);
     const stepRef = useRef(null);
@@ -151,6 +153,7 @@ export default function CotizadorForm() {
     const reiniciar = () => {
         setEnviado(false);
         setErrorEnvio(false);
+        setRuta(null);
         setPaso(1);
         setForm({
             nombre: '', origen: '', destino: '', escalerasOrigen: '', escalerasDestino: '',
@@ -204,7 +207,7 @@ export default function CotizadorForm() {
 `Hola, quiero cotizar una mudanza.
 
 *Origen:* ${form.origen}
-*Destino:* ${form.destino}
+*Destino:* ${form.destino}${ruta ? `\n*Distancia aproximada:* ${ruta.km} km (~${ruta.min} min en carro)` : ''}
 
 *Acceso:*
   - ${escStr('Origen', form.escalerasOrigen)}
@@ -341,6 +344,7 @@ ${mueblesList || '  (no especificado)'}${extras}
         seccion('Ubicacion');
         fila('Origen', form.origen);
         fila('Destino', form.destino);
+        if (ruta) fila('Distancia aproximada', `${ruta.km} km (~${ruta.min} min en carro)`);
         fila('Escaleras en origen', escStr(form.escalerasOrigen));
         fila('Escaleras en destino', escStr(form.escalerasDestino));
         fila('Caminata mayor a 20 m', form.caminata === 'si' ? 'Si' : 'No');
@@ -450,6 +454,8 @@ ${mueblesList || '  (no especificado)'}${extras}
                     escaleras_destino: form.escalerasDestino,
                     caminata: form.caminata === 'si',
                     parqueo: form.parqueo,
+                    distancia_km: ruta?.km ?? null,
+                    duracion_min: ruta?.min ?? null,
                 },
                 pdf_url: pdfUrl,
             });
@@ -565,6 +571,11 @@ ${mueblesList || '  (no especificado)'}${extras}
                                     onChange={v => set('destino')(v)}
                                     placeholder="Ej: Alajuela, La Guacima"
                                 />
+                            </div>
+
+                            <div className={styles.field}>
+                                <label>Ruta de tu mudanza</label>
+                                <RutaMapa origen={form.origen} destino={form.destino} onRuta={setRuta} />
                             </div>
 
                             <div className={styles.field}>
@@ -765,6 +776,7 @@ ${mueblesList || '  (no especificado)'}${extras}
                                     <h4>Resumen de tu solicitud</h4>
                                     <div className={styles.resumenItem}><span>Origen</span><strong>{form.origen}</strong></div>
                                     <div className={styles.resumenItem}><span>Destino</span><strong>{form.destino}</strong></div>
+                                    {ruta && <div className={styles.resumenItem}><span>Distancia</span><strong>{ruta.km} km aprox.</strong></div>}
                                     <div className={styles.resumenItem}><span>Articulos</span><strong>{totalMuebles} item(s)</strong></div>
                                     <div className={styles.resumenItem}><span>Fecha</span><strong>{form.fecha}</strong></div>
                                     {form.desmontaje === 'si' && <div className={styles.resumenItem}><span>Desmontaje</span><strong>Si (+costo)</strong></div>}
