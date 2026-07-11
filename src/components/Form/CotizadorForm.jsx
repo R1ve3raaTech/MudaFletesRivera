@@ -74,6 +74,7 @@ export default function CotizadorForm() {
     const [coordsDestino, setCoordsDestino] = useState(null);
     const [selectorAbierto, setSelectorAbierto] = useState(false);
     const [errorEnvio, setErrorEnvio] = useState(false);
+    const [pdfListo, setPdfListo] = useState(null); // { blob, filename, url }
     const cardRef = useRef(null);
     const stepRef = useRef(null);
     const primeraCarga = useRef(true);
@@ -95,6 +96,7 @@ export default function CotizadorForm() {
     const reiniciar = () => {
         setEnviado(false);
         setErrorEnvio(false);
+        setPdfListo(null);
         setRuta(null);
         setCoordsOrigen(null);
         setCoordsDestino(null);
@@ -424,6 +426,28 @@ ${mueblesList || '  (no especificado)'}${extras}
         return doc;
     };
 
+    const construirMensajeWa = (pdfUrl) =>
+        `Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web.` +
+        (pdfUrl
+            ? `\n\nAqui esta el PDF con todos los detalles de mi mudanza:\n${pdfUrl}`
+            : `\n\nLes adjunto el PDF con todos los detalles de mi mudanza.`);
+
+    // En móvil, comparte el PDF como archivo adjunto real (menú nativo del sistema)
+    const compartirPdf = async () => {
+        if (!pdfListo) return;
+        const file = new File([pdfListo.blob], pdfListo.filename, { type: 'application/pdf' });
+        if (navigator.canShare?.({ files: [file] })) {
+            try {
+                await navigator.share({
+                    files: [file],
+                    text: construirMensajeWa(null),
+                });
+                return;
+            } catch { /* usuario canceló o falló: cae al enlace */ }
+        }
+        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa(pdfListo.url))}`, '_blank');
+    };
+
     const enviarWhatsapp = async () => {
         setEnviando(true);
         setErrorEnvio(false);
@@ -502,10 +526,12 @@ ${mueblesList || '  (no especificado)'}${extras}
             }
 
             // Descargar PDF localmente
-            doc.save(`cotizacion-${form.nombre.trim()}.pdf`);
+            const filename2 = `cotizacion-${form.nombre.trim()}.pdf`;
+            doc.save(filename2);
+            setPdfListo({ blob, filename: filename2, url: pdfUrl });
 
-            // Abrir WhatsApp
-            const msg = `Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.`;
+            // Abrir WhatsApp con el enlace al PDF incluido en el mensaje
+            const msg = construirMensajeWa(pdfUrl);
             setTimeout(() => {
                 window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
             }, 600);
@@ -537,22 +563,19 @@ ${mueblesList || '  (no especificado)'}${extras}
                             </div>
                             <h3>¡Listo, {form.nombre.trim().split(' ')[0]}!</h3>
                             <p>
-                                Tu PDF se descargó y se abrió WhatsApp. Adjunta el PDF en el chat
-                                y en minutos te confirmamos el precio de tu mudanza.
+                                {pdfListo?.url
+                                    ? 'Se abrió WhatsApp con tu solicitud y el enlace al PDF ya incluido en el mensaje. Solo tienes que enviarlo.'
+                                    : 'Tu PDF se descargó y se abrió WhatsApp. Adjunta el PDF en el chat y en minutos te confirmamos el precio.'}
                             </p>
                             <div className={styles.exitoPasos}>
                                 <span><Check size={15} /> PDF generado con tus datos</span>
                                 <span><Check size={15} /> Solicitud registrada</span>
-                                <span><MessageCircle size={15} /> Solo falta adjuntarlo en WhatsApp</span>
+                                <span><MessageCircle size={15} /> {pdfListo?.url ? 'El enlace al PDF va en el mensaje' : 'Solo falta adjuntarlo en WhatsApp'}</span>
                             </div>
                             <div className={styles.exitoAcciones}>
-                                <a
-                                    href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hola! Mi nombre es ${form.nombre.trim()}. Acabo de llenar el formulario de cotizacion en su pagina web. Les adjunto el PDF con todos los detalles de mi mudanza.`)}`}
-                                    target="_blank" rel="noopener noreferrer"
-                                    className={styles.btnWa}
-                                >
-                                    <MessageCircle size={18} /> Abrir WhatsApp de nuevo
-                                </a>
+                                <button type="button" className={styles.btnWa} onClick={compartirPdf}>
+                                    <MessageCircle size={18} /> Enviar PDF por WhatsApp
+                                </button>
                                 <button type="button" className={styles.btnBack} onClick={reiniciar}>
                                     <RotateCcw size={15} /> Hacer otra cotización
                                 </button>
