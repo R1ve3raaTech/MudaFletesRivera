@@ -17,6 +17,7 @@ import CotizadorForm from './components/Form/CotizadorForm';
 import NuestroEquipo from './components/NuestroEquipo/NuestroEquipo';
 import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
+import PromoCotizador from './components/PromoCotizador/PromoCotizador';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
@@ -87,6 +88,7 @@ const App = () => {
                 <Footer />
                 <BottomNav />
                 <WhatsappFloat />
+                <PromoCotizador />
             </div>
         </Router>
     );
