@@ -41,7 +41,13 @@ export default async function handler(req, res) {
 
     const envio = await fetch(`https://formsubmit.co/ajax/${EMAIL_PRINCIPAL}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            // FormSubmit rechaza peticiones sin origen web
+            Origin: 'https://mudafletesrivera.com',
+            Referer: 'https://mudafletesrivera.com/',
+        },
         body: JSON.stringify({
             _subject: `Recordatorio: ${mudanzas.length} mudanza(s) en los próximos 3 días`,
             _template: 'table',
