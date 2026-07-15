@@ -91,7 +91,7 @@ const BottomNav = () => {
                 <div className={styles.iconWrapper}>
                     <FileText size={22} />
                 </div>
-                <span className={styles.navLabelFijo}>Mi mudanza</span>
+                <span className={styles.navLabel}>Mi mudanza</span>
             </Link>
         </nav>
     );
