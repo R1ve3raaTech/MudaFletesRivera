@@ -174,6 +174,9 @@ const Modal = ({ onClose }) => {
     const [tagsSeleccionados, setTagsSeleccionados] = useState([]);
     const [errors, setErrors] = useState({});
     const [status, setStatus] = useState('idle');
+    // Anti-spam: campo trampa (honeypot) y momento de apertura del formulario
+    const honeypotRef = useRef('');
+    const abiertoEnRef = useRef(Date.now());
 
     useEffect(() => {
         const scrollY = window.scrollY;
@@ -221,6 +224,13 @@ const Modal = ({ onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Anti-spam: si el honeypot trae texto, es un bot → simulamos éxito y no guardamos
+        if (honeypotRef.current) { setStatus('success'); return; }
+        // Anti-spam: envío demasiado rápido (< 3 s) es sospechoso de bot
+        if (Date.now() - abiertoEnRef.current < 3000) {
+            setErrors({ comentario: 'Tomate un momento para escribir tu reseña antes de enviar.' });
+            return;
+        }
         const e2 = validate();
         if (Object.keys(e2).length > 0) { setErrors(e2); return; }
         setStatus('sending');
@@ -260,10 +270,27 @@ const Modal = ({ onClose }) => {
                     </div>
                 ) : (
                     <>
-                        <h3 className={styles.modalTitle}>Dejá tu reseña</h3>
-                        <p className={styles.modalSub}>Todos los campos son obligatorios.</p>
+                        <div className={styles.modalHead}>
+                            <div className={styles.modalHeadIcon} aria-hidden="true">
+                                <Quote size={22} />
+                            </div>
+                            <div>
+                                <h3 className={styles.modalTitle}>Dejá tu reseña</h3>
+                                <p className={styles.modalSub}>Todos los campos son obligatorios.</p>
+                            </div>
+                        </div>
 
                         <form onSubmit={handleSubmit} noValidate className={styles.form}>
+                            {/* Campo trampa anti-bot: invisible para personas, atractivo para bots */}
+                            <input
+                                type="text"
+                                name="website"
+                                tabIndex={-1}
+                                autoComplete="off"
+                                aria-hidden="true"
+                                className={styles.honeypot}
+                                onChange={(e) => { honeypotRef.current = e.target.value; }}
+                            />
                             <div className={styles.field}>
                                 <label>Nombre completo</label>
                                 <input
