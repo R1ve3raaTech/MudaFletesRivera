@@ -34,6 +34,10 @@ const Conditions = () => {
                         especializada en Costa Rica, usted acepta cumplir con los siguientes términos y condiciones,
                         establecidos para garantizar la seguridad de su patrimonio y una experiencia de servicio transparente.
                     </p>
+                    <p>
+                        MudaFletesRivera se reserva el derecho de actualizar o modificar estas condiciones en cualquier
+                        momento. La versión vigente será siempre la publicada en este sitio web.
+                    </p>
                 </div>
 
                 <div className={styles.termsSection}>
@@ -50,7 +54,24 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>3. Cotizador y Solicitudes</h2>
+                    <h2>3. Obligaciones del Cliente</h2>
+                    <p>
+                        Para garantizar un servicio seguro, el cliente se compromete a:
+                    </p>
+                    <ul>
+                        <li>Estar presente, personalmente o mediante un representante autorizado, durante la carga y la descarga.</li>
+                        <li>Declarar con veracidad los artículos, la accesibilidad y las condiciones del origen y destino.</li>
+                        <li>No solicitar el transporte de artículos ilegales, peligrosos, inflamables, explosivos ni perecederos.</li>
+                        <li>Embalar adecuadamente los objetos frágiles o de valor, salvo que contrate el servicio de embalaje.</li>
+                    </ul>
+                    <p>
+                        MudaFletesRivera podrá rechazar el transporte de cualquier artículo que represente un riesgo
+                        para la seguridad de las personas o de la carga.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>4. Cotizador y Solicitudes</h2>
                     <p>
                         El cotizador disponible en nuestro sitio web genera una <strong>solicitud de cotización</strong>,
                         no un precio definitivo. Al completar el formulario, se descarga un PDF con los detalles
@@ -65,7 +86,7 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>4. Servicios Adicionales</h2>
+                    <h2>5. Servicios Adicionales</h2>
                     <p>
                         Los siguientes servicios tienen un costo adicional al flete base y deben ser solicitados
                         con anticipación:
@@ -83,7 +104,20 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>5. Mudanzas Urgentes</h2>
+                    <h2>6. Formas y Condiciones de Pago</h2>
+                    <p>
+                        El pago total del servicio se realiza <strong>al finalizar la mudanza</strong>, una vez
+                        completada la descarga, salvo que se acuerde algo distinto por WhatsApp. Los medios de pago
+                        aceptados se confirman con el cliente al coordinar el servicio.
+                    </p>
+                    <p>
+                        El monto a pagar corresponde al precio final confirmado por WhatsApp, más cualquier cargo
+                        adicional por servicios extra o por diferencias entre las condiciones declaradas y las reales.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>7. Mudanzas Urgentes</h2>
                     <p>
                         Las solicitudes con menos de <strong>3 días de anticipación</strong> a la fecha deseada se
                         consideran urgentes y aplica un cargo adicional. Este cargo será informado y confirmado
@@ -92,7 +126,7 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>6. Puntualidad y Acceso</h2>
+                    <h2>8. Puntualidad y Acceso</h2>
                     <p>
                         Nuestro compromiso es la puntualidad. El cliente debe asegurar que los accesos al origen y
                         destino estén despejados y listos para la carga en la hora acordada. Si el lugar no cuenta
@@ -102,7 +136,7 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>7. Cotizaciones y Validez</h2>
+                    <h2>9. Cotizaciones y Validez</h2>
                     <p>
                         Todas las cotizaciones confirmadas tienen una validez de <strong>3 días naturales</strong>.
                         Pasado ese plazo, los precios pueden estar sujetos a cambios según disponibilidad y
@@ -111,7 +145,7 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>8. Cancelaciones y Reprogramaciones</h2>
+                    <h2>10. Cancelaciones y Reprogramaciones</h2>
                     <p>
                         El cliente puede cancelar o reprogramar su mudanza sin costo alguno avisando por WhatsApp
                         con al menos <strong>48 horas de anticipación</strong> a la fecha y hora acordadas.
@@ -124,7 +158,7 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>9. Límite de Responsabilidad</h2>
+                    <h2>11. Límite de Responsabilidad y Seguro</h2>
                     <p>
                         MudaFletesRivera no se hace responsable por retrasos o incumplimientos causados por
                         situaciones de fuerza mayor o caso fortuito, tales como condiciones climáticas severas,
@@ -136,10 +170,29 @@ const Conditions = () => {
                         La responsabilidad por daños se limita a los artículos declarados y embalados
                         adecuadamente, conforme a la sección 2 de estas condiciones.
                     </p>
+                    <p>
+                        <strong>Seguro de carga:</strong> por el momento, el servicio no cuenta con una póliza de
+                        seguro que cubra la mercancía transportada. En caso de daño atribuible a nuestro equipo sobre
+                        un artículo declarado y correctamente embalado, la solución se coordinará directamente con el
+                        cliente conforme a la sección 12.
+                    </p>
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>10. Propiedad Intelectual</h2>
+                    <h2>12. Reclamos por Daños</h2>
+                    <p>
+                        Cualquier daño atribuible al servicio debe ser reportado por WhatsApp dentro de las
+                        <strong> 48 horas siguientes</strong> a la finalización de la mudanza, adjuntando fotografías
+                        del artículo afectado. Los reclamos presentados fuera de este plazo no podrán ser considerados.
+                    </p>
+                    <p>
+                        Una vez recibido el reclamo, nuestro equipo lo revisará y coordinará con el cliente una
+                        solución razonable, siempre que el artículo haya sido declarado y embalado adecuadamente.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>13. Propiedad Intelectual</h2>
                     <p>
                         Todo el contenido de este sitio web —incluyendo el nombre MudaFletesRivera, el logotipo,
                         los textos, las imágenes, el diseño y el cotizador— es propiedad de MudaFletesRivera y
@@ -149,7 +202,7 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>11. Privacidad y Datos</h2>
+                    <h2>14. Privacidad y Datos</h2>
                     <p>
                         Los datos personales ingresados en el cotizador (nombre, dirección de origen y destino,
                         artículos y servicios solicitados) son almacenados de forma segura y utilizados
@@ -159,13 +212,19 @@ const Conditions = () => {
                         Personales</strong> de Costa Rica.
                     </p>
                     <p>
-                        El PDF generado por el cotizador también se guarda en nuestro sistema para referencia
-                        interna del equipo. Si desea que sus datos sean eliminados, puede solicitarlo por WhatsApp.
+                        <strong>Conservación:</strong> los datos y el PDF generado se conservan únicamente durante el
+                        tiempo necesario para gestionar la solicitud y por un período razonable de referencia interna.
+                        El cliente puede solicitar su eliminación en cualquier momento por WhatsApp.
+                    </p>
+                    <p>
+                        <strong>Almacenamiento:</strong> la información se aloja en servidores de nuestro proveedor
+                        tecnológico (Supabase), que pueden encontrarse fuera de Costa Rica, aplicando medidas de
+                        seguridad para proteger los datos.
                     </p>
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>12. Ley Aplicable y Contacto</h2>
+                    <h2>15. Ley Aplicable y Contacto</h2>
                     <p>
                         Estas condiciones se rigen por las leyes de la República de <strong>Costa Rica</strong>.
                         Cualquier controversia derivada de los servicios será resuelta ante los tribunales
