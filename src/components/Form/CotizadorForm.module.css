@@ -579,6 +579,45 @@
     margin-top: 1px;
 }
 
+/* ── Consentimiento de datos ── */
+.consentBox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    background: var(--bg-neutral, #f4efe6);
+    border: 1.5px solid var(--border-neutral, #e7e1d6);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+}
+
+.consentBox:hover {
+    border-color: var(--primary-brand, #2563eb);
+}
+
+.consentBox input {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    accent-color: var(--primary-brand, #2563eb);
+    cursor: pointer;
+}
+
+.consentBox span {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text-secondary, #4e5a70);
+}
+
+.consentBox a {
+    color: var(--primary-brand, #2563eb);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
 /* ── Navegación ── */
 .nav {
     display: flex;

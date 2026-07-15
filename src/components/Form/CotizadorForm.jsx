@@ -79,6 +79,7 @@ export default function CotizadorForm() {
     const [selectorAbierto, setSelectorAbierto] = useState(false);
     const [errorEnvio, setErrorEnvio] = useState(false);
     const [pdfListo, setPdfListo] = useState(null); // { blob, filename, url }
+    const [consiente, setConsiente] = useState(false);
     const cardRef = useRef(null);
     const stepRef = useRef(null);
     const primeraCarga = useRef(true);
@@ -139,7 +140,7 @@ export default function CotizadorForm() {
         form.nombre.trim() && form.origen.trim() && form.destino.trim() && form.escalerasOrigen && form.escalerasDestino && form.caminata && form.parqueo,
         totalMuebles > 0,
         form.fragiles && form.desmontaje && form.embalaje && form.mascotas,
-        form.fecha,
+        form.fecha && consiente,
     ];
 
     const cargarImagen = (src) => new Promise((resolve) => {
@@ -895,6 +896,21 @@ export default function CotizadorForm() {
                     )}
 
                     </div>
+
+                    {/* Consentimiento de datos - solo en paso 4 con fecha */}
+                    {paso === 4 && form.fecha && (
+                        <label className={styles.consentBox}>
+                            <input
+                                type="checkbox"
+                                checked={consiente}
+                                onChange={e => setConsiente(e.target.checked)}
+                            />
+                            <span>
+                                Acepto el tratamiento de mis datos para procesar esta solicitud, conforme a las{' '}
+                                <a href="/condiciones" target="_blank" rel="noopener noreferrer">Condiciones de Uso</a>.
+                            </span>
+                        </label>
+                    )}
 
                     {/* Nota PDF - solo en paso 4 con fecha */}
                     {paso === 4 && form.fecha && (
