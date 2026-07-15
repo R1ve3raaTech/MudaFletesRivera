@@ -47,6 +47,47 @@
     margin-bottom: 2rem;
 }
 
+/* ── Resumen de calificación ── */
+.resumen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0 auto 1.8rem;
+    padding: 1.1rem 2rem;
+    background: var(--bg-neutral);
+    border: 1px solid var(--border-neutral);
+    border-radius: 18px;
+    width: max-content;
+    max-width: 100%;
+    animation: resumenIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes resumenIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.resumenEstrellas {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.resumenNivel {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.resumenTotal {
+    font-size: 0.85rem;
+    color: var(--text-secondary, #64748b);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .resumen { animation: none; }
+}
+
 /* ── Botón CTA ── */
 .ctaBtn {
     display: inline-flex;

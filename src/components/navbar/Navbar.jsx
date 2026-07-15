@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, FileText, Info } from 'lucide-react';
+import { Home, FileText, Info, Star } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
 import styles from './Navbar.module.css';
 
@@ -17,7 +17,11 @@ const Navbar = () => {
     }, []);
 
     const isActive = (to) => {
-        if (to.startsWith('/#')) return location.pathname === '/';
+        if (to.startsWith('/#')) {
+            if (location.pathname !== '/') return false;
+            const hash = location.hash || '#inicio';
+            return to === `/${hash}`;
+        }
         return location.pathname === to;
     };
 
@@ -37,8 +41,13 @@ const Navbar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/mimudanza" className={isActive('/mimudanza') ? styles.navActive : ''}>
-                        <FileText size={18} /> <span className={styles.navLabel}>Mi mudanza</span>
+                    <Link to="/#resenas" className={isActive('/#resenas') ? styles.navActive : ''}>
+                        <Star size={18} /> <span className={styles.navLabel}>Reseñas</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/mimudanza" className={`${styles.navDestacado} ${isActive('/mimudanza') ? styles.navDestacadoActivo : ''}`}>
+                        <FileText size={18} /> <span className={styles.navLabelFijo}>Mi mudanza</span>
                     </Link>
                 </li>
                 <li>

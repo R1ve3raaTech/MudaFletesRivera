@@ -106,23 +106,24 @@
         margin-left: 2px;
     }
 
+    /* "Mi mudanza" siempre relleno y con etiqueta visible */
     .specialBlue {
-        background: rgba(14, 165, 233, 0.12);
-        color: #0ea5e9 !important;
+        background: linear-gradient(135deg, #0052cc, #0ea5e9);
+        color: white !important;
         border-radius: 999px;
+        padding-right: 14px;
+        box-shadow: 0 6px 16px rgba(0, 82, 204, 0.3);
+        flex-shrink: 0;
+    }
+
+    .navLabelFijo {
+        white-space: nowrap;
+        margin-left: 2px;
+        color: #fff;
     }
 
     .specialBlue.active {
-        background: linear-gradient(135deg, #0052cc, #0ea5e9);
-        color: white !important;
-        padding-right: 14px;
-    }
-
-    .specialBlue.active .navLabel {
-        max-width: 100px;
-        opacity: 1;
-        margin-left: 2px;
-        color: #fff;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.3), 0 6px 16px rgba(0, 82, 204, 0.3);
     }
 
     .special :global(.lucide) {

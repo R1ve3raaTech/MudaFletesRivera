@@ -218,3 +218,32 @@
     color: #25D366 !important;
 }
 
+/* Enlace destacado "Mi mudanza": siempre visible, con relleno de marca */
+.navDestacado {
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    color: #fff !important;
+    padding: 0.6rem 1.1rem !important;
+    box-shadow: 0 6px 18px rgba(0, 82, 204, 0.3);
+    transition: box-shadow 0.25s ease, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.navDestacado:hover {
+    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    color: #fff !important;
+    box-shadow: 0 10px 26px rgba(0, 82, 204, 0.42);
+    transform: translateY(-1px);
+}
+
+.navDestacadoActivo {
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.25), 0 6px 18px rgba(0, 82, 204, 0.3);
+}
+
+.navLabelFijo {
+    white-space: nowrap;
+    margin-left: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navDestacado:hover { transform: none; }
+}
+

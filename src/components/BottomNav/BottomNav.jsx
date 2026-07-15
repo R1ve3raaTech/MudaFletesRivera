@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Home, MessageCircle, Info } from 'lucide-react';
+import { Home, FileText, Info, Star } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
@@ -41,9 +41,20 @@ const BottomNav = () => {
                 className={`${styles.navItem} ${styles.specialBlue} ${currentPath.startsWith('/mimudanza') ? styles.active : ''}`}
             >
                 <div className={styles.iconWrapper}>
-                    <MessageCircle size={22} />
+                    <FileText size={22} />
                 </div>
-                <span className={styles.navLabel}>Mi mudanza</span>
+                <span className={styles.navLabelFijo}>Mi mudanza</span>
+            </Link>
+
+            <Link
+                to="/#resenas"
+                aria-label="Reseñas"
+                className={`${styles.navItem} ${currentPath === '/#resenas' ? styles.active : ''}`}
+            >
+                <div className={styles.iconWrapper}>
+                    <Star size={22} />
+                </div>
+                <span className={styles.navLabel}>Reseñas</span>
             </Link>
 
             <a
