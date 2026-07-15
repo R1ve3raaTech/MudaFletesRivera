@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Quote, X, Send, ThumbsUp, Star } from 'lucide-react';
+import { Quote, X, Send, ThumbsUp } from 'lucide-react';
 import supabase from '../../supabaseClient';
 import styles from './Resenhas.module.css';
 
@@ -51,7 +51,7 @@ const MiniTermometro = ({ calificacion }) => {
             <div className={styles.miniThermoTrack}>
                 <div
                     className={styles.miniThermoFill}
-                    style={{ width: `${pct}%`, background: color }}
+                    style={{ transform: `scaleX(${pct / 100})`, background: color }}
                 />
             </div>
             <span className={styles.miniThermoLabel} style={{ color }}>
@@ -136,9 +136,12 @@ const ReseñaCard = ({ nombre, calificacion, texto, fecha, aspectos, index }) =>
             )}
             <MiniTermometro calificacion={calificacion} />
             <div className={styles.autor}>
+                <div className={styles.avatar} aria-hidden="true">
+                    {nombre.trim().split(/\s+/).slice(0, 2).map(p => p[0]?.toUpperCase()).join('')}
+                </div>
                 <div>
                     <p className={styles.nombre}>{nombre}</p>
-                    <p className={styles.meta}>{fecha}</p>
+                    <p className={styles.meta}>Mudanza · {fecha}</p>
                 </div>
             </div>
         </div>
@@ -395,11 +398,6 @@ const Reseñas = () => {
 
     useEffect(() => { cargarReseñas(); }, []);
 
-    const promedio = reseñas.length > 0
-        ? reseñas.reduce((acc, r) => acc + (r.calificacion || 0), 0) / reseñas.length
-        : 0;
-    const nivelPromedio = promedio > 0 ? NIVELES[Math.min(5, Math.round(promedio) - 1)] : null;
-
     const totalPaginas = Math.ceil(reseñas.length / POR_PAGINA);
     const reseñasPagina = reseñas.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
@@ -438,26 +436,6 @@ const Reseñas = () => {
                 <p>
                     Más de 20 años generando confianza en Costa Rica. Aquí están las experiencias de quienes ya confiaron en nosotros.
                 </p>
-                {nivelPromedio && (
-                    <div className={styles.resumen}>
-                        <div className={styles.resumenEstrellas} style={{ color: nivelPromedio.color }}>
-                            {Array.from({ length: 6 }, (_, i) => (
-                                <Star
-                                    key={i}
-                                    size={22}
-                                    fill={i < Math.round(promedio) ? 'currentColor' : 'none'}
-                                    strokeWidth={1.8}
-                                />
-                            ))}
-                        </div>
-                        <span className={styles.resumenNivel} style={{ color: nivelPromedio.color }}>
-                            {nivelPromedio.label}
-                        </span>
-                        <span className={styles.resumenTotal}>
-                            {reseñas.length} reseña{reseñas.length === 1 ? '' : 's'} de clientes reales
-                        </span>
-                    </div>
-                )}
                 <button
                     className={styles.ctaBtn}
                     onClick={() => setModalOpen(true)}
