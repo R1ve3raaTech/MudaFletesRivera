@@ -784,6 +784,38 @@
     color: #14804a;
 }
 
+.exitoAviso {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0.2rem 0 0.6rem;
+    padding: 0.9rem 1.2rem;
+    background: rgba(255, 170, 0, 0.08);
+    border: 1px solid rgba(255, 170, 0, 0.3);
+    border-radius: 14px;
+    text-align: left;
+    max-width: 48ch;
+    animation: avisoIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+}
+
+@keyframes avisoIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.exitoAvisoIcon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #b47600;
+}
+
+.exitoAviso p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: #7a5200;
+}
+
 .exitoAcciones {
     display: flex;
     align-items: center;
@@ -794,7 +826,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .exitoIcon, .countChip { animation: none; }
+    .exitoIcon, .countChip, .exitoAviso { animation: none; }
 }
 
 /* ── Selector de ruta (abre la ventana estilo Uber) ── */

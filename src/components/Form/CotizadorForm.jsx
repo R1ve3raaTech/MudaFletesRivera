@@ -559,6 +559,14 @@ export default function CotizadorForm() {
                                 <span><Check size={15} /> Solicitud registrada</span>
                                 <span><MessageCircle size={15} /> Solo falta adjuntarlo en WhatsApp</span>
                             </div>
+                            <div className={styles.exitoAviso}>
+                                <Info size={16} className={styles.exitoAvisoIcon} />
+                                <p>
+                                    El precio mostrado es <strong>solamente un estimado</strong> calculado
+                                    según el kilometraje, el acceso, los pisos y los artículos.
+                                    El <strong>precio final se aclara por WhatsApp</strong>.
+                                </p>
+                            </div>
                             <div className={styles.exitoAcciones}>
                                 <button type="button" className={styles.btnWa} onClick={compartirPdf}>
                                     <MessageCircle size={18} /> Enviar PDF por WhatsApp
@@ -863,8 +871,8 @@ export default function CotizadorForm() {
                                         {fmtCRC(estimacion.min)} – {fmtCRC(estimacion.max)}
                                     </span>
                                     <span className={styles.estimacionNota}>
-                                        Estimacion preliminar segun distancia, acceso y articulos.
-                                        El precio final se confirma por WhatsApp.
+                                        Estimacion preliminar segun kilometraje, acceso, pisos y articulos.
+                                        El precio final se aclara por WhatsApp.
                                     </span>
                                 </div>
                             )}
