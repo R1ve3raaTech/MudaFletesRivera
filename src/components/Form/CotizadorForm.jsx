@@ -580,6 +580,16 @@ export default function CotizadorForm() {
                     ) : (
                     <>
                     {/* Progreso */}
+                    <div className={styles.progressHead}>
+                        <span className={styles.progressStep}>Paso {paso} de 4</span>
+                        <span className={styles.progressPct}>{Math.round((paso / 4) * 100)}% completado</span>
+                    </div>
+                    <div className={styles.progressBar}>
+                        <div
+                            className={styles.progressBarFill}
+                            style={{ transform: `scaleX(${paso / 4})` }}
+                        />
+                    </div>
                     <div className={styles.progress}>
                         {STEP_LABELS.map((label, i) => {
                             const n = i + 1;
@@ -924,6 +934,16 @@ export default function CotizadorForm() {
                         <div className={styles.errorNota}>
                             <AlertTriangle size={15} />
                             Algo falló al enviar. Tus respuestas siguen aquí, intenta de nuevo.
+                        </div>
+                    )}
+
+                    {/* Ayuda: campos pendientes para avanzar */}
+                    {!pasoValido[paso] && (
+                        <div className={styles.navHint}>
+                            <Info size={14} />
+                            {paso === 4
+                                ? 'Elegí la fecha y aceptá el consentimiento para finalizar.'
+                                : 'Completá las opciones de este paso para continuar.'}
                         </div>
                     )}
 

@@ -60,6 +60,47 @@
     scroll-margin-top: 96px;
 }
 
+/* ── Progreso: encabezado y barra ── */
+.progressHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.progressStep {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--text-primary, #0f172a);
+}
+
+.progressPct {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #0052cc;
+}
+
+.progressBar {
+    height: 6px;
+    border-radius: 99px;
+    background: #e2e8f0;
+    overflow: hidden;
+    margin-bottom: 1.6rem;
+}
+
+.progressBarFill {
+    height: 100%;
+    width: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #0052cc, #0ea5e9);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progressBarFill { transition: none; }
+}
+
 /* ── Progreso ── */
 .progress {
     display: flex;
@@ -618,12 +659,31 @@
     text-decoration: underline;
 }
 
+/* ── Ayuda de campos pendientes ── */
+.navHint {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #94670a;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    margin-top: 1.6rem;
+}
+
+.navHint svg {
+    flex-shrink: 0;
+    color: #b4790a;
+}
+
 /* ── Navegación ── */
 .nav {
     display: flex;
     justify-content: flex-end;
     gap: 0.8rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid #f1f5f9;
 }
