@@ -58,8 +58,8 @@ const Navbar = () => {
                     </a>
                 </li>
                 <li>
-                    <Link to="/mimudanza" className={`${styles.navDestacado} ${isActive('/mimudanza') ? styles.navDestacadoActivo : ''}`}>
-                        <FileText size={18} /> <span className={styles.navLabelFijo}>Mi mudanza</span>
+                    <Link to="/condiciones" className={isActive('/condiciones') ? styles.navActive : ''}>
+                        <Info size={18} /> <span className={styles.navLabel}>Condiciones</span>
                     </Link>
                 </li>
                 <li>
@@ -71,8 +71,8 @@ const Navbar = () => {
                     </a>
                 </li>
                 <li>
-                    <Link to="/condiciones" className={isActive('/condiciones') ? styles.navActive : ''}>
-                        <Info size={18} /> <span className={styles.navLabel}>Condiciones</span>
+                    <Link to="/mimudanza" className={`${styles.navDestacado} ${isActive('/mimudanza') ? styles.navDestacadoActivo : ''}`}>
+                        <FileText size={18} /> <span className={styles.navLabelFijo}>Mi mudanza</span>
                     </Link>
                 </li>
             </ul>

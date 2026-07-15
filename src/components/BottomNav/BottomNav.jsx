@@ -47,17 +47,6 @@ const BottomNav = () => {
                 <span className={styles.navLabel}>Inicio</span>
             </a>
 
-            <Link
-                to="/mimudanza"
-                aria-label="Mi mudanza"
-                className={`${styles.navItem} ${styles.specialBlue} ${currentPath.startsWith('/mimudanza') ? styles.active : ''}`}
-            >
-                <div className={styles.iconWrapper}>
-                    <FileText size={22} />
-                </div>
-                <span className={styles.navLabelFijo}>Mi mudanza</span>
-            </Link>
-
             <a
                 href="/"
                 aria-label="Reseñas"
@@ -69,6 +58,17 @@ const BottomNav = () => {
                 </div>
                 <span className={styles.navLabel}>Reseñas</span>
             </a>
+
+            <Link
+                to="/condiciones"
+                aria-label="Legal"
+                className={`${styles.navItem} ${currentPath === '/condiciones' ? styles.active : ''}`}
+            >
+                <div className={styles.iconWrapper}>
+                    <Info size={22} />
+                </div>
+                <span className={styles.navLabel}>Legal</span>
+            </Link>
 
             <a
                 href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza"
@@ -84,14 +84,14 @@ const BottomNav = () => {
             </a>
 
             <Link
-                to="/condiciones"
-                aria-label="Legal"
-                className={`${styles.navItem} ${currentPath === '/condiciones' ? styles.active : ''}`}
+                to="/mimudanza"
+                aria-label="Mi mudanza"
+                className={`${styles.navItem} ${styles.specialBlue} ${currentPath.startsWith('/mimudanza') ? styles.active : ''}`}
             >
                 <div className={styles.iconWrapper}>
-                    <Info size={22} />
+                    <FileText size={22} />
                 </div>
-                <span className={styles.navLabel}>Legal</span>
+                <span className={styles.navLabelFijo}>Mi mudanza</span>
             </Link>
         </nav>
     );
