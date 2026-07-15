@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Home, FileText, Info, Star } from 'lucide-react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import styles from './BottomNav.module.css';
 
 const WA_ICON = (
@@ -13,8 +13,19 @@ const WA_ICON = (
 
 const BottomNav = () => {
     const location = useLocation();
-    const currentPath = location.pathname + location.hash;
+    const navigate = useNavigate();
+    const currentPath = location.pathname;
     const navRef = useRef(null);
+
+    // Navega a una sección de la página principal sin dejar hash en la URL
+    const irASeccion = (id) => {
+        if (location.pathname === '/') {
+            if (id === 'inicio') window.scrollTo({ top: 0, behavior: 'smooth' });
+            else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            navigate('/', id === 'inicio' ? undefined : { state: { scrollTo: id } });
+        }
+    };
 
     useGSAP(() => {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -24,16 +35,17 @@ const BottomNav = () => {
 
     return (
         <nav className={styles.bottomNav} ref={navRef}>
-            <Link
-                to="/#inicio"
+            <a
+                href="/"
                 aria-label="Inicio"
-                className={`${styles.navItem} ${currentPath === '/#inicio' ? styles.active : ''}`}
+                onClick={(e) => { e.preventDefault(); irASeccion('inicio'); }}
+                className={`${styles.navItem} ${currentPath === '/' ? styles.active : ''}`}
             >
                 <div className={styles.iconWrapper}>
                     <Home size={22} />
                 </div>
                 <span className={styles.navLabel}>Inicio</span>
-            </Link>
+            </a>
 
             <Link
                 to="/mimudanza"
@@ -46,16 +58,17 @@ const BottomNav = () => {
                 <span className={styles.navLabelFijo}>Mi mudanza</span>
             </Link>
 
-            <Link
-                to="/#resenas"
+            <a
+                href="/"
                 aria-label="Reseñas"
-                className={`${styles.navItem} ${currentPath === '/#resenas' ? styles.active : ''}`}
+                onClick={(e) => { e.preventDefault(); irASeccion('resenas'); }}
+                className={styles.navItem}
             >
                 <div className={styles.iconWrapper}>
                     <Star size={22} />
                 </div>
                 <span className={styles.navLabel}>Reseñas</span>
-            </Link>
+            </a>
 
             <a
                 href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza"

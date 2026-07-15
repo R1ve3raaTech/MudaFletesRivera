@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, FileText, Info, Star } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
 import styles from './Navbar.module.css';
@@ -16,13 +16,18 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const isActive = (to) => {
-        if (to.startsWith('/#')) {
-            if (location.pathname !== '/') return false;
-            const hash = location.hash || '#inicio';
-            return to === `/${hash}`;
+    const navigate = useNavigate();
+
+    const isActive = (to) => location.pathname === to;
+
+    // Navega a una sección de la página principal sin dejar hash en la URL
+    const irASeccion = (id) => {
+        if (location.pathname === '/') {
+            if (id === 'inicio') window.scrollTo({ top: 0, behavior: 'smooth' });
+            else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            navigate('/', id === 'inicio' ? undefined : { state: { scrollTo: id } });
         }
-        return location.pathname === to;
     };
 
     return (
@@ -36,14 +41,21 @@ const Navbar = () => {
 
             <ul className={styles.navLinks}>
                 <li>
-                    <Link to="/#inicio" className={isActive('/#inicio') ? styles.navActive : ''}>
+                    <a
+                        href="/"
+                        onClick={(e) => { e.preventDefault(); irASeccion('inicio'); }}
+                        className={isActive('/') ? styles.navActive : ''}
+                    >
                         <Home size={18} /> <span className={styles.navLabel}>Inicio</span>
-                    </Link>
+                    </a>
                 </li>
                 <li>
-                    <Link to="/#resenas" className={isActive('/#resenas') ? styles.navActive : ''}>
+                    <a
+                        href="/"
+                        onClick={(e) => { e.preventDefault(); irASeccion('resenas'); }}
+                    >
                         <Star size={18} /> <span className={styles.navLabel}>Reseñas</span>
-                    </Link>
+                    </a>
                 </li>
                 <li>
                     <Link to="/mimudanza" className={`${styles.navDestacado} ${isActive('/mimudanza') ? styles.navDestacadoActivo : ''}`}>

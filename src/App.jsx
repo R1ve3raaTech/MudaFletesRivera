@@ -21,21 +21,18 @@ import PromoCotizador from './components/PromoCotizador/PromoCotizador';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
-    const { pathname, hash } = useLocation();
+    const { pathname, hash, state } = useLocation();
 
     useEffect(() => {
-        if (!hash) {
+        const id = state?.scrollTo || (hash ? hash.replace('#', '') : null);
+        if (!id) {
             window.scrollTo(0, 0);
-        } else {
-            const id = hash.replace('#', '');
-            const element = document.getElementById(id);
-            if (element) {
-                setTimeout(() => {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            }
+            return;
         }
-    }, [pathname, hash]);
+        setTimeout(() => {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+    }, [pathname, hash, state]);
 
     return null;
 };
