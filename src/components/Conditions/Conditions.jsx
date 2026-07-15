@@ -111,16 +111,69 @@ const Conditions = () => {
                 </div>
 
                 <div className={styles.termsSection}>
-                    <h2>8. Privacidad y Datos</h2>
+                    <h2>8. Cancelaciones y Reprogramaciones</h2>
+                    <p>
+                        El cliente puede cancelar o reprogramar su mudanza sin costo alguno avisando por WhatsApp
+                        con al menos <strong>48 horas de anticipación</strong> a la fecha y hora acordadas.
+                        Las cancelaciones o cambios con menos de 48 horas de aviso pueden estar sujetos a un cargo,
+                        que será informado por WhatsApp según el caso.
+                    </p>
+                    <p>
+                        La reprogramación queda sujeta a la disponibilidad de fechas de nuestro equipo.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>9. Límite de Responsabilidad</h2>
+                    <p>
+                        MudaFletesRivera no se hace responsable por retrasos o incumplimientos causados por
+                        situaciones de fuerza mayor o caso fortuito, tales como condiciones climáticas severas,
+                        cierres de vías, bloqueos, accidentes de tránsito ajenos a la empresa o disposiciones de
+                        autoridades públicas. En estos casos, se coordinará con el cliente una nueva fecha u
+                        horario sin costo adicional.
+                    </p>
+                    <p>
+                        La responsabilidad por daños se limita a los artículos declarados y embalados
+                        adecuadamente, conforme a la sección 2 de estas condiciones.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>10. Propiedad Intelectual</h2>
+                    <p>
+                        Todo el contenido de este sitio web —incluyendo el nombre MudaFletesRivera, el logotipo,
+                        los textos, las imágenes, el diseño y el cotizador— es propiedad de MudaFletesRivera y
+                        está protegido por la legislación de derechos de autor. Queda prohibida su reproducción,
+                        distribución o uso comercial sin autorización previa y por escrito.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>11. Privacidad y Datos</h2>
                     <p>
                         Los datos personales ingresados en el cotizador (nombre, dirección de origen y destino,
                         artículos y servicios solicitados) son almacenados de forma segura y utilizados
                         exclusivamente para procesar su solicitud de cotización y mejorar nuestro servicio.
-                        No compartimos sus datos con terceros.
+                        No compartimos sus datos con terceros. El tratamiento de datos se realiza conforme a la
+                        <strong> Ley N.º 8968 de Protección de la Persona frente al Tratamiento de sus Datos
+                        Personales</strong> de Costa Rica.
                     </p>
                     <p>
                         El PDF generado por el cotizador también se guarda en nuestro sistema para referencia
                         interna del equipo. Si desea que sus datos sean eliminados, puede solicitarlo por WhatsApp.
+                    </p>
+                </div>
+
+                <div className={styles.termsSection}>
+                    <h2>12. Ley Aplicable y Contacto</h2>
+                    <p>
+                        Estas condiciones se rigen por las leyes de la República de <strong>Costa Rica</strong>.
+                        Cualquier controversia derivada de los servicios será resuelta ante los tribunales
+                        costarricenses competentes.
+                    </p>
+                    <p>
+                        Para consultas sobre estas condiciones, puede contactarnos por WhatsApp al
+                        <strong> +506 7081 8306</strong>.
                     </p>
                 </div>
 
