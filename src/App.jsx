@@ -4,18 +4,20 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Navbar from './components/navbar/Navbar';
 import Hero from './components/Hero/Hero';
-import Services from './components/NuestrosServicios/NuestrosServicios';
 import Stats from './components/stats/Stats';
-import WhyUs from './components/whyus/WhyUs';
-import Process from './components/Process/Process';
-import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
-import Reseñas from './components/Resenhas/Resenhas';
+import LazySection from './components/LazySection';
+
+const Services = lazy(() => import('./components/NuestrosServicios/NuestrosServicios'));
+const WhyUs = lazy(() => import('./components/whyus/WhyUs'));
+const Process = lazy(() => import('./components/Process/Process'));
+const Contact = lazy(() => import('./components/Contact/Contact'));
+const Reseñas = lazy(() => import('./components/Resenhas/Resenhas'));
 
 const Conditions = lazy(() => import('./components/Conditions/Conditions'));
 const CotizadorForm = lazy(() => import('./components/Form/CotizadorForm'));
 
-import NuestroEquipo from './components/NuestroEquipo/NuestroEquipo';
+const NuestroEquipo = lazy(() => import('./components/NuestroEquipo/NuestroEquipo'));
 import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
 import PromoCotizador from './components/PromoCotizador/PromoCotizador';
@@ -53,12 +55,14 @@ const HomePage = () => {
         <PageWrapper>
             <Hero />
             <Stats />
-            <Services />
-            <Process />
-            <WhyUs />
-            <NuestroEquipo />
-            <Reseñas />
-            <Contact />
+            <Suspense fallback={null}>
+                <LazySection order={0}><Services /></LazySection>
+                <LazySection order={1}><Process /></LazySection>
+                <LazySection order={2}><WhyUs /></LazySection>
+                <LazySection order={3}><NuestroEquipo /></LazySection>
+                <LazySection order={4}><Reseñas /></LazySection>
+                <LazySection order={5}><Contact /></LazySection>
+            </Suspense>
         </PageWrapper>
     );
 };
