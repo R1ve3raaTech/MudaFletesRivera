@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { jsPDF } from 'jspdf';
 import logoTruck from '../../assets/trucklogo.png';
 import supabase from '../../supabaseClient';
 import {
@@ -160,6 +159,7 @@ export default function CotizadorForm() {
     const generarPDF = async () => {
         const b64Truck = await cargarImagen(logoTruck);
 
+        const { jsPDF } = await import('jspdf');
         const doc = new jsPDF({ unit: 'mm', format: 'a4' });
         const W  = 210;
         const H  = 297;

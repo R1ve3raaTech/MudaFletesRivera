@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -10,9 +10,10 @@ import WhyUs from './components/whyus/WhyUs';
 import Process from './components/Process/Process';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
-import Conditions from './components/Conditions/Conditions';
 import Reseñas from './components/Resenhas/Resenhas';
-import CotizadorForm from './components/Form/CotizadorForm';
+
+const Conditions = lazy(() => import('./components/Conditions/Conditions'));
+const CotizadorForm = lazy(() => import('./components/Form/CotizadorForm'));
 
 import NuestroEquipo from './components/NuestroEquipo/NuestroEquipo';
 import BottomNav from './components/BottomNav/BottomNav';
@@ -65,11 +66,13 @@ const HomePage = () => {
 const AnimatedRoutes = () => {
     const location = useLocation();
     return (
-        <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/condiciones" element={<Conditions />} />
-            <Route path="/mimudanza" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
-        </Routes>
+        <Suspense fallback={null}>
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/condiciones" element={<Conditions />} />
+                <Route path="/mimudanza" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
+            </Routes>
+        </Suspense>
     );
 };
 
