@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, lazy, Suspense } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import logoTruck from '../../assets/trucklogo.png';
@@ -11,8 +11,8 @@ import {
     PartyPopper, RotateCcw
 } from 'lucide-react';
 import { calcularEstimacion, fmtCRC } from './tarifas';
-import RutaMapa from './RutaMapa';
-import SelectorRuta from './SelectorRuta';
+const RutaMapa = lazy(() => import('./RutaMapa'));
+const SelectorRuta = lazy(() => import('./SelectorRuta'));
 import styles from './CotizadorForm.module.css';
 
 const WA_NUMBER = '50670818306';
@@ -651,13 +651,15 @@ export default function CotizadorForm() {
                                 </button>
 
                                 {form.origen && form.destino && (
-                                    <RutaMapa
-                                        origen={form.origen}
-                                        destino={form.destino}
-                                        coordsOrigen={coordsOrigen}
-                                        coordsDestino={coordsDestino}
-                                        onRuta={setRuta}
-                                    />
+                                    <Suspense fallback={null}>
+                                        <RutaMapa
+                                            origen={form.origen}
+                                            destino={form.destino}
+                                            coordsOrigen={coordsOrigen}
+                                            coordsDestino={coordsDestino}
+                                            onRuta={setRuta}
+                                        />
+                                    </Suspense>
                                 )}
                             </div>
 
@@ -981,16 +983,20 @@ export default function CotizadorForm() {
                 </div>
             </div>
 
-            <SelectorRuta
-                abierto={selectorAbierto}
-                inicial={{ origen: form.origen, destino: form.destino, coordsOrigen, coordsDestino }}
-                onConfirmar={({ origen, destino, coordsOrigen: cO, coordsDestino: cD }) => {
-                    setForm(f => ({ ...f, origen, destino }));
-                    setCoordsOrigen(cO);
-                    setCoordsDestino(cD);
-                }}
-                onCerrar={() => setSelectorAbierto(false)}
-            />
+            {selectorAbierto && (
+                <Suspense fallback={null}>
+                    <SelectorRuta
+                        abierto={selectorAbierto}
+                        inicial={{ origen: form.origen, destino: form.destino, coordsOrigen, coordsDestino }}
+                        onConfirmar={({ origen, destino, coordsOrigen: cO, coordsDestino: cD }) => {
+                            setForm(f => ({ ...f, origen, destino }));
+                            setCoordsOrigen(cO);
+                            setCoordsDestino(cD);
+                        }}
+                        onCerrar={() => setSelectorAbierto(false)}
+                    />
+                </Suspense>
+            )}
         </section>
     );
 }
