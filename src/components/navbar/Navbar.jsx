@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, FileText, Info, Star } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
+import scrollToSection from '../../scrollToSection';
 import styles from './Navbar.module.css';
 
 const WA_HREF = 'https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza';
@@ -23,8 +24,7 @@ const Navbar = () => {
     // Navega a una sección de la página principal sin dejar hash en la URL
     const irASeccion = (id) => {
         if (location.pathname === '/') {
-            if (id === 'inicio') window.scrollTo({ top: 0, behavior: 'smooth' });
-            else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            scrollToSection(id);
         } else {
             navigate('/', id === 'inicio' ? undefined : { state: { scrollTo: id } });
         }

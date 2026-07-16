@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { MessageCircle, ShieldCheck } from 'lucide-react';
 import truckImg from '../../assets/truck1.webp';
+import scrollToSection from '../../scrollToSection';
 import styles from './Hero.module.css';
 
 const Hero = () => {
@@ -43,7 +44,11 @@ const Hero = () => {
                         >
                             <MessageCircle size={18} /> Cotizar por WhatsApp
                         </a>
-                        <a href="#servicios" className={styles.btnSecondary}>Ver servicios</a>
+                        <a
+                            href="#servicios"
+                            onClick={(e) => { e.preventDefault(); scrollToSection('servicios'); }}
+                            className={styles.btnSecondary}
+                        >Ver servicios</a>
                     </div>
                 </div>
 

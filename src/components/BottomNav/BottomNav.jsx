@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { Home, FileText, Info, Star } from 'lucide-react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import styles from './BottomNav.module.css';
+import scrollToSection from '../../scrollToSection';
 
 const WA_ICON = (
     <svg width="24" height="24" viewBox="0 0 448 512" fill="currentColor">
@@ -20,8 +21,7 @@ const BottomNav = () => {
     // Navega a una sección de la página principal sin dejar hash en la URL
     const irASeccion = (id) => {
         if (location.pathname === '/') {
-            if (id === 'inicio') window.scrollTo({ top: 0, behavior: 'smooth' });
-            else document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            scrollToSection(id);
         } else {
             navigate('/', id === 'inicio' ? undefined : { state: { scrollTo: id } });
         }

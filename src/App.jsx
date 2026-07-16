@@ -7,6 +7,7 @@ import Hero from './components/Hero/Hero';
 import Stats from './components/stats/Stats';
 import Footer from './components/Footer/Footer';
 import LazySection from './components/LazySection';
+import scrollToSection from './scrollToSection';
 
 const Services = lazy(() => import('./components/NuestrosServicios/NuestrosServicios'));
 const WhyUs = lazy(() => import('./components/whyus/WhyUs'));
@@ -32,9 +33,7 @@ const ScrollToTop = () => {
             window.scrollTo(0, 0);
             return;
         }
-        setTimeout(() => {
-            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
+        setTimeout(() => scrollToSection(id), 100);
     }, [pathname, hash, state]);
 
     return null;
