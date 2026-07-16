@@ -70,6 +70,17 @@ const BottomNav = () => {
                 <span className={styles.navLabel}>Legal</span>
             </Link>
 
+            <Link
+                to="/mimudanza"
+                aria-label="Mi mudanza"
+                className={`${styles.navItem} ${styles.specialBlue} ${currentPath.startsWith('/mimudanza') ? styles.active : ''}`}
+            >
+                <div className={styles.iconWrapper}>
+                    <FileText size={22} />
+                </div>
+                <span className={styles.navLabel}>Mi mudanza</span>
+            </Link>
+
             <a
                 href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza"
                 target="_blank"
@@ -82,17 +93,6 @@ const BottomNav = () => {
                 </div>
                 <span className={styles.navLabel}>WhatsApp</span>
             </a>
-
-            <Link
-                to="/mimudanza"
-                aria-label="Mi mudanza"
-                className={`${styles.navItem} ${styles.specialBlue} ${currentPath.startsWith('/mimudanza') ? styles.active : ''}`}
-            >
-                <div className={styles.iconWrapper}>
-                    <FileText size={22} />
-                </div>
-                <span className={styles.navLabel}>Mi mudanza</span>
-            </Link>
         </nav>
     );
 };
