@@ -1,0 +1,153 @@
+/* Gesto de borde derecho → "Mi mudanza". Solo móvil/táctil. */
+
+.zone {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 26px;
+    height: 100dvh;
+    z-index: 1200;
+    touch-action: pan-y;
+}
+
+/* Pestaña-guía anclada al borde derecho */
+.hint {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 1190;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 10px 12px 14px;
+    border-radius: 18px 0 0 18px;
+    background: linear-gradient(135deg, #0052CC, #2F6FE0);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 6px 24px rgba(0, 82, 204, 0.35);
+    border: none;
+    -webkit-tap-highlight-color: transparent;
+    animation: latido 2.6s ease-in-out infinite;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.hint .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.chevrons {
+    display: inline-flex;
+    flex-direction: column;
+    line-height: 0.7;
+    font-size: 0.9rem;
+}
+
+.chevrons span {
+    opacity: 0.35;
+    animation: ola 1.6s ease-in-out infinite;
+}
+
+.chevrons span:nth-child(2) { animation-delay: 0.2s; }
+.chevrons span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes ola {
+    0%, 100% { opacity: 0.35; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-2px); }
+}
+
+@keyframes latido {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-50%) translateX(-4px); }
+}
+
+/* Escena del gesto */
+.scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1195;
+    background: rgba(6, 24, 54, 0.5);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100dvh;
+    width: min(82vw, 340px);
+    z-index: 1210;
+    transform: translateX(100%);
+    background: linear-gradient(165deg, #0D2B57 0%, #0052CC 55%, #2F6FE0 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    padding: 32px 24px;
+    border-radius: 24px 0 0 24px;
+    box-shadow: -12px 0 40px rgba(6, 24, 54, 0.45);
+    will-change: transform;
+    touch-action: none;
+}
+
+.panelIcon {
+    font-size: 56px !important;
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 24px;
+    padding: 18px;
+    /* la grúa se inclina con el avance del gesto vía --tirar */
+    transform: rotate(calc(var(--tirar, 0) * -8deg)) scale(calc(1 + var(--tirar, 0) * 0.15));
+}
+
+.panelTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.panelText {
+    font-size: 0.95rem;
+    opacity: 0.85;
+}
+
+.progressTrack {
+    width: 140px;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    width: 100%;
+    border-radius: 3px;
+    background: #4ADE80;
+    transform-origin: left;
+    transform: scaleX(var(--tirar, 0));
+}
+
+.suelta {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: calc((var(--tirar, 0) - 0.6) * 2.5);
+    color: #4ADE80;
+}
+
+@media (min-width: 900px), (hover: hover) and (pointer: fine) {
+    .zone, .hint, .panel, .scrim { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hint { animation: none; }
+    .chevrons span { animation: none; opacity: 0.8; }
+}
