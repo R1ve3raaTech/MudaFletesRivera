@@ -122,6 +122,11 @@ export default function PromoCotizador() {
                 <button type="button" className={styles.despues} onClick={cerrar} disabled={cerrando}>
                     Quizás después
                 </button>
+
+                <p className={styles.tipSwipe}>
+                    <span aria-hidden="true">👈</span> Tip: desliza el dedo hacia la
+                    izquierda en cualquier momento para cotizar
+                </p>
             </div>
         </div>
     );

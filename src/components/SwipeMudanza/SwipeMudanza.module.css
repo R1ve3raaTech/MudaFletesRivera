@@ -1,15 +1,5 @@
 /* Gesto de borde derecho → "Mi mudanza". Solo móvil/táctil. */
 
-.zone {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 26px;
-    height: 100dvh;
-    z-index: 1200;
-    touch-action: pan-y;
-}
-
 /* Pestaña-guía anclada al borde derecho */
 .hint {
     position: fixed;
@@ -76,49 +66,44 @@
 
 .panel {
     position: fixed;
-    top: 0;
+    top: 50%;
     right: 0;
-    height: 100dvh;
-    width: min(82vw, 340px);
+    width: min(58vw, 230px);
     z-index: 1210;
-    transform: translateX(100%);
+    transform: translateY(-50%) translateX(100%);
     background: linear-gradient(165deg, #0D2B57 0%, #0052CC 55%, #2F6FE0 100%);
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     text-align: center;
-    padding: 32px 24px;
-    border-radius: 24px 0 0 24px;
-    box-shadow: -12px 0 40px rgba(6, 24, 54, 0.45);
+    padding: 22px 18px;
+    border-radius: 22px 0 0 22px;
+    box-shadow: -10px 0 34px rgba(6, 24, 54, 0.4);
     will-change: transform;
     touch-action: none;
+    pointer-events: none;
 }
 
 .panelIcon {
-    font-size: 56px !important;
+    font-size: 36px !important;
     background: rgba(255, 255, 255, 0.14);
-    border-radius: 24px;
-    padding: 18px;
+    border-radius: 16px;
+    padding: 12px;
     /* la grúa se inclina con el avance del gesto vía --tirar */
     transform: rotate(calc(var(--tirar, 0) * -8deg)) scale(calc(1 + var(--tirar, 0) * 0.15));
 }
 
 .panelTitle {
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     font-weight: 800;
     line-height: 1.15;
 }
 
-.panelText {
-    font-size: 0.95rem;
-    opacity: 0.85;
-}
-
 .progressTrack {
-    width: 140px;
+    width: 110px;
     height: 6px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.2);
@@ -144,7 +129,7 @@
 }
 
 @media (min-width: 900px), (hover: hover) and (pointer: fine) {
-    .zone, .hint, .panel, .scrim { display: none; }
+    .hint, .panel, .scrim { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
