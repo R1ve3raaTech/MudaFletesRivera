@@ -11,6 +11,7 @@ import {
     PartyPopper, RotateCcw
 } from 'lucide-react';
 import { calcularEstimacion, fmtCRC } from './tarifas';
+import HoldButton from '../HoldButton/HoldButton';
 const RutaMapa = lazy(() => import('./RutaMapa'));
 const SelectorRuta = lazy(() => import('./SelectorRuta'));
 import styles from './CotizadorForm.module.css';
@@ -967,15 +968,14 @@ export default function CotizadorForm() {
                             </button>
                         )}
                         {paso === 4 && (
-                            <button
-                                type="button"
+                            <HoldButton
                                 className={styles.btnWa}
-                                onClick={enviarWhatsapp}
+                                onComplete={enviarWhatsapp}
                                 disabled={!pasoValido[4] || enviando}
                             >
                                 <MessageCircle size={20} />
                                 {enviando ? 'Generando PDF...' : 'Descargar PDF y abrir WhatsApp'}
-                            </button>
+                            </HoldButton>
                         )}
                     </div>
                     </>

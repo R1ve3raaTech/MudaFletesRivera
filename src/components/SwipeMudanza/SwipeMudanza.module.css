@@ -87,13 +87,23 @@
     pointer-events: none;
 }
 
+/* Variante para el gesto de regreso: panel anclado a la izquierda */
+.panelIzq {
+    right: auto;
+    left: 0;
+    border-radius: 0 22px 22px 0;
+    box-shadow: 10px 0 34px rgba(6, 24, 54, 0.4);
+    transform: translateY(-50%) translateX(-100%);
+}
+
 .panelIcon {
     font-size: 36px !important;
     background: rgba(255, 255, 255, 0.14);
     border-radius: 16px;
     padding: 12px;
-    /* la grúa se inclina con el avance del gesto vía --tirar */
-    transform: rotate(calc(var(--tirar, 0) * -8deg)) scale(calc(1 + var(--tirar, 0) * 0.15));
+    /* se inclina con el arrastre (--tirar) y late con la carga (--carga) */
+    transform: rotate(calc(var(--tirar, 0) * -8deg))
+        scale(calc(1 + var(--tirar, 0) * 0.12 + var(--carga, 0) * 0.22));
 }
 
 .panelTitle {
@@ -114,9 +124,10 @@
     height: 100%;
     width: 100%;
     border-radius: 3px;
-    background: #4ADE80;
+    /* el arrastre llena hasta ~55% y la carga por tiempo completa el resto */
+    background: linear-gradient(90deg, #7DB7FF, #4ADE80);
     transform-origin: left;
-    transform: scaleX(var(--tirar, 0));
+    transform: scaleX(calc(min(var(--tirar, 0) / 0.7, 1) * 0.55 + var(--carga, 0) * 0.45));
 }
 
 .suelta {
@@ -124,7 +135,7 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    opacity: calc((var(--tirar, 0) - 0.6) * 2.5);
+    opacity: calc((var(--tirar, 0) - 0.5) * 2.5);
     color: #4ADE80;
 }
 
