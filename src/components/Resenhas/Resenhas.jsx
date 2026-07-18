@@ -4,7 +4,8 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Quote, X, Send, ThumbsUp } from 'lucide-react';
-import supabase from '../../supabaseClient';
+// Supabase pesa ~200 KB: se importa bajo demanda para no cargarlo con la portada
+const getSupabase = () => import('../../supabaseClient').then((m) => m.default);
 import styles from './Resenhas.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -234,6 +235,7 @@ const Modal = ({ onClose }) => {
         const e2 = validate();
         if (Object.keys(e2).length > 0) { setErrors(e2); return; }
         setStatus('sending');
+        const supabase = await getSupabase();
         const { error } = await supabase.from('mudafletesrivera').insert({
             nombre: form.nombre,
             fecha_mudanza: fechaFormateada,
@@ -413,14 +415,11 @@ const Reseñas = () => {
     const [cargando, setCargando] = useState(true);
     const [pagina, setPagina] = useState(1);
 
-    const cargarReseñas = () => {
-        supabase
-            .from('mudafletesrivera')
-            .select('*')
-            .then(({ data }) => {
-                setReseñas(data ?? []);
-                setCargando(false);
-            });
+    const cargarReseñas = async () => {
+        const supabase = await getSupabase();
+        const { data } = await supabase.from('mudafletesrivera').select('*');
+        setReseñas(data ?? []);
+        setCargando(false);
     };
 
     useEffect(() => { cargarReseñas(); }, []);

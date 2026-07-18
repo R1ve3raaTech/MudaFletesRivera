@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MOUNT_SECTIONS_EVENT } from '../scrollToSection';
+import ErrorBoundary from './ErrorBoundary';
 
 // Monta sus hijos cuando la sección se acerca al viewport, o tras un
 // periodo de inactividad post-carga (para que los anclajes #seccion
@@ -44,7 +45,7 @@ const LazySection = ({ children, minHeight = 400, order = 0 }) => {
 
     return (
         <div ref={ref} style={visible ? undefined : { minHeight }}>
-            {visible ? children : null}
+            {visible ? <ErrorBoundary>{children}</ErrorBoundary> : null}
         </div>
     );
 };
