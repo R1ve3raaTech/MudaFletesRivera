@@ -1,0 +1,52 @@
+/* Skeleton del placeholder: tonos cálidos sobre el fondo crema del sitio. */
+.skeleton {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 72px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.bar {
+    border-radius: 10px;
+    background: linear-gradient(90deg, #EDE7DA 25%, #F7F3EA 45%, #EDE7DA 65%);
+    background-size: 300% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.title {
+    width: min(320px, 70%);
+    height: 34px;
+}
+
+.subtitle {
+    width: min(480px, 85%);
+    height: 18px;
+    margin-bottom: 24px;
+}
+
+.cards {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    height: 220px;
+    border-radius: 16px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bar {
+        animation: none;
+        background: #EFE9DD;
+    }
+}

@@ -1,6 +1,21 @@
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { MOUNT_SECTIONS_EVENT } from '../scrollToSection';
 import ErrorBoundary from './ErrorBoundary';
+import styles from './LazySection.module.css';
+
+// Esqueleto genérico (título, subtítulo y tarjetas) que ocupa la altura
+// reservada mientras el chunk de la sección descarga.
+const Skeleton = ({ minHeight }) => (
+    <div className={styles.skeleton} style={{ minHeight }} aria-hidden="true">
+        <div className={`${styles.bar} ${styles.title}`} />
+        <div className={`${styles.bar} ${styles.subtitle}`} />
+        <div className={styles.cards}>
+            <div className={`${styles.bar} ${styles.card}`} />
+            <div className={`${styles.bar} ${styles.card}`} />
+            <div className={`${styles.bar} ${styles.card}`} />
+        </div>
+    </div>
+);
 
 // Monta sus hijos cuando la sección se acerca al viewport, o tras un
 // periodo de inactividad post-carga (para que los anclajes #seccion
@@ -54,14 +69,16 @@ const LazySection = ({ children, minHeight = 400, order = 0 }) => {
     // conserva la altura y el footer no salta a la vista (visible sobre todo
     // en móvil con red lenta).
     return (
-        <div ref={ref} style={visible ? undefined : { minHeight: alto }}>
+        <div ref={ref}>
             {visible ? (
                 <ErrorBoundary>
-                    <Suspense fallback={<div style={{ minHeight: alto }} />}>
+                    <Suspense fallback={<Skeleton minHeight={alto} />}>
                         {children}
                     </Suspense>
                 </ErrorBoundary>
-            ) : null}
+            ) : (
+                <Skeleton minHeight={alto} />
+            )}
         </div>
     );
 };
