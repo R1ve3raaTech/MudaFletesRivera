@@ -2,30 +2,33 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MessageCircle, Package, Mail, MapPin, ArrowUpRight } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
 import styles from './Footer.module.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
     const ctaRef = useRef(null);
     const innerRef = useRef(null);
 
-    useGSAP(() => {
-        gsap.from(`.${styles.ctaHeading}, .${styles.ctaBtn}`, {
-            opacity: 0, y: 24, duration: 0.5, stagger: 0.1, ease: 'power2.out',
-            scrollTrigger: { trigger: ctaRef.current, start: 'top 90%', once: true },
-        });
-    }, { scope: ctaRef });
+    // El footer es persistente entre rutas: un ScrollTrigger calcularía sus
+    // posiciones con el alto de la página inicial y en rutas más cortas
+    // (/mimudanza) jamás se dispararía, dejando el contenido en opacity 0.
+    // IntersectionObserver no depende del layout, así que nunca se desfasa.
+    const animarAlVerse = (ref, selector, y) => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion || !ref.current) return undefined;
+        const io = new IntersectionObserver(([entry]) => {
+            if (!entry.isIntersecting) return;
+            io.disconnect();
+            gsap.from(selector, { opacity: 0, y, duration: 0.5, stagger: 0.1, ease: 'power2.out' });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        io.observe(ref.current);
+        return () => io.disconnect();
+    };
 
-    useGSAP(() => {
-        gsap.from(`.${styles.brandCol}, .${styles.navCol}, .${styles.contactCol}`, {
-            opacity: 0, y: 16, duration: 0.5, stagger: 0.1, ease: 'power2.out',
-            scrollTrigger: { trigger: innerRef.current, start: 'top 90%', once: true },
-        });
-    }, { scope: innerRef });
+    useGSAP(() => animarAlVerse(ctaRef, `.${styles.ctaHeading}, .${styles.ctaBtn}`, 24), { scope: ctaRef });
+
+    useGSAP(() => animarAlVerse(innerRef, `.${styles.brandCol}, .${styles.navCol}, .${styles.contactCol}`, 16), { scope: innerRef });
 
     return (
     <footer className={styles.footer}>
