@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    { "source": "/((?!api/|assets/|fonts/).*)", "destination": "/index.html" }
   ],
   "crons": [
     { "path": "/api/recordatorios", "schedule": "0 12 * * *" },
