@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { MOUNT_SECTIONS_EVENT } from '../scrollToSection';
 import ErrorBoundary from './ErrorBoundary';
 
@@ -43,9 +43,18 @@ const LazySection = ({ children, minHeight = 400, order = 0 }) => {
         };
     }, [visible, order]);
 
+    // Suspense propio por sección: mientras el chunk descarga, el espaciador
+    // conserva la altura y el footer no salta a la vista (visible sobre todo
+    // en móvil con red lenta).
     return (
         <div ref={ref} style={visible ? undefined : { minHeight }}>
-            {visible ? <ErrorBoundary>{children}</ErrorBoundary> : null}
+            {visible ? (
+                <ErrorBoundary>
+                    <Suspense fallback={<div style={{ minHeight }} />}>
+                        {children}
+                    </Suspense>
+                </ErrorBoundary>
+            ) : null}
         </div>
     );
 };

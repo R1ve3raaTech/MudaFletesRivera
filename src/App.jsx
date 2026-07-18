@@ -54,14 +54,14 @@ const HomePage = () => {
         <PageWrapper>
             <Hero />
             <Stats />
-            <Suspense fallback={null}>
-                <LazySection order={0}><Services /></LazySection>
-                <LazySection order={1}><Process /></LazySection>
-                <LazySection order={2}><WhyUs /></LazySection>
-                <LazySection order={3}><NuestroEquipo /></LazySection>
-                <LazySection order={4}><Reseñas /></LazySection>
-                <LazySection order={5}><Contact /></LazySection>
-            </Suspense>
+            {/* Cada LazySection trae su propio Suspense con espaciador: un
+                chunk cargando no debe colapsar el resto de la página. */}
+            <LazySection order={0}><Services /></LazySection>
+            <LazySection order={1}><Process /></LazySection>
+            <LazySection order={2}><WhyUs /></LazySection>
+            <LazySection order={3}><NuestroEquipo /></LazySection>
+            <LazySection order={4}><Reseñas /></LazySection>
+            <LazySection order={5}><Contact /></LazySection>
         </PageWrapper>
     );
 };
