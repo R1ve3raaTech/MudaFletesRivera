@@ -58,12 +58,12 @@ const HomePage = () => {
                 chunk cargando no debe colapsar el resto de la página. */}
             {/* minHeight ≈ altura real medida de cada sección (móvil/escritorio)
                 para que el layout no salte mientras cargan. */}
-            <LazySection order={0} minHeight={{ mobile: 1540, desktop: 1060 }}><Services /></LazySection>
-            <LazySection order={1} minHeight={{ mobile: 1180, desktop: 600 }}><Process /></LazySection>
-            <LazySection order={2} minHeight={{ mobile: 1160, desktop: 800 }}><WhyUs /></LazySection>
-            <LazySection order={3} minHeight={{ mobile: 1500, desktop: 990 }}><NuestroEquipo /></LazySection>
-            <LazySection order={4} minHeight={{ mobile: 1580, desktop: 980 }}><Reseñas /></LazySection>
-            <LazySection order={5} minHeight={{ mobile: 1370, desktop: 870 }}><Contact /></LazySection>
+            <LazySection order={0} variant="services" minHeight={{ mobile: 1540, desktop: 1060 }}><Services /></LazySection>
+            <LazySection order={1} variant="process" minHeight={{ mobile: 1180, desktop: 600 }}><Process /></LazySection>
+            <LazySection order={2} variant="whyus" minHeight={{ mobile: 1160, desktop: 800 }}><WhyUs /></LazySection>
+            <LazySection order={3} variant="team" minHeight={{ mobile: 1500, desktop: 990 }}><NuestroEquipo /></LazySection>
+            <LazySection order={4} variant="reviews" minHeight={{ mobile: 1580, desktop: 980 }}><Reseñas /></LazySection>
+            <LazySection order={5} variant="contact" minHeight={{ mobile: 1370, desktop: 870 }}><Contact /></LazySection>
         </PageWrapper>
     );
 };

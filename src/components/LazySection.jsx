@@ -3,16 +3,109 @@ import { MOUNT_SECTIONS_EVENT } from '../scrollToSection';
 import ErrorBoundary from './ErrorBoundary';
 import styles from './LazySection.module.css';
 
-// Esqueleto genérico (título, subtítulo y tarjetas) que ocupa la altura
-// reservada mientras el chunk de la sección descarga.
-const Skeleton = ({ minHeight }) => (
-    <div className={styles.skeleton} style={{ minHeight }} aria-hidden="true">
-        <div className={`${styles.bar} ${styles.title}`} />
-        <div className={`${styles.bar} ${styles.subtitle}`} />
-        <div className={styles.cards}>
-            <div className={`${styles.bar} ${styles.card}`} />
-            <div className={`${styles.bar} ${styles.card}`} />
-            <div className={`${styles.bar} ${styles.card}`} />
+const Bar = ({ cls }) => <div className={`${styles.bar} ${cls}`} />;
+
+// Silueta que imita el layout real de cada sección mientras su chunk descarga.
+const VARIANTES = {
+    services: (
+        <>
+            <Bar cls={styles.title} />
+            <Bar cls={styles.subtitle} />
+            {[0, 1, 2].map((i) => (
+                <div key={i} className={styles.serviceRow}>
+                    <Bar cls={`${styles.circle} ${styles.serviceIcon}`} />
+                    <div className={styles.serviceLines}>
+                        <Bar cls={styles.lineWide} />
+                        <Bar cls={styles.lineMid} />
+                        <Bar cls={styles.lineShort} />
+                    </div>
+                    <Bar cls={styles.serviceBtn} />
+                </div>
+            ))}
+        </>
+    ),
+    process: (
+        <>
+            <Bar cls={styles.title} />
+            <Bar cls={styles.subtitle} />
+            <div className={styles.steps}>
+                {[0, 1, 2, 3].map((i) => (
+                    <div key={i} className={styles.step}>
+                        <Bar cls={`${styles.circle} ${styles.stepCircle}`} />
+                        <Bar cls={styles.stepTitle} />
+                        <Bar cls={styles.stepLine} />
+                        <Bar cls={styles.stepLine} />
+                    </div>
+                ))}
+            </div>
+        </>
+    ),
+    whyus: (
+        <>
+            <Bar cls={styles.title} />
+            <Bar cls={styles.subtitle} />
+            <div className={styles.whySplit}>
+                <Bar cls={styles.whyBig} />
+                <div className={styles.whyStack}>
+                    <Bar cls={styles.whySmall} />
+                    <Bar cls={styles.whySmall} />
+                    <Bar cls={styles.whySmall} />
+                </div>
+            </div>
+        </>
+    ),
+    team: (
+        <div className={styles.teamSplit}>
+            <Bar cls={styles.teamImage} />
+            <div className={styles.teamCol}>
+                <Bar cls={styles.teamTitle} />
+                <Bar cls={styles.lineMid} />
+                <Bar cls={styles.lineShort} />
+                <div className={styles.teamCards}>
+                    <Bar cls={styles.teamCard} />
+                    <Bar cls={styles.teamCard} />
+                </div>
+                <div className={styles.teamBtns}>
+                    <Bar cls={styles.teamBtn} />
+                    <Bar cls={styles.teamBtn} />
+                </div>
+            </div>
+        </div>
+    ),
+    reviews: (
+        <>
+            <Bar cls={styles.title} />
+            <Bar cls={styles.subtitle} />
+            <Bar cls={styles.pill} />
+            <div className={styles.reviewCards}>
+                <Bar cls={styles.reviewCard} />
+                <Bar cls={styles.reviewCard} />
+                <Bar cls={styles.reviewCard} />
+            </div>
+        </>
+    ),
+    contact: (
+        <>
+            <Bar cls={styles.title} />
+            <Bar cls={styles.subtitle} />
+            <div className={styles.contactCards}>
+                {[0, 1, 2, 3].map((i) => <Bar key={i} cls={styles.contactCard} />)}
+            </div>
+            <Bar cls={styles.contactWide} />
+        </>
+    ),
+};
+
+// Secciones con el encabezado centrado (Servicios lo lleva a la izquierda).
+const CENTRADAS = new Set(['process', 'whyus', 'reviews', 'contact']);
+
+const Skeleton = ({ minHeight, variant }) => (
+    <div className={variant === 'reviews' ? styles.reviewsBg : undefined} aria-hidden="true">
+        <div
+            className={`${styles.skeleton} ${CENTRADAS.has(variant) ? styles.centered : ''}`}
+            style={{ minHeight }}
+        >
+            {VARIANTES[variant] || VARIANTES.services}
         </div>
     </div>
 );
@@ -20,7 +113,7 @@ const Skeleton = ({ minHeight }) => (
 // Monta sus hijos cuando la sección se acerca al viewport, o tras un
 // periodo de inactividad post-carga (para que los anclajes #seccion
 // sigan funcionando aunque el usuario no haya hecho scroll).
-const LazySection = ({ children, minHeight = 400, order = 0 }) => {
+const LazySection = ({ children, minHeight = 400, order = 0, variant = 'services' }) => {
     const ref = useRef(null);
     const [visible, setVisible] = useState(false);
 
@@ -72,12 +165,12 @@ const LazySection = ({ children, minHeight = 400, order = 0 }) => {
         <div ref={ref}>
             {visible ? (
                 <ErrorBoundary>
-                    <Suspense fallback={<Skeleton minHeight={alto} />}>
+                    <Suspense fallback={<Skeleton minHeight={alto} variant={variant} />}>
                         {children}
                     </Suspense>
                 </ErrorBoundary>
             ) : (
-                <Skeleton minHeight={alto} />
+                <Skeleton minHeight={alto} variant={variant} />
             )}
         </div>
     );
