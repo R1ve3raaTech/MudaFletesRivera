@@ -56,12 +56,14 @@ const HomePage = () => {
             <Stats />
             {/* Cada LazySection trae su propio Suspense con espaciador: un
                 chunk cargando no debe colapsar el resto de la página. */}
-            <LazySection order={0}><Services /></LazySection>
-            <LazySection order={1}><Process /></LazySection>
-            <LazySection order={2}><WhyUs /></LazySection>
-            <LazySection order={3}><NuestroEquipo /></LazySection>
-            <LazySection order={4}><Reseñas /></LazySection>
-            <LazySection order={5}><Contact /></LazySection>
+            {/* minHeight ≈ altura real medida de cada sección (móvil/escritorio)
+                para que el layout no salte mientras cargan. */}
+            <LazySection order={0} minHeight={{ mobile: 1540, desktop: 1060 }}><Services /></LazySection>
+            <LazySection order={1} minHeight={{ mobile: 1180, desktop: 600 }}><Process /></LazySection>
+            <LazySection order={2} minHeight={{ mobile: 1160, desktop: 800 }}><WhyUs /></LazySection>
+            <LazySection order={3} minHeight={{ mobile: 1500, desktop: 990 }}><NuestroEquipo /></LazySection>
+            <LazySection order={4} minHeight={{ mobile: 1580, desktop: 980 }}><Reseñas /></LazySection>
+            <LazySection order={5} minHeight={{ mobile: 1370, desktop: 870 }}><Contact /></LazySection>
         </PageWrapper>
     );
 };

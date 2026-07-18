@@ -9,6 +9,13 @@ const LazySection = ({ children, minHeight = 400, order = 0 }) => {
     const ref = useRef(null);
     const [visible, setVisible] = useState(false);
 
+    // minHeight puede ser un número o { mobile, desktop }: el espaciador debe
+    // aproximar la altura real de la sección para que el footer no asome al
+    // scrollear rápido antes de que la sección monte.
+    const alto = typeof minHeight === 'number'
+        ? minHeight
+        : (window.innerWidth < 768 ? minHeight.mobile : minHeight.desktop);
+
     useEffect(() => {
         if (visible) return;
         const mostrar = () => setVisible(true);
@@ -47,10 +54,10 @@ const LazySection = ({ children, minHeight = 400, order = 0 }) => {
     // conserva la altura y el footer no salta a la vista (visible sobre todo
     // en móvil con red lenta).
     return (
-        <div ref={ref} style={visible ? undefined : { minHeight }}>
+        <div ref={ref} style={visible ? undefined : { minHeight: alto }}>
             {visible ? (
                 <ErrorBoundary>
-                    <Suspense fallback={<div style={{ minHeight }} />}>
+                    <Suspense fallback={<div style={{ minHeight: alto }} />}>
                         {children}
                     </Suspense>
                 </ErrorBoundary>
