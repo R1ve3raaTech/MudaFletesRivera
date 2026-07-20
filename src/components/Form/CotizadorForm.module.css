@@ -262,7 +262,7 @@
     font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
-    transition: border-color 0.18s, color 0.18s, background 0.18s, transform 0.12s;
+    transition: border-color 0.18s, color 0.18s, background 0.18s, transform 0.12s, opacity 0.25s;
     font-family: inherit;
 }
 
@@ -282,15 +282,23 @@
     border-color: transparent;
     color: white !important;
     transform: scale(1.03);
+    animation: opcionPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Las opciones no elegidas ceden protagonismo a la elegida */
+.opciones:has(.opcionActiva) .opcion:not(.opcionActiva):not(:hover) {
+    opacity: 0.55;
 }
 
 @keyframes opcionPop {
-    0% { transform: scale(0.92); }
+    0% { transform: scale(0.9); }
+    60% { transform: scale(1.09); }
     100% { transform: scale(1.03); }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .opcion:hover, .opcion:active, .opcionActiva { transform: none; animation: none; }
+    .opciones:has(.opcionActiva) .opcion:not(.opcionActiva):not(:hover) { opacity: 1; }
 }
 
 /* ── Avisos inline ── */
@@ -344,6 +352,17 @@
     border-color: #0052cc;
     background: rgba(239,246,255,0.75);
     box-shadow: 0 2px 12px rgba(0, 82, 204, 0.15);
+    animation: muebleWiggle 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes muebleWiggle {
+    0% { transform: scale(0.96); }
+    55% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .muebleActivo { animation: none; }
 }
 
 .muebleIcon {

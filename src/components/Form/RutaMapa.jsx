@@ -148,6 +148,20 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
                         new maplibregl.Marker({ element: crearMarcador('destino') }).setLngLat([pB[1], pB[0]]).addTo(map),
                     ];
 
+                    // Los marcadores caen con un pop escalonado (origen primero)
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        marcadoresRef.current.forEach((m, i) => {
+                            m.getElement().firstElementChild?.animate(
+                                [
+                                    { transform: 'scale(0) translateY(-10px)', opacity: 0 },
+                                    { transform: 'scale(1.25) translateY(0)', opacity: 1, offset: 0.7 },
+                                    { transform: 'scale(1)', opacity: 1 },
+                                ],
+                                { duration: 420, delay: i * 220, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)', fill: 'backwards' }
+                            );
+                        });
+                    }
+
                     const coords = ruta.geometry.coordinates; // [lon, lat]
                     const bounds = coords.reduce(
                         (b, c) => b.extend(c),

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { calcularEstimacion, fmtCRC } from './tarifas';
 import HoldButton from '../HoldButton/HoldButton';
+import Confetti from '../Confetti/Confetti';
 const RutaMapa = lazy(() => import('./RutaMapa'));
 const SelectorRuta = lazy(() => import('./SelectorRuta'));
 import styles from './CotizadorForm.module.css';
@@ -82,6 +83,7 @@ export default function CotizadorForm() {
     const [consiente, setConsiente] = useState(false);
     const cardRef = useRef(null);
     const stepRef = useRef(null);
+    const resumenRef = useRef(null);
     const primeraCarga = useRef(true);
 
     // Animación de entrada al cambiar de paso + scroll al inicio de la tarjeta
@@ -95,6 +97,17 @@ export default function CotizadorForm() {
         );
         cardRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     }, { dependencies: [paso, enviado], scope: cardRef });
+
+    // El resumen se "imprime" en cascada, como un recibo, cuando aparece
+    const mostrarResumen = paso === 4 && !!form.fecha;
+    useGSAP(() => {
+        if (!mostrarResumen || !resumenRef.current) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        gsap.fromTo(resumenRef.current.children,
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.32, ease: 'power2.out', stagger: 0.055 }
+        );
+    }, { dependencies: [mostrarResumen], scope: cardRef });
 
     const set = (k) => (v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -548,6 +561,7 @@ export default function CotizadorForm() {
                 <div className={styles.card} ref={cardRef}>
                     {enviado ? (
                         <div className={styles.exito} ref={stepRef}>
+                            <Confetti />
                             <div className={styles.exitoIcon}>
                                 <PartyPopper size={34} />
                             </div>
@@ -892,7 +906,7 @@ export default function CotizadorForm() {
                             )}
 
                             {form.fecha && (
-                                <div className={styles.resumen}>
+                                <div className={styles.resumen} ref={resumenRef}>
                                     <h4>Resumen de tu solicitud</h4>
                                     <div className={styles.resumenItem}><span>Origen</span><strong>{form.origen}</strong></div>
                                     <div className={styles.resumenItem}><span>Destino</span><strong>{form.destino}</strong></div>
