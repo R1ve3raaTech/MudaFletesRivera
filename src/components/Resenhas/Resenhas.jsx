@@ -417,7 +417,11 @@ const Reseñas = () => {
 
     const cargarReseñas = async () => {
         const supabase = await getSupabase();
-        const { data } = await supabase.from('mudafletesrivera').select('*');
+        // Columnas explícitas (no '*'): si a futuro esta tabla gana una columna
+        // sensible, no se filtra sola al navegador. Ver docs/seguridad-rls.sql
+        const { data } = await supabase
+            .from('mudafletesrivera')
+            .select('nombre, fecha_mudanza, calificacion, aspectos, comentario');
         setReseñas(data ?? []);
         setCargando(false);
     };
