@@ -13,6 +13,16 @@ import {
 import { calcularEstimacion, fmtCRC } from './tarifas';
 import HoldButton from '../HoldButton/HoldButton';
 import Confetti from '../Confetti/Confetti';
+import { obtenerTokenTurnstile } from '../../lib/turnstile';
+
+// Convierte el blob del PDF a base64 (sin el prefijo data:) para mandarlo
+// dentro del JSON a la Edge Function.
+const blobABase64 = (blob) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(String(reader.result).split(',')[1] ?? '');
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+});
 const RutaMapa = lazy(() => import('./RutaMapa'));
 const SelectorRuta = lazy(() => import('./SelectorRuta'));
 import styles from './CotizadorForm.module.css';
@@ -452,61 +462,57 @@ export default function CotizadorForm() {
             const blob = doc.output('blob');
             const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
 
-            // Subir PDF al bucket PRIVADO (el navegador solo puede subir, no leer)
-            let pdfPath = null;   // ruta guardada en la base para re-firmar luego
+            // La subida del PDF y la inserción pasan por la Edge Function
+            // 'enviar-cotizacion', que primero verifica el token de Turnstile.
+            // El navegador ya no sube ni inserta directo (anti-spam).
             let pdfLink = null;   // enlace firmado y temporal, solo para el correo
-            const { data: uploadData, error: uploadError } = await supabase.storage
-                .from('cotizaciones')
-                .upload(filename, blob, { contentType: 'application/pdf' });
+            const pdfBase64 = await blobABase64(blob);
+            const token = await obtenerTokenTurnstile();
 
-            if (!uploadError && uploadData) {
-                pdfPath = filename;
-                // El enlace lo firma la Edge Function del lado del servidor
-                // (bucket privado: el navegador no puede firmar). No bloquea
-                // el flujo si falla.
-                try {
-                    const { data: firma } = await supabase.functions.invoke('firmar-pdf', {
-                        body: { path: filename },
-                    });
-                    pdfLink = firma?.url ?? null;
-                } catch (e) {
-                    console.error('No se pudo firmar el enlace del PDF:', e);
-                }
-            }
-
-            // Guardar datos en la tabla
-            await supabase.from('cotizaciones').insert({
-                nombre: form.nombre.trim(),
-                origen: form.origen.trim(),
-                destino: form.destino.trim(),
-                fecha_mudanza: form.fecha,
-                urgente: esUrgente,
-                articulos: {
-                    muebles: Object.fromEntries(
-                        MUEBLES.filter(m => (form.muebles[m.id] || 0) > 0)
-                               .map(m => [m.label, form.muebles[m.id]])
-                    ),
-                    detalle: form.otrosDetalle.trim(),
+            const { data: resp, error: fnError } = await supabase.functions.invoke('enviar-cotizacion', {
+                body: {
+                    token,
+                    filename,
+                    pdfBase64,
+                    cotizacion: {
+                        nombre: form.nombre.trim(),
+                        origen: form.origen.trim(),
+                        destino: form.destino.trim(),
+                        fecha_mudanza: form.fecha,
+                        urgente: esUrgente,
+                        articulos: {
+                            muebles: Object.fromEntries(
+                                MUEBLES.filter(m => (form.muebles[m.id] || 0) > 0)
+                                       .map(m => [m.label, form.muebles[m.id]])
+                            ),
+                            detalle: form.otrosDetalle.trim(),
+                        },
+                        servicios: {
+                            fragiles: form.fragiles === 'si',
+                            desmontaje: form.desmontaje === 'si',
+                            embalaje: form.embalaje === 'si',
+                            ayudantes: form.ayudantes,
+                            mascotas: form.mascotas === 'si',
+                            info_adicional: form.infoAdicional.trim() || null,
+                        },
+                        acceso: {
+                            escaleras_origen: form.escalerasOrigen,
+                            escaleras_destino: form.escalerasDestino,
+                            caminata: form.caminata === 'si',
+                            parqueo: form.parqueo,
+                            distancia_km: ruta?.km ?? null,
+                            duracion_min: ruta?.min ?? null,
+                            estimacion: estimacion ? `${estimacion.min}-${estimacion.max}` : null,
+                        },
+                    },
                 },
-                servicios: {
-                    fragiles: form.fragiles === 'si',
-                    desmontaje: form.desmontaje === 'si',
-                    embalaje: form.embalaje === 'si',
-                    ayudantes: form.ayudantes,
-                    mascotas: form.mascotas === 'si',
-                    info_adicional: form.infoAdicional.trim() || null,
-                },
-                acceso: {
-                    escaleras_origen: form.escalerasOrigen,
-                    escaleras_destino: form.escalerasDestino,
-                    caminata: form.caminata === 'si',
-                    parqueo: form.parqueo,
-                    distancia_km: ruta?.km ?? null,
-                    duracion_min: ruta?.min ?? null,
-                    estimacion: estimacion ? `${estimacion.min}-${estimacion.max}` : null,
-                },
-                pdf_url: pdfPath,
             });
+
+            if (fnError || !resp?.ok) {
+                // La verificación anti-spam falló o el guardado no se completó
+                throw new Error('No se pudo registrar la cotización');
+            }
+            pdfLink = resp.signedUrl ?? null;
 
             // Aviso por correo con ubicaciones y enlace al PDF (FormSubmit, sin backend).
             // No bloquea el flujo si falla.

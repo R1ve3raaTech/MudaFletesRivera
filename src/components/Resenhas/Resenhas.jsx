@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Quote, X, Send, ThumbsUp } from 'lucide-react';
 // Supabase pesa ~200 KB: se importa bajo demanda para no cargarlo con la portada
 const getSupabase = () => import('../../supabaseClient').then((m) => m.default);
+import { obtenerTokenTurnstile } from '../../lib/turnstile';
 import styles from './Resenhas.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -235,16 +236,28 @@ const Modal = ({ onClose }) => {
         const e2 = validate();
         if (Object.keys(e2).length > 0) { setErrors(e2); return; }
         setStatus('sending');
-        const supabase = await getSupabase();
-        const { error } = await supabase.from('mudafletesrivera').insert({
-            nombre: form.nombre,
-            fecha_mudanza: fechaFormateada,
-            calificacion: form.calificacion,
-            aspectos: tagsSeleccionados.length > 0 ? tagsSeleccionados.join(', ') : null,
-            comentario: form.comentario,
-        });
-        if (error) setStatus('error');
-        else setStatus('success');
+        try {
+            // La inserción pasa por la Edge Function, que verifica el token de
+            // Turnstile antes de escribir. El navegador ya no inserta directo.
+            const token = await obtenerTokenTurnstile();
+            const supabase = await getSupabase();
+            const { data, error } = await supabase.functions.invoke('enviar-resena', {
+                body: {
+                    token,
+                    resena: {
+                        nombre: form.nombre,
+                        fecha_mudanza: fechaFormateada,
+                        calificacion: form.calificacion,
+                        aspectos: tagsSeleccionados.length > 0 ? tagsSeleccionados.join(', ') : null,
+                        comentario: form.comentario,
+                    },
+                },
+            });
+            if (error || !data?.ok) setStatus('error');
+            else setStatus('success');
+        } catch {
+            setStatus('error');
+        }
     };
 
     const set = (field) => (e) => {
