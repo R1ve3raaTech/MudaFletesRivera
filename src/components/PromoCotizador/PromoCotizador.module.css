@@ -151,32 +151,3 @@
         border-radius: 20px;
     }
 }
-
-/* Tip del gesto de deslizar: solo tiene sentido en pantallas táctiles */
-.tipSwipe {
-    display: none;
-    margin-top: 0.9rem;
-    padding-top: 0.9rem;
-    border-top: 1px dashed rgba(0, 82, 204, 0.18);
-    font-size: 0.78rem;
-    color: var(--text-secondary, #6b7280);
-    line-height: 1.45;
-}
-
-.tipSwipe span {
-    display: inline-block;
-    animation: tipSaludo 1.8s ease-in-out infinite;
-}
-
-@keyframes tipSaludo {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-5px); }
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .tipSwipe { display: block; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .tipSwipe span { animation: none; }
-}
