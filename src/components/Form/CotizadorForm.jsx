@@ -452,17 +452,26 @@ export default function CotizadorForm() {
             const blob = doc.output('blob');
             const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
 
-            // Subir PDF a Supabase Storage
-            let pdfUrl = null;
+            // Subir PDF al bucket PRIVADO (el navegador solo puede subir, no leer)
+            let pdfPath = null;   // ruta guardada en la base para re-firmar luego
+            let pdfLink = null;   // enlace firmado y temporal, solo para el correo
             const { data: uploadData, error: uploadError } = await supabase.storage
                 .from('cotizaciones')
                 .upload(filename, blob, { contentType: 'application/pdf' });
 
             if (!uploadError && uploadData) {
-                const { data: urlData } = supabase.storage
-                    .from('cotizaciones')
-                    .getPublicUrl(filename);
-                pdfUrl = urlData?.publicUrl ?? null;
+                pdfPath = filename;
+                // El enlace lo firma la Edge Function del lado del servidor
+                // (bucket privado: el navegador no puede firmar). No bloquea
+                // el flujo si falla.
+                try {
+                    const { data: firma } = await supabase.functions.invoke('firmar-pdf', {
+                        body: { path: filename },
+                    });
+                    pdfLink = firma?.url ?? null;
+                } catch (e) {
+                    console.error('No se pudo firmar el enlace del PDF:', e);
+                }
             }
 
             // Guardar datos en la tabla
@@ -496,7 +505,7 @@ export default function CotizadorForm() {
                     duracion_min: ruta?.min ?? null,
                     estimacion: estimacion ? `${estimacion.min}-${estimacion.max}` : null,
                 },
-                pdf_url: pdfUrl,
+                pdf_url: pdfPath,
             });
 
             // Aviso por correo con ubicaciones y enlace al PDF (FormSubmit, sin backend).
@@ -522,7 +531,7 @@ export default function CotizadorForm() {
                             ? 'Si' : 'No',
                         'Informacion adicional': form.infoAdicional.trim() || 'Ninguna',
                         'Precio estimado mostrado': estimacion ? `${fmtCRC(estimacion.min)} - ${fmtCRC(estimacion.max)}` : 'No calculado',
-                        'PDF con la informacion completa': pdfUrl || 'No se pudo subir el PDF',
+                        'PDF con la informacion completa': pdfLink || 'No se pudo generar el enlace (el PDF igual llega por WhatsApp)',
                     }),
                 });
             } catch (e) {
@@ -532,7 +541,7 @@ export default function CotizadorForm() {
             // Descargar PDF localmente
             const filename2 = `cotizacion-${form.nombre.trim()}.pdf`;
             doc.save(filename2);
-            setPdfListo({ blob, filename: filename2, url: pdfUrl });
+            setPdfListo({ blob, filename: filename2, url: pdfLink });
 
             // Abrir WhatsApp
             setTimeout(() => {
