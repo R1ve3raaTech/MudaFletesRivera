@@ -895,11 +895,18 @@
 
 .exitoPasos span {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
     font-size: 0.85rem;
     font-weight: 600;
     color: #14804a;
+    text-align: left;
+    line-height: 1.35;
+}
+
+.exitoPasos span svg {
+    flex-shrink: 0;
+    margin-top: 0.1em;
 }
 
 .exitoAviso {
