@@ -47,7 +47,8 @@ export async function obtenerTokenTurnstile() {
         try {
             id = window.turnstile.render(cont, {
                 sitekey: SITE_KEY,
-                size: 'invisible',
+                size: 'normal',
+                appearance: 'interaction-only',
                 callback: (token) => { limpiar(); resolve(token); },
                 'error-callback': () => { limpiar(); reject(new Error('Turnstile falló')); },
                 'timeout-callback': () => { limpiar(); reject(new Error('Turnstile expiró')); },
