@@ -463,6 +463,20 @@ export default function CotizadorForm() {
         // no solicitado y lo bloquea sin avisar. Navegamos esta pestaña al
         // final, cuando ya tenemos la URL real de WhatsApp.
         const waTab = window.open('', '_blank');
+        if (waTab) {
+            waTab.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8">
+                <title>Preparando tu cotización…</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                    body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:system-ui,-apple-system,sans-serif;background:#f5f5f4;color:#1e293b}
+                    .spin{width:40px;height:40px;border:4px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:s .8s linear infinite}
+                    @keyframes s{to{transform:rotate(360deg)}}
+                    p{font-size:15px;color:#475569}
+                    @media (prefers-reduced-motion: reduce){.spin{animation:none}}
+                </style></head>
+                <body><div class="spin"></div><p>Preparando tu cotización para WhatsApp…</p></body></html>`);
+            waTab.document.close();
+        }
         try {
             const doc = await generarPDF();
             const blob = doc.output('blob');
