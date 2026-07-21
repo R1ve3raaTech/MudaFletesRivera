@@ -457,6 +457,12 @@ export default function CotizadorForm() {
     const enviarWhatsapp = async () => {
         setEnviando(true);
         setErrorEnvio(false);
+        // Se abre ya, en blanco, como reacción directa al toque del usuario.
+        // En móvil, si window.open() se llama recién después de varios await
+        // (red, Turnstile, subida del PDF), el navegador lo trata como popup
+        // no solicitado y lo bloquea sin avisar. Navegamos esta pestaña al
+        // final, cuando ya tenemos la URL real de WhatsApp.
+        const waTab = window.open('', '_blank');
         try {
             const doc = await generarPDF();
             const blob = doc.output('blob');
@@ -515,48 +521,45 @@ export default function CotizadorForm() {
             pdfLink = resp.signedUrl ?? null;
 
             // Aviso por correo con ubicaciones y enlace al PDF (FormSubmit, sin backend).
-            // No bloquea el flujo si falla.
-            try {
-                const mapLink = (c) => (c ? `https://www.google.com/maps?q=${c[0]},${c[1]}` : 'Sin coordenadas');
-                await fetch(`https://formsubmit.co/ajax/${EMAIL_AVISOS}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({
-                        _subject: `Nueva solicitud de mudanza: ${form.nombre.trim()} (${form.fecha})${esUrgente ? ' [URGENTE]' : ''}`,
-                        _template: 'table',
-                        _cc: EMAIL_MUDANZAS,
-                        Cliente: form.nombre.trim(),
-                        'Cargar en (origen)': form.origen.trim(),
-                        'Mapa de carga': mapLink(coordsOrigen),
-                        'Descargar en (destino)': form.destino.trim(),
-                        'Mapa de descarga': mapLink(coordsDestino),
-                        Distancia: ruta ? `${ruta.km} km (~${ruta.min} min en camión)` : 'No calculada',
-                        'Fecha de mudanza': form.fecha + (esUrgente ? ' (URGENTE, menos de 3 dias)' : ''),
-                        'Total de articulos': totalMuebles,
-                        Mascotas: form.mascotas === 'si'
-                            ? 'Si' : 'No',
-                        'Informacion adicional': form.infoAdicional.trim() || 'Ninguna',
-                        'Precio estimado mostrado': estimacion ? `${fmtCRC(estimacion.min)} - ${fmtCRC(estimacion.max)}` : 'No calculado',
-                        'PDF con la informacion completa': pdfLink || 'No se pudo generar el enlace (el PDF igual llega por WhatsApp)',
-                    }),
-                });
-            } catch (e) {
-                console.error('No se pudo enviar el aviso por correo:', e);
-            }
+            // No bloquea el flujo ni el envío por WhatsApp si falla o tarda.
+            const mapLink = (c) => (c ? `https://www.google.com/maps?q=${c[0]},${c[1]}` : 'Sin coordenadas');
+            fetch(`https://formsubmit.co/ajax/${EMAIL_AVISOS}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify({
+                    _subject: `Nueva solicitud de mudanza: ${form.nombre.trim()} (${form.fecha})${esUrgente ? ' [URGENTE]' : ''}`,
+                    _template: 'table',
+                    _cc: EMAIL_MUDANZAS,
+                    Cliente: form.nombre.trim(),
+                    'Cargar en (origen)': form.origen.trim(),
+                    'Mapa de carga': mapLink(coordsOrigen),
+                    'Descargar en (destino)': form.destino.trim(),
+                    'Mapa de descarga': mapLink(coordsDestino),
+                    Distancia: ruta ? `${ruta.km} km (~${ruta.min} min en camión)` : 'No calculada',
+                    'Fecha de mudanza': form.fecha + (esUrgente ? ' (URGENTE, menos de 3 dias)' : ''),
+                    'Total de articulos': totalMuebles,
+                    Mascotas: form.mascotas === 'si'
+                        ? 'Si' : 'No',
+                    'Informacion adicional': form.infoAdicional.trim() || 'Ninguna',
+                    'Precio estimado mostrado': estimacion ? `${fmtCRC(estimacion.min)} - ${fmtCRC(estimacion.max)}` : 'No calculado',
+                    'PDF con la informacion completa': pdfLink || 'No se pudo generar el enlace (el PDF igual llega por WhatsApp)',
+                }),
+            }).catch((e) => console.error('No se pudo enviar el aviso por correo:', e));
 
             // Descargar PDF localmente
             const filename2 = `cotizacion-${form.nombre.trim()}.pdf`;
             doc.save(filename2);
             setPdfListo({ blob, filename: filename2, url: pdfLink });
 
-            // Abrir WhatsApp
-            setTimeout(() => {
-                window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`, '_blank');
-            }, 600);
+            // Navegamos la pestaña ya abierta (evita el bloqueo de popups en móvil)
+            const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`;
+            if (waTab) waTab.location.href = waUrl;
+            else window.open(waUrl, '_blank');
 
             setEnviado(true);
         } catch (err) {
             console.error('Error al enviar:', err);
+            if (waTab) waTab.close();
             setErrorEnvio(true);
         } finally {
             setEnviando(false);
