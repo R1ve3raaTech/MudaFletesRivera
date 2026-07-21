@@ -35,7 +35,9 @@ export async function obtenerTokenTurnstile() {
     await cargarScript();
     return new Promise((resolve, reject) => {
         const cont = document.createElement('div');
-        cont.style.display = 'none';
+        cont.style.position = 'fixed';
+        cont.style.left = '-9999px';
+        cont.style.top = '0';
         document.body.appendChild(cont);
 
         let id;
