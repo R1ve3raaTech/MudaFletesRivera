@@ -463,35 +463,61 @@ export default function CotizadorForm() {
         // no solicitado y lo bloquea sin avisar. Navegamos esta pestaña al
         // final, cuando ya tenemos la URL real de WhatsApp.
         const waTab = window.open('', '_blank');
-        const avanzar = (pct) => waTab?.setProgreso?.(pct);
+        const avanzar = (pct, texto) => waTab?.setProgreso?.(pct, texto);
         if (waTab) {
+            // Misma pestaña same-origin: reusamos la fuente y el logo reales
+            // del sitio (no un HTML genérico) para que se sienta parte de la marca.
             waTab.document.write(`<!doctype html><html lang="es"><head><meta charset="utf-8">
                 <title>Preparando tu cotización…</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+                <link rel="stylesheet" href="/fonts/fonts.css">
                 <style>
                     html,body{height:100%;margin:0}
-                    body{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(180deg,#1e40af 0%,#1e40af 38%,#faf7f1 38%);color:#1e293b;padding:24px;box-sizing:border-box}
-                    .marca{display:flex;align-items:center;gap:10px;color:#fff;position:absolute;top:max(20px,env(safe-area-inset-top));left:0;right:0;justify-content:center}
-                    .marca b{font-size:17px;letter-spacing:.2px}
-                    .tarjeta{background:#fff;border-radius:16px;padding:28px 26px;box-shadow:0 10px 30px rgba(30,41,59,.12);width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-                    .barra{width:100%;height:8px;border-radius:999px;background:#e7e5e4;overflow:hidden}
-                    .barra span{display:block;height:100%;width:100%;border-radius:999px;background:linear-gradient(90deg,#2563eb,#3b82f6);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
-                    .pct{font-size:13px;font-weight:600;color:#2563eb}
-                    p{font-size:14.5px;color:#57534e;margin:0}
+                    body{
+                        min-height:100dvh;display:flex;flex-direction:column;
+                        font-family:'Outfit',system-ui,sans-serif;color:#1B2437;
+                        background:
+                            radial-gradient(1100px 620px at 85% -8%, rgba(37,99,235,.07), transparent 60%),
+                            radial-gradient(900px 560px at -10% 12%, rgba(245,158,11,.06), transparent 55%),
+                            #FAF7F1;
+                        padding:max(20px,env(safe-area-inset-top)) 20px max(20px,env(safe-area-inset-bottom));
+                        box-sizing:border-box;
+                    }
+                    .marca{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+                    .marca img{width:30px;height:30px;border-radius:8px;display:block}
+                    .marca b{font-size:15px;font-weight:600;letter-spacing:-.01em;color:#1B2437}
+                    main{flex:1;display:flex;align-items:center;justify-content:center}
+                    .tarjeta{
+                        width:100%;max-width:340px;background:#fff;border:1px solid #E7E1D6;
+                        border-radius:16px;padding:26px 24px;
+                        box-shadow:0 4px 20px -2px rgba(0,0,0,.05),0 2px 10px -2px rgba(0,0,0,.03);
+                        display:flex;flex-direction:column;gap:14px;
+                    }
+                    .fila{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+                    p{font-size:14px;color:#4E5A70;margin:0;line-height:1.4}
+                    .pct{font-size:13px;font-weight:600;color:#2563EB;font-variant-numeric:tabular-nums;flex:0 0 auto}
+                    .barra{width:100%;height:6px;border-radius:99px;background:#F4EFE6;overflow:hidden}
+                    .barra span{
+                        display:block;height:100%;width:100%;border-radius:99px;background:#2563EB;
+                        transform:scaleX(0);transform-origin:left;
+                        transition:transform .22s cubic-bezier(.23,1,.32,1);
+                    }
                     @media (prefers-reduced-motion: reduce){.barra span{transition:none}}
                 </style></head>
                 <body>
-                    <div class="marca"><b>MudaFletesRivera</b></div>
-                    <div class="tarjeta">
-                        <div class="barra"><span id="bar"></span></div>
-                        <span class="pct" id="pct">0%</span>
-                        <p id="txt">Preparando tu cotización para WhatsApp…</p>
-                    </div>
+                    <div class="marca"><img src="${logoTruck}" alt=""><b>MudaFletesRivera</b></div>
+                    <main>
+                        <div class="tarjeta">
+                            <div class="fila"><p id="txt">Preparando tu cotización…</p><span class="pct" id="pct">0%</span></div>
+                            <div class="barra"><span id="bar"></span></div>
+                        </div>
+                    </main>
                     <script>
-                        window.setProgreso = function (pct) {
+                        window.setProgreso = function (pct, texto) {
                             var p = Math.max(0, Math.min(100, pct));
                             document.getElementById('bar').style.transform = 'scaleX(' + (p / 100) + ')';
                             document.getElementById('pct').textContent = p + '%';
+                            if (texto) document.getElementById('txt').textContent = texto;
                         };
                     </script>
                 </body></html>`);
@@ -499,7 +525,7 @@ export default function CotizadorForm() {
         }
         try {
             const doc = await generarPDF();
-            avanzar(20);
+            avanzar(20, 'Generando tu PDF…');
             const blob = doc.output('blob');
             const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
 
@@ -508,9 +534,9 @@ export default function CotizadorForm() {
             // El navegador ya no sube ni inserta directo (anti-spam).
             let pdfLink = null;   // enlace firmado y temporal, solo para el correo
             const pdfBase64 = await blobABase64(blob);
-            avanzar(35);
+            avanzar(35, 'Verificando que sos vos…');
             const token = await obtenerTokenTurnstile();
-            avanzar(55);
+            avanzar(55, 'Enviando tu solicitud…');
 
             const { data: resp, error: fnError } = await supabase.functions.invoke('enviar-cotizacion', {
                 body: {
@@ -555,7 +581,7 @@ export default function CotizadorForm() {
                 // La verificación anti-spam falló o el guardado no se completó
                 throw new Error('No se pudo registrar la cotización');
             }
-            avanzar(85);
+            avanzar(85, 'Guardando tu cotización…');
             pdfLink = resp.signedUrl ?? null;
 
             // Aviso por correo con ubicaciones y enlace al PDF (FormSubmit, sin backend).
@@ -593,7 +619,7 @@ export default function CotizadorForm() {
             const filename2 = `cotizacion-${form.nombre.trim().replace(/\s+/g, '_')}-${clave}.pdf`;
             doc.save(filename2);
             setPdfListo({ blob, filename: filename2, url: pdfLink });
-            avanzar(100);
+            avanzar(100, 'Listo, abriendo WhatsApp…');
 
             // Navegamos la pestaña ya abierta (evita el bloqueo de popups en móvil)
             const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`;
