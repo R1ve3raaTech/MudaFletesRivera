@@ -469,12 +469,13 @@ export default function CotizadorForm() {
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <style>
                     body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:system-ui,-apple-system,sans-serif;background:#f5f5f4;color:#1e293b}
-                    .spin{width:40px;height:40px;border:4px solid #dbeafe;border-top-color:#2563eb;border-radius:50%;animation:s .8s linear infinite}
-                    @keyframes s{to{transform:rotate(360deg)}}
+                    .barra{width:200px;height:6px;border-radius:999px;background:#dbeafe;overflow:hidden}
+                    .barra span{display:block;height:100%;width:40%;border-radius:999px;background:#2563eb;animation:b 1.1s ease-in-out infinite}
+                    @keyframes b{0%{transform:translateX(-100%)}100%{transform:translateX(350%)}}
                     p{font-size:15px;color:#475569}
-                    @media (prefers-reduced-motion: reduce){.spin{animation:none}}
+                    @media (prefers-reduced-motion: reduce){.barra span{animation:none;width:100%}}
                 </style></head>
-                <body><div class="spin"></div><p>Preparando tu cotización para WhatsApp…</p></body></html>`);
+                <body><div class="barra"><span></span></div><p>Preparando tu cotización para WhatsApp…</p></body></html>`);
             waTab.document.close();
         }
         try {
@@ -560,8 +561,13 @@ export default function CotizadorForm() {
                 }),
             }).catch((e) => console.error('No se pudo enviar el aviso por correo:', e));
 
-            // Descargar PDF localmente
-            const filename2 = `cotizacion-${form.nombre.trim()}.pdf`;
+            // Descargar PDF localmente, con una clave corta para no repetir
+            // siempre "cotizacion-(nombre)" entre distintos envíos del mismo cliente.
+            const letras = Array.from({ length: 2 }, () =>
+                'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)]).join('');
+            const numeros = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+            const clave = `${letras}${numeros}`;
+            const filename2 = `cotizacion-${form.nombre.trim().replace(/\s+/g, '_')}-${clave}.pdf`;
             doc.save(filename2);
             setPdfListo({ blob, filename: filename2, url: pdfLink });
 
