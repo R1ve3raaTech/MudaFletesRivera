@@ -11,6 +11,7 @@
 
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 import { verificarTurnstile, cors, json } from '../_shared/turnstile.ts';
+import { dentroDelLimite, registrarEnvio } from '../_shared/rateLimit.ts';
 
 const BUCKET = 'cotizaciones';
 const EXPIRA_SEG = 60 * 60 * 24 * 60;      // 60 días
@@ -46,6 +47,18 @@ Deno.serve(async (req) => {
     const ok = await verificarTurnstile(payload.token, ip);
     if (!ok) return json({ error: 'Verificación anti-spam fallida' }, 403);
 
+    const admin = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+    );
+
+    // Turnstile frena bots, pero no a una persona insistiendo a mano con un
+    // navegador real. Como tope extra: máximo 3 cotizaciones cada 10 min por IP.
+    if (!(await dentroDelLimite(admin, ip, 'enviar-cotizacion'))) {
+        return json({ error: 'Demasiados envíos. Probá de nuevo en unos minutos.' }, 429);
+    }
+    await registrarEnvio(admin, ip, 'enviar-cotizacion');
+
     // ── PDF ──
     const filename = rec(payload.filename, 120);
     if (!/^[\w.\-]+\.pdf$/.test(filename)) {
@@ -61,11 +74,6 @@ Deno.serve(async (req) => {
             return json({ error: 'PDF inválido' }, 422);
         }
     }
-
-    const admin = createClient(
-        Deno.env.get('SUPABASE_URL')!,
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-    );
 
     let pdfPath: string | null = null;
     let signedUrl: string | null = null;

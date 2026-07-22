@@ -9,6 +9,7 @@
 
 import { createClient } from 'jsr:@supabase/supabase-js@2';
 import { verificarTurnstile, cors, json } from '../_shared/turnstile.ts';
+import { dentroDelLimite, registrarEnvio } from '../_shared/rateLimit.ts';
 
 const rec = (v: unknown, max: number): string =>
     (typeof v === 'string' ? v : '').trim().slice(0, max);
@@ -28,6 +29,18 @@ Deno.serve(async (req) => {
     const ok = await verificarTurnstile(payload.token, ip);
     if (!ok) return json({ error: 'Verificación anti-spam fallida' }, 403);
 
+    const admin = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
+    );
+
+    // Turnstile frena bots, pero no a una persona insistiendo a mano con un
+    // navegador real. Como tope extra: máximo 3 reseñas cada 10 min por IP.
+    if (!(await dentroDelLimite(admin, ip, 'enviar-resena'))) {
+        return json({ error: 'Demasiados envíos. Probá de nuevo en unos minutos.' }, 429);
+    }
+    await registrarEnvio(admin, ip, 'enviar-resena');
+
     const r = (payload.resena ?? {}) as Record<string, unknown>;
 
     // Saneamiento del lado del servidor: nunca confiamos en lo que llega.
@@ -41,11 +54,6 @@ Deno.serve(async (req) => {
     if (!Number.isInteger(calificacion) || calificacion < 1 || calificacion > 6) {
         return json({ error: 'Calificación inválida' }, 422);
     }
-
-    const admin = createClient(
-        Deno.env.get('SUPABASE_URL')!,
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
-    );
 
     const { error } = await admin.from('mudafletesrivera').insert({
         nombre,
