@@ -477,45 +477,63 @@ export default function CotizadorForm() {
                         min-height:100dvh;display:flex;flex-direction:column;
                         font-family:'Outfit',system-ui,sans-serif;color:#1B2437;
                         background:
-                            radial-gradient(1100px 620px at 85% -8%, rgba(37,99,235,.07), transparent 60%),
-                            radial-gradient(900px 560px at -10% 12%, rgba(245,158,11,.06), transparent 55%),
+                            radial-gradient(1100px 620px at 85% -8%, rgba(37,99,235,.09), transparent 60%),
+                            radial-gradient(900px 560px at -10% 12%, rgba(245,158,11,.07), transparent 55%),
                             #FAF7F1;
                         padding:max(20px,env(safe-area-inset-top)) 20px max(20px,env(safe-area-inset-bottom));
                         box-sizing:border-box;
+                        overflow:hidden;
                     }
-                    .marca{display:flex;align-items:center;gap:9px;flex:0 0 auto}
+                    .marca{display:flex;align-items:center;gap:9px;flex:0 0 auto;opacity:0;animation:entra .5s cubic-bezier(.23,1,.32,1) .05s forwards}
                     .marca img{width:30px;height:30px;border-radius:8px;display:block}
                     .marca b{font-size:15px;font-weight:600;letter-spacing:-.01em;color:#1B2437}
                     main{flex:1;display:flex;align-items:center;justify-content:center}
                     .tarjeta{
                         width:100%;max-width:340px;background:#fff;border:1px solid #E7E1D6;
-                        border-radius:16px;padding:26px 24px;
+                        border-radius:20px;padding:30px 26px;
                         box-shadow:0 4px 20px -2px rgba(0,0,0,.05),0 2px 10px -2px rgba(0,0,0,.03);
-                        display:flex;flex-direction:column;gap:14px;
+                        display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;
+                        opacity:0;transform:translateY(10px) scale(.98);
+                        animation:entra .55s cubic-bezier(.23,1,.32,1) .1s forwards;
                     }
-                    .fila{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-                    p{font-size:14px;color:#4E5A70;margin:0;line-height:1.4}
-                    .pct{font-size:13px;font-weight:600;color:#2563EB;font-variant-numeric:tabular-nums;flex:0 0 auto}
-                    .barra{width:100%;height:6px;border-radius:99px;background:#F4EFE6;overflow:hidden}
+                    .pista{position:relative;width:100%;height:34px}
+                    .barra{position:absolute;left:0;right:0;top:14px;height:6px;border-radius:99px;background:#F4EFE6;overflow:hidden}
                     .barra span{
-                        display:block;height:100%;width:100%;border-radius:99px;background:#2563EB;
+                        display:block;height:100%;width:100%;border-radius:99px;
+                        background:linear-gradient(90deg,#2563EB,#3B82F6);
                         transform:scaleX(0);transform-origin:left;
-                        transition:transform .22s cubic-bezier(.23,1,.32,1);
+                        transition:transform .5s cubic-bezier(.34,1.56,.64,1);
                     }
-                    @media (prefers-reduced-motion: reduce){.barra span{transition:none}}
+                    .camion{position:absolute;top:-2px;left:0;width:34px;height:34px;transform:translateX(-100%);transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+                    .camion img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3px 6px rgba(37,99,235,.35))}
+                    .txt{display:flex;flex-direction:column;gap:4px}
+                    p{font-size:14.5px;color:#4E5A70;margin:0;line-height:1.4}
+                    .pct{font-size:13px;font-weight:600;color:#2563EB;font-variant-numeric:tabular-nums}
+                    @keyframes entra{to{opacity:1;transform:none}}
+                    @media (prefers-reduced-motion: reduce){
+                        .marca,.tarjeta{animation:none;opacity:1;transform:none}
+                        .barra span,.camion{transition:none}
+                    }
                 </style></head>
                 <body>
                     <div class="marca"><img src="${logoTruck}" alt=""><b>MudaFletesRivera</b></div>
                     <main>
                         <div class="tarjeta">
-                            <div class="fila"><p id="txt">Preparando tu cotización…</p><span class="pct" id="pct">0%</span></div>
-                            <div class="barra"><span id="bar"></span></div>
+                            <div class="pista">
+                                <div class="camion" id="camion"><img src="${logoTruck}" alt=""></div>
+                                <div class="barra"><span id="bar"></span></div>
+                            </div>
+                            <div class="txt">
+                                <p id="txt">Preparando tu cotización…</p>
+                                <span class="pct" id="pct">0%</span>
+                            </div>
                         </div>
                     </main>
                     <script>
                         window.setProgreso = function (pct, texto) {
                             var p = Math.max(0, Math.min(100, pct));
                             document.getElementById('bar').style.transform = 'scaleX(' + (p / 100) + ')';
+                            document.getElementById('camion').style.transform = 'translateX(' + (p * 2.9 - 100) + '%)';
                             document.getElementById('pct').textContent = p + '%';
                             if (texto) document.getElementById('txt').textContent = texto;
                         };
@@ -523,20 +541,50 @@ export default function CotizadorForm() {
                 </body></html>`);
             waTab.document.close();
         }
+        let doc;
+        let blob;
         try {
-            const doc = await generarPDF();
-            avanzar(20, 'Generando tu PDF…');
-            const blob = doc.output('blob');
-            const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
+            // Fase rápida: lo único que el usuario necesita para llegar a WhatsApp
+            // con su PDF. Nada de esto depende del servidor.
+            avanzar(15, 'Generando tu PDF…');
+            doc = await generarPDF();
+            blob = doc.output('blob');
+            avanzar(70, 'Casi listo…');
 
-            // La subida del PDF y la inserción pasan por la Edge Function
-            // 'enviar-cotizacion', que primero verifica el token de Turnstile.
-            // El navegador ya no sube ni inserta directo (anti-spam).
-            let pdfLink = null;   // enlace firmado y temporal, solo para el correo
+            const letras = Array.from({ length: 2 }, () =>
+                'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)]).join('');
+            const numeros = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+            const clave = `${letras}${numeros}`;
+            const filename2 = `cotizacion-${form.nombre.trim().replace(/\s+/g, '_')}-${clave}.pdf`;
+            doc.save(filename2);
+            setPdfListo({ blob, filename: filename2, url: null });
+
+            avanzar(100, '¡Listo!');
+            const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`;
+            // Pequeña pausa para que se alcance a ver el 100%: sensación de
+            // cierre, no un salto brusco a mitad de la animación.
+            await new Promise((r) => setTimeout(r, 260));
+            if (waTab) waTab.location.href = waUrl;
+            else window.open(waUrl, '_blank');
+
+            setEnviado(true);
+            setEnviando(false);
+        } catch (err) {
+            console.error('Error al enviar:', err);
+            if (waTab) waTab.close();
+            setErrorEnvio(true);
+            setEnviando(false);
+            return;
+        }
+
+        // Fase en segundo plano: verificación anti-spam y guardado en el
+        // servidor. El usuario ya está en WhatsApp con su PDF; si esto falla,
+        // no lo interrumpimos con un error, solo queda sin registrar del lado
+        // del servidor (el mensaje de WhatsApp igual le llega a la empresa).
+        try {
+            const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
             const pdfBase64 = await blobABase64(blob);
-            avanzar(35, 'Verificando que sos vos…');
             const token = await obtenerTokenTurnstile();
-            avanzar(55, 'Enviando tu solicitud…');
 
             const { data: resp, error: fnError } = await supabase.functions.invoke('enviar-cotizacion', {
                 body: {
@@ -578,14 +626,13 @@ export default function CotizadorForm() {
             });
 
             if (fnError || !resp?.ok) {
-                // La verificación anti-spam falló o el guardado no se completó
-                throw new Error('No se pudo registrar la cotización');
+                console.error('No se pudo registrar la cotización en el servidor:', fnError);
+                return;
             }
-            avanzar(85, 'Guardando tu cotización…');
-            pdfLink = resp.signedUrl ?? null;
+            const pdfLink = resp.signedUrl ?? null;
+            setPdfListo((prev) => (prev ? { ...prev, url: pdfLink } : prev));
 
             // Aviso por correo con ubicaciones y enlace al PDF (FormSubmit, sin backend).
-            // No bloquea el flujo ni el envío por WhatsApp si falla o tarda.
             const mapLink = (c) => (c ? `https://www.google.com/maps?q=${c[0]},${c[1]}` : 'Sin coordenadas');
             fetch(`https://formsubmit.co/ajax/${EMAIL_AVISOS}`, {
                 method: 'POST',
@@ -609,30 +656,8 @@ export default function CotizadorForm() {
                     'PDF con la informacion completa': pdfLink || 'No se pudo generar el enlace (el PDF igual llega por WhatsApp)',
                 }),
             }).catch((e) => console.error('No se pudo enviar el aviso por correo:', e));
-
-            // Descargar PDF localmente, con una clave corta para no repetir
-            // siempre "cotizacion-(nombre)" entre distintos envíos del mismo cliente.
-            const letras = Array.from({ length: 2 }, () =>
-                'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)]).join('');
-            const numeros = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-            const clave = `${letras}${numeros}`;
-            const filename2 = `cotizacion-${form.nombre.trim().replace(/\s+/g, '_')}-${clave}.pdf`;
-            doc.save(filename2);
-            setPdfListo({ blob, filename: filename2, url: pdfLink });
-            avanzar(100, 'Listo, abriendo WhatsApp…');
-
-            // Navegamos la pestaña ya abierta (evita el bloqueo de popups en móvil)
-            const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(construirMensajeWa())}`;
-            if (waTab) waTab.location.href = waUrl;
-            else window.open(waUrl, '_blank');
-
-            setEnviado(true);
-        } catch (err) {
-            console.error('Error al enviar:', err);
-            if (waTab) waTab.close();
-            setErrorEnvio(true);
-        } finally {
-            setEnviando(false);
+        } catch (e) {
+            console.error('Fallo en el registro de fondo de la cotización:', e);
         }
     };
 
