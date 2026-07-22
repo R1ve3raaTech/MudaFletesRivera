@@ -103,6 +103,11 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
         animRef.current = requestAnimationFrame(paso);
     };
 
+    // Sincroniza el estado del cálculo de ruta con los props origen/destino:
+    // resetea o dispara el geocodificado debounced según cambien. Es el
+    // patrón estándar de "sincronizar con un sistema externo" (red, con
+    // cancelación), no derivado de otro estado de React.
+    /* eslint-disable react-hooks/set-state-in-effect */
     useEffect(() => {
         const o = origen?.trim();
         const d = destino?.trim();
@@ -187,6 +192,7 @@ export default function RutaMapa({ origen, destino, coordsOrigen, coordsDestino,
         return () => { cancelado = true; clearTimeout(timer); };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [origen, destino, coordsOrigen, coordsDestino]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     return (
         <div className={styles.wrap}>

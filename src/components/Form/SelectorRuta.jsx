@@ -26,7 +26,32 @@ export default function SelectorRuta({ abierto, inicial, onConfirmar, onCerrar }
     const inputOrigenRef = useRef(null);
     const inputDestinoRef = useRef(null);
 
-    // Sincroniza con los valores existentes al abrir y bloquea el scroll del fondo
+    const setCampo = (campo, texto, coords) => {
+        if (campo === 'origen') { setOrigen(texto); setCoordsOrigen(coords); }
+        else { setDestino(texto); setCoordsDestino(coords); }
+    };
+
+    const usarMiUbicacion = () => {
+        if (!navigator.geolocation) return;
+        setUbicando(true);
+        navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+                const { latitude: lat, longitude: lon } = pos.coords;
+                const label = await reverseGeocodificar(lat, lon);
+                setCampo('origen', label, [lat, lon]);
+                setUbicando(false);
+                mapRef.current?.flyTo({ center: [lon, lat], zoom: 15, duration: 900 });
+                setCampoActivo('destino');
+            },
+            () => setUbicando(false),
+            { enableHighAccuracy: true, timeout: 8000 }
+        );
+    };
+
+    // Sincroniza con los valores existentes al abrir y bloquea el scroll del
+    // fondo. setState síncrono a propósito: es la inicialización del modal
+    // según sus props al momento de abrirse, no un derivado de otro estado.
+    /* eslint-disable react-hooks/set-state-in-effect */
     useEffect(() => {
         if (!abierto) return;
         setOrigen(inicial?.origen || '');
@@ -43,6 +68,7 @@ export default function SelectorRuta({ abierto, inicial, onConfirmar, onCerrar }
         return () => { document.body.style.overflow = ''; };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [abierto]);
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     // Mapa con pin central fijo (se mueve el mapa, no el pin)
     useEffect(() => {
@@ -76,20 +102,14 @@ export default function SelectorRuta({ abierto, inicial, onConfirmar, onCerrar }
 
     if (!abierto) return null;
 
-    const setCampo = (campo, texto, coords) => {
-        if (campo === 'origen') { setOrigen(texto); setCoordsOrigen(coords); }
-        else { setDestino(texto); setCoordsDestino(coords); }
-    };
-
-    const handleTexto = (campo) => (e) => {
-        const q = e.target.value;
-        setCampo(campo, q, null);
+    const handleTexto = (campo, texto) => {
+        setCampo(campo, texto, null);
         setCampoActivo(campo);
         clearTimeout(timeoutRef.current);
-        if (q.length < 3) { setSugerencias([]); setBuscando(false); return; }
+        if (texto.length < 3) { setSugerencias([]); setBuscando(false); return; }
         setBuscando(true);
         timeoutRef.current = setTimeout(async () => {
-            const items = await buscarDirecciones(q);
+            const items = await buscarDirecciones(texto);
             setSugerencias(items);
             setBuscando(false);
         }, 300);
@@ -103,23 +123,6 @@ export default function SelectorRuta({ abierto, inicial, onConfirmar, onCerrar }
             setCampoActivo('destino');
             inputDestinoRef.current?.focus();
         }
-    };
-
-    const usarMiUbicacion = () => {
-        if (!navigator.geolocation) return;
-        setUbicando(true);
-        navigator.geolocation.getCurrentPosition(
-            async (pos) => {
-                const { latitude: lat, longitude: lon } = pos.coords;
-                const label = await reverseGeocodificar(lat, lon);
-                setCampo('origen', label, [lat, lon]);
-                setUbicando(false);
-                mapRef.current?.flyTo({ center: [lon, lat], zoom: 15, duration: 900 });
-                setCampoActivo('destino');
-            },
-            () => setUbicando(false),
-            { enableHighAccuracy: true, timeout: 8000 }
-        );
     };
 
     const fijarPin = () => {
@@ -161,7 +164,7 @@ export default function SelectorRuta({ abierto, inicial, onConfirmar, onCerrar }
                                 type="text"
                                 placeholder="Punto A: ¿de dónde salimos?"
                                 value={origen}
-                                onChange={handleTexto('origen')}
+                                onChange={(e) => handleTexto('origen', e.target.value)}
                                 onFocus={() => setCampoActivo('origen')}
                                 autoComplete="off"
                             />
@@ -182,7 +185,7 @@ export default function SelectorRuta({ abierto, inicial, onConfirmar, onCerrar }
                                 type="text"
                                 placeholder="Punto B: ¿a dónde llegamos?"
                                 value={destino}
-                                onChange={handleTexto('destino')}
+                                onChange={(e) => handleTexto('destino', e.target.value)}
                                 onFocus={() => setCampoActivo('destino')}
                                 autoComplete="off"
                             />

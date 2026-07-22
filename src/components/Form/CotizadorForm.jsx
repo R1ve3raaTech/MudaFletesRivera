@@ -31,6 +31,17 @@ const WA_NUMBER = '50670818306';
 const EMAIL_AVISOS = 'thecamil999@gmail.com';
 const EMAIL_MUDANZAS = 'camiloritrujillo@gmail.com';
 
+// Fuera del componente a propósito: Math.random/Date.now son impuros y no
+// deben llamarse desde el cuerpo de un componente o hook.
+const generarClaveCorta = () => {
+    const letras = Array.from({ length: 2 }, () =>
+        'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)]).join('');
+    const numeros = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+    return `${letras}${numeros}`;
+};
+
+const generarNombreTemporal = (nombre) => `${Date.now()}-${nombre.replace(/\s+/g, '_')}.pdf`;
+
 const MUEBLES = [
     { id: 'cama_individual',  Icon: BedSingle,       label: 'Cama individual' },
     { id: 'cama_matrimonial', Icon: BedDouble,       label: 'Cama matrimonial / king' },
@@ -475,11 +486,7 @@ export default function CotizadorForm() {
             doc = await generarPDF();
             blob = doc.output('blob');
 
-            const letras = Array.from({ length: 2 }, () =>
-                'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.floor(Math.random() * 24)]).join('');
-            const numeros = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-            const clave = `${letras}${numeros}`;
-            const filename2 = `cotizacion-${form.nombre.trim().replace(/\s+/g, '_')}-${clave}.pdf`;
+            const filename2 = `cotizacion-${form.nombre.trim().replace(/\s+/g, '_')}-${generarClaveCorta()}.pdf`;
             doc.save(filename2);
             setPdfListo({ blob, filename: filename2, url: null });
 
@@ -502,7 +509,7 @@ export default function CotizadorForm() {
         // no lo interrumpimos con un error, solo queda sin registrar del lado
         // del servidor (el mensaje de WhatsApp igual le llega a la empresa).
         try {
-            const filename = `${Date.now()}-${form.nombre.trim().replace(/\s+/g, '_')}.pdf`;
+            const filename = generarNombreTemporal(form.nombre.trim());
             const pdfBase64 = await blobABase64(blob);
             const token = await obtenerTokenTurnstile();
 

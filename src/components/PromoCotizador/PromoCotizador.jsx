@@ -73,7 +73,6 @@ export default function PromoCotizador() {
         const onKey = (e) => { if (e.key === 'Escape') cerrar(); };
         window.addEventListener('keydown', onKey);
         return () => window.removeEventListener('keydown', onKey);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
     if (!visible || pathname.startsWith('/mimudanza')) return null;

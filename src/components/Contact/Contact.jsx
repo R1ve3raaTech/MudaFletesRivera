@@ -79,7 +79,9 @@ const Contact = () => {
 
             {/* Cards grid */}
             <div className={styles.grid} ref={gridRef}>
-                {cards.map(({ Icon, label, value, href, cta }, i) => (
+                {cards.map((card, i) => {
+                    const { Icon, label, value, href, cta } = card;
+                    return (
                     <div
                         key={i}
                         className={`${styles.card} ${cta ? styles.cardCta : ''}`}
@@ -96,7 +98,8 @@ const Contact = () => {
                             <span className={styles.cardValue}>{value}</span>
                         )}
                     </div>
-                ))}
+                    );
+                })}
             </div>
 
             {/* Big WhatsApp CTA */}

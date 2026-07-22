@@ -20,8 +20,8 @@ const CountUp = ({ target, format, suffix, started }) => {
     useEffect(() => {
         if (!started) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            setShown(fmt(target, format));
-            return;
+            const raf = requestAnimationFrame(() => setShown(fmt(target, format)));
+            return () => cancelAnimationFrame(raf);
         }
         let start = 0;
         const duration = 1600;

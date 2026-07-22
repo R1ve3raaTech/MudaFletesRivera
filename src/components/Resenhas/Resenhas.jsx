@@ -178,7 +178,11 @@ const Modal = ({ onClose }) => {
     const [status, setStatus] = useState('idle');
     // Anti-spam: campo trampa (honeypot) y momento de apertura del formulario
     const honeypotRef = useRef('');
-    const abiertoEnRef = useRef(Date.now());
+    const abiertoEnRef = useRef(null);
+
+    useEffect(() => {
+        abiertoEnRef.current = Date.now();
+    }, []);
 
     useEffect(() => {
         const scrollY = window.scrollY;
@@ -439,6 +443,10 @@ const Reseñas = () => {
         setCargando(false);
     };
 
+    // Patrón estándar de "buscar datos al montar" (setState llega tras el
+    // await, no de forma síncrona). Migrar a una librería de fetching es un
+    // cambio aparte, no algo que valga la pena forzar acá.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => { cargarReseñas(); }, []);
 
     const totalPaginas = Math.ceil(reseñas.length / POR_PAGINA);
