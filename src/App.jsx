@@ -18,6 +18,7 @@ const Reseñas = lazy(() => import('./components/Resenhas/Resenhas'));
 
 const Conditions = lazy(() => import('./components/Conditions/Conditions'));
 const CotizadorForm = lazy(() => import('./components/Form/CotizadorForm'));
+const MudanzasSanJose = lazy(() => import('./components/MudanzasSanJose/MudanzasSanJose'));
 
 const NuestroEquipo = lazy(() => import('./components/NuestroEquipo/NuestroEquipo'));
 import BottomNav from './components/BottomNav/BottomNav';
@@ -100,6 +101,7 @@ const AnimatedRoutes = () => {
                         <CotizadorForm />
                     </PageWrapper>
                 )} />
+                <Route path="/mudanzas-san-jose" element={<PageWrapper><MudanzasSanJose /></PageWrapper>} />
             </Routes>
         </Suspense>
     );

@@ -62,6 +62,7 @@ const Footer = () => {
                 <a href="#servicios">Servicios</a>
                 <a href="#nosotros">Nosotros</a>
                 <a href="#contacto">Contáctenos</a>
+                <Link to="/mudanzas-san-jose">Mudanzas en San José</Link>
                 <Link to="/condiciones">Condiciones</Link>
             </nav>
 
