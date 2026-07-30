@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -426,6 +427,33 @@ const Modal = ({ onClose }) => {
 
 const POR_PAGINA = 3;
 
+// El termómetro usa escala 1-6 (Pésimo a Excelente), no la 1-5 habitual de
+// schema.org: bestRating/worstRating hay que declararlos explícitos.
+const RatingSchema = ({ reseñas }) => {
+    if (reseñas.length === 0) return null;
+    const suma = reseñas.reduce((acc, r) => acc + r.calificacion, 0);
+    const promedio = suma / reseñas.length;
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'MovingCompany',
+        '@id': 'https://mudafletesrivera.com/#negocio',
+        aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: Number(promedio.toFixed(1)),
+            bestRating: 6,
+            worstRating: 1,
+            reviewCount: reseñas.length,
+        },
+    };
+
+    return (
+        <Helmet>
+            <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        </Helmet>
+    );
+};
+
 const Reseñas = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [reseñas, setReseñas] = useState([]);
@@ -476,6 +504,7 @@ const Reseñas = () => {
 
     return (
         <section id="resenas" className={styles.section}>
+            {!cargando && <RatingSchema reseñas={reseñas} />}
             <div className={styles.sectionHeader} ref={headerRef}>
                 <span className={styles.eyebrow}>
                     Lo que dicen nuestros clientes

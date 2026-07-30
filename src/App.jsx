@@ -8,6 +8,7 @@ import Stats from './components/stats/Stats';
 import Footer from './components/Footer/Footer';
 import LazySection from './components/LazySection';
 import scrollToSection from './scrollToSection';
+import SEO from './components/SEO';
 
 const Services = lazy(() => import('./components/NuestrosServicios/NuestrosServicios'));
 const WhyUs = lazy(() => import('./components/whyus/WhyUs'));
@@ -52,6 +53,11 @@ const PageWrapper = ({ children }) => {
 const HomePage = () => {
     return (
         <PageWrapper>
+            <SEO
+                title="MudaFletesRivera — Mudanzas y Fletes en Costa Rica"
+                description="Soluciones integrales de transporte, mudanzas profesionales y venta de pegamentos industriales tipo Bondex en Costa Rica."
+                path="/"
+            />
             <Hero />
             <Stats />
             {/* Cada LazySection trae su propio Suspense con espaciador: un
@@ -74,8 +80,26 @@ const AnimatedRoutes = () => {
         <Suspense fallback={null}>
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/condiciones" element={<Conditions />} />
-                <Route path="/mimudanza" element={<PageWrapper><CotizadorForm /></PageWrapper>} />
+                <Route path="/condiciones" element={(
+                    <>
+                        <SEO
+                            title="Condiciones del servicio — MudaFletesRivera"
+                            description="Términos y condiciones del servicio de mudanzas y fletes de MudaFletesRivera en Costa Rica."
+                            path="/condiciones"
+                        />
+                        <Conditions />
+                    </>
+                )} />
+                <Route path="/mimudanza" element={(
+                    <PageWrapper>
+                        <SEO
+                            title="Cotiza tu mudanza en San José — MudaFletesRivera"
+                            description="Cotiza en línea tu mudanza en San José y el Gran Área Metropolitana. Precio estimado al instante con MudaFletesRivera."
+                            path="/mimudanza"
+                        />
+                        <CotizadorForm />
+                    </PageWrapper>
+                )} />
             </Routes>
         </Suspense>
     );

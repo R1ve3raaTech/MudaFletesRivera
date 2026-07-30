@@ -33,16 +33,25 @@
     {
       "@context": "https://schema.org",
       "@type": "MovingCompany",
+      "@id": "https://mudafletesrivera.com/#negocio",
       "name": "MudaFletesRivera",
       "url": "https://mudafletesrivera.com",
       "logo": "https://mudafletesrivera.com/favicon.png",
       "image": "https://mudafletesrivera.com/og-image.jpg",
       "description": "Mudanzas profesionales, fletes y transporte en Costa Rica.",
       "telephone": "+506 7081 8306",
-      "areaServed": {
-        "@type": "Country",
-        "name": "Costa Rica"
-      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "San José",
+          "containedInPlace": { "@type": "Country", "name": "Costa Rica" }
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Gran Área Metropolitana",
+          "containedInPlace": { "@type": "Country", "name": "Costa Rica" }
+        }
+      ],
       "sameAs": []
     }
     </script>
