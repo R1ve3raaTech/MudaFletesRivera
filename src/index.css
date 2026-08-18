@@ -101,27 +101,13 @@ button {
     font-family: inherit;
 }
 
-/* Scrollbar más grueso: fácil de agarrar con mouse o con el dedo */
+/* Scrollbar nativo oculto: lo reemplaza el pill arrastrable de
+   ScrollbarPill (en Android/Chrome el nativo no se puede agarrar con
+   el dedo, sin importar el grosor que se le ponga por CSS). */
 html {
-    scrollbar-width: auto;
-    scrollbar-color: var(--primary-brand) var(--bg-neutral);
+    scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
-    width: 16px;
-    height: 16px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--bg-neutral);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary-brand);
-    border-radius: 999px;
-    border: 4px solid var(--bg-neutral);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+    display: none;
 }

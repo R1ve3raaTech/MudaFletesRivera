@@ -25,6 +25,7 @@ import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
 import PromoCotizador from './components/PromoCotizador/PromoCotizador';
 import CursorBubble from './components/CursorBubble/CursorBubble';
+import ScrollbarPill from './components/ScrollbarPill/ScrollbarPill';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
@@ -122,6 +123,7 @@ const App = () => {
                 <WhatsappFloat />
                 <PromoCotizador />
                 <CursorBubble />
+                <ScrollbarPill />
             </div>
         </Router>
     );
