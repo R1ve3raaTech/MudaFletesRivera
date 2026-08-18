@@ -24,6 +24,7 @@ const NuestroEquipo = lazy(() => import('./components/NuestroEquipo/NuestroEquip
 import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
 import PromoCotizador from './components/PromoCotizador/PromoCotizador';
+import CursorBubble from './components/CursorBubble/CursorBubble';
 
 // Component to handle scroll behavior
 const ScrollToTop = () => {
@@ -120,6 +121,7 @@ const App = () => {
                 <BottomNav />
                 <WhatsappFloat />
                 <PromoCotizador />
+                <CursorBubble />
             </div>
         </Router>
     );

@@ -100,3 +100,28 @@ button {
     cursor: pointer;
     font-family: inherit;
 }
+
+/* Scrollbar más grueso: fácil de agarrar con mouse o con el dedo */
+html {
+    scrollbar-width: auto;
+    scrollbar-color: var(--primary-brand) var(--bg-neutral);
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-neutral);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-brand);
+    border-radius: 999px;
+    border: 4px solid var(--bg-neutral);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
