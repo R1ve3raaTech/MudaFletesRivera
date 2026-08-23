@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ImagePlus, MessageCircle, ArrowUpRight } from 'lucide-react';
 import SEO from '../SEO';
 import foto2014 from '../../assets/historia-2014.webp';
+import foto2026 from '../../assets/historia-2026.webp';
 import styles from './Historia.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,36 +15,11 @@ gsap.registerPlugin(ScrollTrigger);
 // Mientras no llegue, fotoSrc queda undefined y se muestra el aviso
 // "Foto pendiente" en vez de fingir una imagen genérica.
 const HITOS = [
-    {
-        year: '2010',
-        title: 'Primeros años',
-        description: 'Los primeros viajes, con un solo camión y la promesa de tratar cada mudanza como si fuera la nuestra.',
-        fotoSrc: undefined,
-    },
-    {
-        year: '2014',
-        title: 'Primeros grandes clientes',
-        description: 'Empezamos a atender mudanzas de oficina y a coordinar con administraciones de edificios y condominios.',
-        fotoSrc: foto2014,
-    },
-    {
-        year: '2018',
-        title: 'Ampliamos la flota',
-        description: 'Sumamos más camiones y personal para cubrir todo el Gran Área Metropolitana con mayor capacidad.',
-        fotoSrc: undefined,
-    },
-    {
-        year: '2022',
-        title: 'Cotizador en línea',
-        description: 'Lanzamos la cotización digital para dar un precio estimado al instante, sin llamadas ni esperas.',
-        fotoSrc: undefined,
-    },
-    {
-        year: '2026',
-        title: 'Hoy',
-        description: 'Seguimos con la misma promesa del primer día: puntualidad, cuidado y precio justo en cada mudanza.',
-        fotoSrc: undefined,
-    },
+    { year: '2010', fotoSrc: undefined },
+    { year: '2014', fotoSrc: foto2014 },
+    { year: '2018', fotoSrc: undefined },
+    { year: '2022', fotoSrc: undefined },
+    { year: '2026', fotoSrc: foto2026 },
 ];
 
 const FotoHito = ({ year, fotoSrc, alt }) => {
@@ -125,14 +101,12 @@ const Historia = () => {
                     <div key={h.year} className={`${styles.hito} ${i % 2 === 1 ? styles.reverse : ''}`}>
                         <div className={styles.hitoContent}>
                             <span className={styles.hitoYear}>{h.year}</span>
-                            <h3>{h.title}</h3>
-                            <p>{h.description}</p>
                         </div>
 
                         <div className={styles.marker} aria-hidden="true" />
 
                         <div className={styles.hitoPhotoCol}>
-                            <FotoHito year={h.year} fotoSrc={h.fotoSrc} alt={`MudaFletesRivera en ${h.year}: ${h.title}`} />
+                            <FotoHito year={h.year} fotoSrc={h.fotoSrc} alt={`MudaFletesRivera en ${h.year}`} />
                         </div>
                     </div>
                 ))}

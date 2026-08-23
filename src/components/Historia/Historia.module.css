@@ -84,30 +84,12 @@
 .hito.reverse .hitoPhotoCol { order: 1; }
 
 .hitoYear {
-    display: inline-block;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: var(--primary-brand);
-    background: rgba(37, 99, 235, 0.08);
-    border: 1px solid rgba(37, 99, 235, 0.18);
-    padding: 0.3rem 0.8rem;
-    border-radius: 999px;
-    margin-bottom: 0.8rem;
-}
-
-.hitoContent h3 {
-    font-size: 1.3rem;
-    font-weight: 800;
-    color: var(--text-primary);
+    display: block;
+    font-size: clamp(2.6rem, 5vw, 3.6rem);
+    font-weight: 900;
     letter-spacing: -0.02em;
-    margin-bottom: 0.5rem;
-}
-
-.hitoContent p {
-    font-size: 0.92rem;
-    color: var(--text-secondary);
-    line-height: 1.65;
+    line-height: 1;
+    color: var(--primary-brand);
 }
 
 .marker {
