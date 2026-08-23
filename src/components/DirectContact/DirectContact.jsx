@@ -19,7 +19,7 @@ const DirectContact = () => {
                 <div className={styles.numberItem}>
                     <span className={styles.numberLabel}>Logística y Despacho</span>
                     <div className={styles.phoneLinks}>
-                        <a href="https://wa.me/50671328432?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">7132-8432</a>
+                        <a href="https://wa.me/50671350343?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">7135-0343</a>
                     </div>
                 </div>
             </div>

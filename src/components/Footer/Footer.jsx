@@ -52,7 +52,13 @@ const Footer = () => {
                     <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
                     MudaFletesRivera
                 </div>
-                <p>Transporte, mudanzas y materiales de construcción en todo Costa Rica.</p>
+                <p>Transporte y mudanzas en todo Costa Rica.</p>
+                <p>
+                    Materiales de construcción: visite a nuestro socio{' '}
+                    <a href="https://aditivosrivera.com" target="_blank" rel="noopener noreferrer">
+                        aditivosrivera.com
+                    </a>
+                </p>
             </div>
 
             <div className={styles.divider} />
@@ -72,8 +78,8 @@ const Footer = () => {
                 <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">
                     <MessageCircle size={16} /> 7081-8306
                 </a>
-                <a href="https://wa.me/50671328432?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">
-                    <Package size={16} /> 7132-8432
+                <a href="https://wa.me/50671350343?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer">
+                    <Package size={16} /> 7135-0343
                 </a>
                 <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@mudafletesrivera.com" target="_blank" rel="noopener noreferrer">
                     <Mail size={16} /> info@mudafletesrivera.com

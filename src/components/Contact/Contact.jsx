@@ -21,8 +21,8 @@ const cards = [
     {
         Icon: Phone,
         label: "Logística & Despacho",
-        value: "+506 7132 8432",
-        href: "https://wa.me/50671328432?text=Hola,%20deseo%20cotizar%20una%20mudanza",
+        value: "+506 7135 0343",
+        href: "https://wa.me/50671350343?text=Hola,%20deseo%20cotizar%20una%20mudanza",
     },
     {
         Icon: Mail,

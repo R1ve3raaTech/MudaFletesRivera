@@ -58,7 +58,7 @@ const HomePage = () => {
         <PageWrapper>
             <SEO
                 title="MudaFletesRivera — Mudanzas y Fletes en Costa Rica"
-                description="Soluciones integrales de transporte, mudanzas profesionales y venta de pegamentos industriales tipo Bondex en Costa Rica."
+                description="Soluciones integrales de transporte y mudanzas profesionales en Costa Rica."
                 path="/"
             />
             <Hero />

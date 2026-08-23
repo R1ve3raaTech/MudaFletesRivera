@@ -88,6 +88,15 @@
     color: rgba(255,255,255,0.45);
 }
 
+.brandCol p a {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.brandCol p a:hover { color: var(--accent-color); }
+
 .navCol {
     display: flex;
     flex-wrap: wrap;

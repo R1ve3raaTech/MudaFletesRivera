@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, ExternalLink } from 'lucide-react';
 import styles from './NuestrosServicios.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -25,13 +25,16 @@ const services = [
     {
         icon: "construction",
         num: "03",
-        title: "Productos Especializados",
-        description: "Calidad certificada en materiales de construcción. Le asesoramos para que su proyecto tenga los mejores cimientos.",
-        benefits: ["Precios de Fábrica", "Entrega Inmediata", "Asesoría Técnica"]
+        title: "Materiales de Construcción",
+        description: "¿Necesita aditivos y materiales para su obra? Visite a nuestro socio Aditivos Rivera, especialistas en materiales de construcción.",
+        benefits: ["Aditivos y Morteros", "Asesoría Especializada", "Sitio Independiente"],
+        href: "https://aditivosrivera.com",
+        ctaLabel: "Visitar sitio",
+        external: true,
     }
 ];
 
-const ServiceCard = ({ icon, num, title, description, benefits, index }) => {
+const ServiceCard = ({ icon, num, title, description, benefits, index, href, ctaLabel, external }) => {
     const ref = useRef(null);
 
     useGSAP(() => {
@@ -65,12 +68,12 @@ const ServiceCard = ({ icon, num, title, description, benefits, index }) => {
         </div>
 
         <a
-            href={`https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20${encodeURIComponent(title)}`}
+            href={href || `https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20${encodeURIComponent(title)}`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.btnService}
         >
-            <MessageCircle size={16} /> Cotizar
+            {external ? <ExternalLink size={16} /> : <MessageCircle size={16} />} {ctaLabel || "Cotizar"}
         </a>
     </div>
     );
