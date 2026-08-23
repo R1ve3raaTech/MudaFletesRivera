@@ -6,12 +6,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ImagePlus, ArrowUpRight } from 'lucide-react';
 import foto2014 from '../../assets/historia-2014.webp';
 import foto2026 from '../../assets/historia-2026.webp';
+import foto3 from '../../assets/historia-3.webp';
+import foto4 from '../../assets/historia-4.webp';
 import styles from './HistoriaTeaser.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 // Mismas 5 fotos que la galería completa (/historia), en miniatura.
-const FOTOS = [undefined, foto2014, undefined, undefined, foto2026];
+const FOTOS = [foto3, foto2014, foto4, undefined, foto2026];
 
 const HistoriaTeaser = () => {
     const ref = useRef(null);

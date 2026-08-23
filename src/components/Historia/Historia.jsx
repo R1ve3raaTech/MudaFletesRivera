@@ -7,6 +7,8 @@ import { ImagePlus, MapPin, MessageCircle, ArrowUpRight } from 'lucide-react';
 import SEO from '../SEO';
 import foto2014 from '../../assets/historia-2014.webp';
 import foto2026 from '../../assets/historia-2026.webp';
+import foto3 from '../../assets/historia-3.webp';
+import foto4 from '../../assets/historia-4.webp';
 import styles from './Historia.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -15,9 +17,9 @@ gsap.registerPlugin(ScrollTrigger);
 // (ubicacion). Mientras falten, se muestra un aviso honesto en vez de
 // inventar una imagen o un lugar.
 const FOTOS = [
-    { fotoSrc: undefined, ubicacion: undefined },
+    { fotoSrc: foto3, ubicacion: undefined },
     { fotoSrc: foto2014, ubicacion: undefined },
-    { fotoSrc: undefined, ubicacion: undefined },
+    { fotoSrc: foto4, ubicacion: undefined },
     { fotoSrc: undefined, ubicacion: undefined },
     { fotoSrc: foto2026, ubicacion: undefined },
 ];
