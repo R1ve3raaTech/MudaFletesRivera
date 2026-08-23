@@ -8,6 +8,9 @@
     --bg-neutral: #F4EFE6;
     --primary-brand: #2563EB;
     --primary-dark: #1E40AF;
+    /* Azul secundario para CTAs y degradados de acento (formulario, navbar, reseñas) */
+    --brand-blue: #0052CC;
+    --brand-cyan: #0EA5E9;
     --accent-color: #F59E0B;
     --accent-glow: rgba(245, 158, 11, 0.1);
     --gradient-hero: linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%);

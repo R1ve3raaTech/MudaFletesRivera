@@ -20,7 +20,7 @@
 
 .eyebrow {
     display: inline-block;
-    color: #0052cc;
+    color: var(--brand-blue);
     font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -39,7 +39,7 @@
 .rule {
     width: 60px;
     height: 4px;
-    background: linear-gradient(90deg, #0052cc, #0ea5e9);
+    background: linear-gradient(90deg, var(--brand-blue), var(--brand-cyan));
     border-radius: 2px;
     margin: 0 auto 1.2rem;
 }
@@ -77,7 +77,7 @@
 .progressPct {
     font-size: 0.8rem;
     font-weight: 700;
-    color: #0052cc;
+    color: var(--brand-blue);
 }
 
 .progressBar {
@@ -92,7 +92,7 @@
     height: 100%;
     width: 100%;
     border-radius: 99px;
-    background: linear-gradient(90deg, #0052cc, #0ea5e9);
+    background: linear-gradient(90deg, var(--brand-blue), var(--brand-cyan));
     transform-origin: left center;
     transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -138,7 +138,7 @@
 }
 
 .progressItem.active .progressDot {
-    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
     color: white;
     box-shadow: 0 4px 14px rgba(0, 82, 204, 0.35);
 }
@@ -157,7 +157,7 @@
 }
 
 .progressItem.active .progressLabel {
-    color: #0052cc;
+    color: var(--brand-blue);
 }
 
 .progressItem.done .progressLabel {
@@ -233,7 +233,7 @@
 .field input[type="text"]:focus,
 .field input[type="date"]:focus,
 .field input[type="time"]:focus {
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
 }
 
 .dateInput {
@@ -267,8 +267,8 @@
 }
 
 .opcion:hover {
-    border-color: #0052cc;
-    color: #0052cc;
+    border-color: var(--brand-blue);
+    color: var(--brand-blue);
     transform: scale(1.03);
 }
 
@@ -278,7 +278,7 @@
 }
 
 .opcionActiva {
-    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
     border-color: transparent;
     color: white !important;
     transform: scale(1.03);
@@ -307,7 +307,7 @@
     align-items: flex-start;
     gap: 0.4rem;
     font-size: 0.82rem;
-    color: #0052cc;
+    color: var(--brand-blue);
     background: #eff6ff;
     border-radius: 8px;
     padding: 0.5rem 0.8rem;
@@ -322,7 +322,7 @@
 
 /* ── Title icon ── */
 .titleIcon {
-    color: #0052cc;
+    color: var(--brand-blue);
     flex-shrink: 0;
 }
 
@@ -349,7 +349,7 @@
 }
 
 .muebleActivo {
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
     background: rgba(239,246,255,0.75);
     box-shadow: 0 2px 12px rgba(0, 82, 204, 0.15);
     animation: muebleWiggle 0.34s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -366,7 +366,7 @@
 }
 
 .muebleIcon {
-    color: #0052cc;
+    color: var(--brand-blue);
     flex-shrink: 0;
     opacity: 0.75;
 }
@@ -396,7 +396,7 @@
     border-radius: 50%;
     border: 1.5px solid var(--border-neutral);
     background: #FDFCFA;
-    color: #0052cc;
+    color: var(--brand-blue);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -408,7 +408,7 @@
 
 .counter button:hover:not(:disabled) {
     background: #eff6ff;
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
 }
 
 .counter button:disabled {
@@ -493,7 +493,7 @@
 }
 
 .textarea:focus {
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
 }
 
 /* ── Number input ── */
@@ -514,7 +514,7 @@
 }
 
 .numberInput:focus {
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
 }
 
 /* ── Resumen ── */
@@ -575,7 +575,7 @@
 }
 
 .autocompleteWrap input:focus {
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
 }
 
 .sugerencias {
@@ -610,11 +610,11 @@
 
 .sugerencias li:hover {
     background: #f0f7ff;
-    color: #0052cc;
+    color: var(--brand-blue);
 }
 
 .sugIcon {
-    color: #0052cc;
+    color: var(--brand-blue);
     flex-shrink: 0;
     margin-top: 2px;
 }
@@ -726,7 +726,7 @@
 }
 
 .btnNext {
-    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
     border: none;
     border-radius: 50px;
     padding: 0.7rem 1.8rem;
@@ -813,7 +813,7 @@
     margin-left: 0.6rem;
     padding: 0.25rem 0.75rem;
     background: rgba(37, 99, 235, 0.1);
-    color: #0052cc;
+    color: var(--brand-blue);
     border-radius: 99px;
     font-size: 0.72rem;
     font-weight: 700;
@@ -972,7 +972,7 @@
 }
 
 .rutaSelector:hover {
-    border-color: #0052cc;
+    border-color: var(--brand-blue);
     box-shadow: 0 4px 16px rgba(0, 82, 204, 0.12);
 }
 
@@ -1005,7 +1005,7 @@
 .rutaDotB {
     width: 8px;
     height: 8px;
-    background: #0052cc;
+    background: var(--brand-blue);
     border-radius: 2px;
 }
 
@@ -1036,7 +1036,7 @@
     flex-shrink: 0;
     font-size: 0.76rem;
     font-weight: 800;
-    color: #0052cc;
+    color: var(--brand-blue);
     background: rgba(0, 82, 204, 0.08);
     border-radius: 99px;
     padding: 0.4rem 0.85rem;
@@ -1061,7 +1061,7 @@
     transition: border-color 0.2s;
 }
 
-.selectInput:focus { border-color: #0052cc; }
+.selectInput:focus { border-color: var(--brand-blue); }
 
 /* ── Sub-etiqueta dentro de un field (ej. hora de mascotas) ── */
 .subLabel {

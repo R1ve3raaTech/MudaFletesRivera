@@ -96,7 +96,7 @@
     }
 
     .specialBlue .iconWrapper {
-        background: linear-gradient(135deg, #0052cc, #0ea5e9);
+        background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
         color: #fff;
         box-shadow: 0 4px 12px rgba(0, 82, 204, 0.35);
     }

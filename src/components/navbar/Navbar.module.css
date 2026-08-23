@@ -220,7 +220,7 @@
 
 /* Enlace destacado "Mi mudanza": siempre visible, con relleno de marca */
 .navDestacado {
-    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
     color: #fff !important;
     padding: 0.6rem 1.1rem !important;
     box-shadow: 0 6px 18px rgba(0, 82, 204, 0.3);
@@ -228,7 +228,7 @@
 }
 
 .navDestacado:hover {
-    background: linear-gradient(135deg, #0052cc, #0ea5e9);
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
     color: #fff !important;
     box-shadow: 0 10px 26px rgba(0, 82, 204, 0.42);
     transform: translateY(-1px);
