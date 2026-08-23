@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ImagePlus, MessageCircle, ArrowUpRight } from 'lucide-react';
+import { ImagePlus, MapPin, MessageCircle, ArrowUpRight } from 'lucide-react';
 import SEO from '../SEO';
 import foto2014 from '../../assets/historia-2014.webp';
 import foto2026 from '../../assets/historia-2026.webp';
@@ -11,33 +11,43 @@ import styles from './Historia.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Cada hito espera una foto real (src) que reemplace el placeholder.
-// Mientras no llegue, fotoSrc queda undefined y se muestra el aviso
-// "Foto pendiente" en vez de fingir una imagen genérica.
-const HITOS = [
-    { year: '2010', fotoSrc: undefined },
-    { year: '2014', fotoSrc: foto2014 },
-    { year: '2018', fotoSrc: undefined },
-    { year: '2022', fotoSrc: undefined },
-    { year: '2026', fotoSrc: foto2026 },
+// Cada foto espera una imagen real (fotoSrc) y el lugar donde se tomó
+// (ubicacion). Mientras falten, se muestra un aviso honesto en vez de
+// inventar una imagen o un lugar.
+const FOTOS = [
+    { fotoSrc: undefined, ubicacion: undefined },
+    { fotoSrc: foto2014, ubicacion: undefined },
+    { fotoSrc: undefined, ubicacion: undefined },
+    { fotoSrc: undefined, ubicacion: undefined },
+    { fotoSrc: foto2026, ubicacion: undefined },
 ];
 
-const FotoHito = ({ year, fotoSrc, alt }) => {
-    if (fotoSrc) {
-        return <img src={fotoSrc} alt={alt} loading="lazy" decoding="async" className={styles.foto} />;
-    }
-    return (
-        <div className={styles.placeholder} role="img" aria-label={`Foto pendiente de ${year}`}>
-            <ImagePlus size={26} />
-            <span>Foto pendiente</span>
-            <strong>{year}</strong>
+const TarjetaFoto = ({ fotoSrc, ubicacion }) => (
+    <div className={styles.card}>
+        {fotoSrc ? (
+            <img
+                src={fotoSrc}
+                alt={ubicacion ? `Mudanza de MudaFletesRivera en ${ubicacion}` : 'Mudanza de MudaFletesRivera'}
+                loading="lazy"
+                decoding="async"
+                className={styles.foto}
+            />
+        ) : (
+            <div className={styles.placeholder} role="img" aria-label="Foto pendiente">
+                <ImagePlus size={26} />
+                <span>Foto pendiente</span>
+            </div>
+        )}
+        <div className={styles.caption}>
+            <MapPin size={14} />
+            <span>{ubicacion || 'Ubicación pendiente'}</span>
         </div>
-    );
-};
+    </div>
+);
 
 const Historia = () => {
     const headerRef = useRef(null);
-    const timelineRef = useRef(null);
+    const galleryRef = useRef(null);
 
     useGSAP(() => {
         gsap.timeline({ defaults: { ease: 'power3.out' } })
@@ -48,67 +58,31 @@ const Historia = () => {
 
     useGSAP(() => {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        if (reduceMotion) {
-            gsap.set(`.${styles.timelineLine}`, { scaleY: 1 });
-        } else {
-            gsap.to(`.${styles.timelineLine}`, {
-                scaleY: 1,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: timelineRef.current,
-                    start: 'top 70%',
-                    end: 'bottom 70%',
-                    scrub: 0.6,
-                },
-            });
-        }
-
-        gsap.utils.toArray(`.${styles.hito}`).forEach((hito, i) => {
-            const desdeX = reduceMotion ? 0 : (i % 2 === 0 ? -28 : 28);
-            gsap.from(hito, {
-                opacity: 0, x: desdeX, duration: 0.6, ease: 'power3.out',
-                scrollTrigger: { trigger: hito, start: 'top 85%', once: true },
-            });
-            gsap.from(hito.querySelector(`.${styles.marker}`), {
-                scale: reduceMotion ? 1 : 0, duration: 0.4, ease: 'back.out(2)',
-                scrollTrigger: { trigger: hito, start: 'top 82%', once: true },
-            });
+        gsap.from(`.${styles.card}`, {
+            opacity: 0, y: reduceMotion ? 0 : 24, scale: reduceMotion ? 1 : 0.97, duration: 0.5, stagger: 0.08,
+            scrollTrigger: { trigger: galleryRef.current, start: 'top 85%', once: true },
         });
-    }, { scope: timelineRef });
+    }, { scope: galleryRef });
 
     return (
         <div className={styles.page}>
             <SEO
-                title="Nuestra historia — MudaFletesRivera"
-                description="Conozca la trayectoria de MudaFletesRivera: más de 15 años de mudanzas y transporte en Costa Rica, año a año."
+                title="Galería de viajes — MudaFletesRivera"
+                description="Fotos reales de mudanzas y viajes de MudaFletesRivera por Costa Rica."
                 path="/historia"
             />
 
             <header className={styles.hero} ref={headerRef}>
-                <span className={styles.eyebrow}>Nuestra trayectoria</span>
-                <h1 className={styles.title}>A través de los años</h1>
+                <span className={styles.eyebrow}>Nuestros viajes</span>
+                <h1 className={styles.title}>Galería de viajes</h1>
                 <p className={styles.subtitle}>
-                    De un solo camión a un equipo que se mueve por todo Costa Rica.
-                    Este es el camino que hemos recorrido, año a año.
+                    Un vistazo a las rutas y mudanzas que hemos hecho por Costa Rica.
                 </p>
             </header>
 
-            <div className={styles.timeline} ref={timelineRef}>
-                <div className={styles.timelineLine} aria-hidden="true" />
-
-                {HITOS.map((h, i) => (
-                    <div key={h.year} className={`${styles.hito} ${i % 2 === 1 ? styles.reverse : ''}`}>
-                        <div className={styles.hitoContent}>
-                            <span className={styles.hitoYear}>{h.year}</span>
-                        </div>
-
-                        <div className={styles.marker} aria-hidden="true" />
-
-                        <div className={styles.hitoPhotoCol}>
-                            <FotoHito year={h.year} fotoSrc={h.fotoSrc} alt={`MudaFletesRivera en ${h.year}`} />
-                        </div>
-                    </div>
+            <div className={styles.gallery} ref={galleryRef}>
+                {FOTOS.map((f, i) => (
+                    <TarjetaFoto key={i} fotoSrc={f.fotoSrc} ubicacion={f.ubicacion} />
                 ))}
             </div>
 

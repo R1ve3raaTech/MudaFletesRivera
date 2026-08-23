@@ -4,11 +4,14 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ImagePlus, ArrowUpRight } from 'lucide-react';
+import foto2014 from '../../assets/historia-2014.webp';
+import foto2026 from '../../assets/historia-2026.webp';
 import styles from './HistoriaTeaser.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AÑOS = ['2010', '2014', '2018', '2022', '2026'];
+// Mismas 5 fotos que la galería completa (/historia), en miniatura.
+const FOTOS = [undefined, foto2014, undefined, undefined, foto2026];
 
 const HistoriaTeaser = () => {
     const ref = useRef(null);
@@ -24,22 +27,22 @@ const HistoriaTeaser = () => {
         <section id="historia" className={styles.teaser} ref={ref}>
             <div className={styles.inner}>
                 <div className={styles.copy}>
-                    <span className={styles.eyebrow}>Nuestra trayectoria</span>
-                    <h2>A través de los años</h2>
+                    <span className={styles.eyebrow}>Nuestros viajes</span>
+                    <h2>Galería de viajes</h2>
                     <p>
-                        De 2010 a hoy: así hemos crecido junto a cada familia y empresa
-                        que confió su mudanza en nosotros.
+                        Un vistazo a las rutas y mudanzas que hemos hecho por Costa Rica.
                     </p>
                     <Link to="/historia" className={styles.cta}>
-                        Ver nuestra historia completa <ArrowUpRight size={18} />
+                        Ver galería completa <ArrowUpRight size={18} />
                     </Link>
                 </div>
 
                 <div className={styles.strip}>
-                    {AÑOS.map((año) => (
-                        <Link to="/historia" key={año} className={styles.chip}>
-                            <ImagePlus size={20} />
-                            <span>{año}</span>
+                    {FOTOS.map((foto, i) => (
+                        <Link to="/historia" key={i} className={styles.chip}>
+                            {foto
+                                ? <img src={foto} alt="Mudanza de MudaFletesRivera" loading="lazy" decoding="async" />
+                                : <ImagePlus size={20} />}
                         </Link>
                     ))}
                 </div>
