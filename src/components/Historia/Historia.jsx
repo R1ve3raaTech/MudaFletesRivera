@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ImagePlus, MessageCircle, ArrowUpRight } from 'lucide-react';
 import SEO from '../SEO';
+import foto2014 from '../../assets/historia-2014.webp';
 import styles from './Historia.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -23,7 +24,7 @@ const HITOS = [
         year: '2014',
         title: 'Primeros grandes clientes',
         description: 'Empezamos a atender mudanzas de oficina y a coordinar con administraciones de edificios y condominios.',
-        fotoSrc: undefined,
+        fotoSrc: foto2014,
     },
     {
         year: '2018',
