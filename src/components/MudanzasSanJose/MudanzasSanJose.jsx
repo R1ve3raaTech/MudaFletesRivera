@@ -18,12 +18,12 @@ const CANTONES = [
 
 const VENTAJAS = [
     {
-        icon: 'history_edu',
-        title: '20+ años en el GAM',
-        description: 'Equipo con más de dos décadas de experiencia en mudanzas dentro del Gran Área Metropolitana.',
+        icon: 'workspace_premium',
+        title: '20+ años de experiencia',
+        description: 'Más de dos décadas moviendo hogares y oficinas en todo Costa Rica, con mayor volumen de trabajo en el GAM.',
     },
     {
-        icon: 'bolt',
+        icon: 'request_quote',
         title: 'Cotización al instante',
         description: 'Precio estimado en línea antes de coordinar cualquier detalle, sin esperar una llamada.',
     },
@@ -33,7 +33,7 @@ const VENTAJAS = [
         description: 'Artículos frágiles y de valor embalados y trasladados con el mismo respeto que a lo propio.',
     },
     {
-        icon: 'apartment',
+        icon: 'home_pin',
         title: 'Coordinación con edificios',
         description: 'Gestionamos horarios y ascensor de carga junto a la administración de condominios y torres.',
     },
@@ -49,8 +49,8 @@ const FAQS = [
         respuesta: 'Depende de la distancia, el tráfico y el volumen a trasladar. Al cotizar en línea te damos un estimado según tu ruta específica dentro del GAM.',
     },
     {
-        pregunta: '¿Cubren cantones fuera de San José centro?',
-        respuesta: 'Sí, damos servicio en todo el Gran Área Metropolitana, incluyendo los cantones que mencionamos abajo.',
+        pregunta: '¿Solo hacen mudanzas dentro del GAM?',
+        respuesta: 'No. El GAM es donde tenemos mayor volumen de trabajo, pero coordinamos mudanzas hacia cualquier punto de Costa Rica. Estos son los cantones del GAM en los que trabajamos con más frecuencia:',
     },
 ];
 
@@ -113,9 +113,10 @@ const MudanzasSanJose = () => {
                             Su mudanza en San José,<br /><span>sin sorpresas.</span>
                         </h1>
                         <p className={styles.subtitle}>
-                            Trasladamos tu hogar u oficina dentro de San José y los cantones del Gran
-                            Área Metropolitana, con un equipo que conoce las condiciones propias de
-                            edificios, condominios y tráfico de la zona.
+                            Trasladamos tu hogar u oficina en San José y los cantones del Gran Área
+                            Metropolitana, donde tenemos nuestro mayor volumen de trabajo, con un
+                            equipo que conoce las condiciones propias de edificios, condominios y
+                            tráfico de la zona. También coordinamos mudanzas hacia el resto de Costa Rica.
                         </p>
                         <div className={styles.heroCtas}>
                             <a
@@ -174,7 +175,8 @@ const MudanzasSanJose = () => {
                 <section className={styles.block}>
                     <h2 className={styles.blockHead}>Zonas donde damos servicio</h2>
                     <p className={styles.blockIntro}>
-                        Cubrimos San José y los cantones del GAM, incluyendo:
+                        Damos servicio en toda Costa Rica. En el Gran Área Metropolitana, donde
+                        tenemos mayor volumen de trabajo, cubrimos cantones como:
                     </p>
                     <div className={styles.tags}>
                         {CANTONES.map((c) => (
