@@ -58,12 +58,9 @@ const Navbar = () => {
                     </a>
                 </li>
                 <li>
-                    <a
-                        href="/"
-                        onClick={(e) => { e.preventDefault(); irASeccion('historia'); }}
-                    >
+                    <Link to="/historia" className={isActive('/historia') ? styles.navActive : ''}>
                         <History size={18} /> <span className={styles.navLabel}>Historia</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
                     <Link to="/condiciones" className={isActive('/condiciones') ? styles.navActive : ''}>

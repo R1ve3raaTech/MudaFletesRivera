@@ -133,38 +133,36 @@
 .teamBtns { display: flex; gap: 16px; margin-top: 16px; }
 .teamBtn { width: 160px; height: 48px; border-radius: 10px; }
 
-/* --- A través de los años: línea de tiempo con marcador + foto --- */
-.historiaList {
+/* --- Teaser de Historia: texto + botón y tira de 5 chips --- */
+.teaserSplit {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-}
-
-.historiaRow {
-    display: flex;
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 32px;
     align-items: center;
-    gap: 24px;
 }
 
-.historiaDot { width: 18px; height: 18px; flex-shrink: 0; }
-
-.historiaLines {
-    flex: 1;
+.teaserCol {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.historiaPhoto {
-    width: 200px;
-    height: 150px;
-    border-radius: 20px;
-    flex-shrink: 0;
+.teaserCta { width: 200px; height: 20px; margin-top: 10px; }
+
+.teaserStrip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+}
+
+.teaserChip {
+    aspect-ratio: 1;
+    border-radius: 16px;
 }
 
 @media (max-width: 768px) {
-    .historiaPhoto { display: none; }
+    .teaserSplit { grid-template-columns: 1fr; }
 }
 
 /* --- Reseñas: fondo azul del sitio con tarjetas claras --- */
