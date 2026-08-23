@@ -1,14 +1,28 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { MessageCircle, Package, Mail, MapPin, ArrowUpRight } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
+import scrollToSection from '../../scrollToSection';
 import styles from './Footer.module.css';
 
 const Footer = () => {
     const ctaRef = useRef(null);
     const innerRef = useRef(null);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // Igual que en BottomNav: el footer es persistente entre rutas, así que
+    // un <a href="#servicios"> no funciona fuera del inicio (solo cambia el
+    // hash de la URL actual sin navegar) ni con las secciones lazy-loaded.
+    const irASeccion = (id) => {
+        if (location.pathname === '/') {
+            scrollToSection(id);
+        } else {
+            navigate('/', id === 'inicio' ? undefined : { state: { scrollTo: id } });
+        }
+    };
 
     // El footer es persistente entre rutas: un ScrollTrigger calcularía sus
     // posiciones con el alto de la página inicial y en rutas más cortas
@@ -64,10 +78,10 @@ const Footer = () => {
             <div className={styles.divider} />
 
             <nav className={styles.navCol} aria-label="Navegación">
-                <a href="#inicio">Inicio</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#nosotros">Nosotros</a>
-                <a href="#contacto">Contáctenos</a>
+                <a href="/" onClick={(e) => { e.preventDefault(); irASeccion('inicio'); }}>Inicio</a>
+                <a href="/#servicios" onClick={(e) => { e.preventDefault(); irASeccion('servicios'); }}>Servicios</a>
+                <a href="/#nosotros" onClick={(e) => { e.preventDefault(); irASeccion('nosotros'); }}>Nosotros</a>
+                <a href="/#contacto" onClick={(e) => { e.preventDefault(); irASeccion('contacto'); }}>Contáctenos</a>
                 <Link to="/mudanzas-san-jose">Mudanzas en San José</Link>
                 <Link to="/condiciones">Condiciones</Link>
             </nav>
