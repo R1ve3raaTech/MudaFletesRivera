@@ -72,6 +72,24 @@ const VARIANTES = {
             </div>
         </div>
     ),
+    historia: (
+        <>
+            <Bar cls={styles.title} />
+            <Bar cls={styles.subtitle} />
+            <div className={styles.historiaList}>
+                {[0, 1, 2].map((i) => (
+                    <div key={i} className={styles.historiaRow}>
+                        <Bar cls={`${styles.circle} ${styles.historiaDot}`} />
+                        <div className={styles.historiaLines}>
+                            <Bar cls={styles.lineShort} />
+                            <Bar cls={styles.lineMid} />
+                        </div>
+                        <Bar cls={styles.historiaPhoto} />
+                    </div>
+                ))}
+            </div>
+        </>
+    ),
     reviews: (
         <>
             <Bar cls={styles.title} />

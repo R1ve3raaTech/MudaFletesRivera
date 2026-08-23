@@ -21,6 +21,7 @@ const CotizadorForm = lazy(() => import('./components/Form/CotizadorForm'));
 const MudanzasSanJose = lazy(() => import('./components/MudanzasSanJose/MudanzasSanJose'));
 
 const NuestroEquipo = lazy(() => import('./components/NuestroEquipo/NuestroEquipo'));
+const AtravesDeLosAnos = lazy(() => import('./components/AtravesDeLosAnos/AtravesDeLosAnos'));
 import BottomNav from './components/BottomNav/BottomNav';
 import WhatsappFloat from './components/WhatsappFloat/WhatsappFloat';
 import PromoCotizador from './components/PromoCotizador/PromoCotizador';
@@ -71,8 +72,9 @@ const HomePage = () => {
             <LazySection order={1} variant="process" minHeight={{ mobile: 1180, desktop: 600 }}><Process /></LazySection>
             <LazySection order={2} variant="whyus" minHeight={{ mobile: 1160, desktop: 800 }}><WhyUs /></LazySection>
             <LazySection order={3} variant="team" minHeight={{ mobile: 1500, desktop: 990 }}><NuestroEquipo /></LazySection>
-            <LazySection order={4} variant="reviews" minHeight={{ mobile: 1580, desktop: 980 }}><Reseñas /></LazySection>
-            <LazySection order={5} variant="contact" minHeight={{ mobile: 1370, desktop: 870 }}><Contact /></LazySection>
+            <LazySection order={4} variant="historia" minHeight={{ mobile: 1600, desktop: 1300 }}><AtravesDeLosAnos /></LazySection>
+            <LazySection order={5} variant="reviews" minHeight={{ mobile: 1580, desktop: 980 }}><Reseñas /></LazySection>
+            <LazySection order={6} variant="contact" minHeight={{ mobile: 1370, desktop: 870 }}><Contact /></LazySection>
         </PageWrapper>
     );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Home, FileText, Info, Star } from 'lucide-react';
+import { Home, FileText, Info, Star, History } from 'lucide-react';
 import logoImg from '../../assets/trucklogo.png';
 import scrollToSection from '../../scrollToSection';
 import styles from './Navbar.module.css';
@@ -55,6 +55,14 @@ const Navbar = () => {
                         onClick={(e) => { e.preventDefault(); irASeccion('resenas'); }}
                     >
                         <Star size={18} /> <span className={styles.navLabel}>Reseñas</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href="/"
+                        onClick={(e) => { e.preventDefault(); irASeccion('historia'); }}
+                    >
+                        <History size={18} /> <span className={styles.navLabel}>Historia</span>
                     </a>
                 </li>
                 <li>
