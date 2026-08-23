@@ -92,40 +92,77 @@ const CursorBubble = () => {
             }
         };
 
-        const onPointerDown = (e) => {
-            if (e.pointerType === 'mouse' && e.button !== 0) return;
-            spawnBubble(e.pointerId, e.clientX, e.clientY);
-        };
-
-        const onPointerMove = (e) => {
-            const state = bubbles.get(e.pointerId);
-            if (!state) return;
-            state.targetX = e.clientX;
-            state.targetY = e.clientY;
-        };
-
-        const release = (e) => {
-            const state = bubbles.get(e.pointerId);
+        const release = (id) => {
+            const state = bubbles.get(id);
             if (!state) return;
             cancelAnimationFrame(state.raf);
             state.el.style.transition = 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease';
             setTransform(state, 1.5, 1.5, 0);
             state.el.style.opacity = '0';
-            bubbles.delete(e.pointerId);
+            bubbles.delete(id);
             salpicar(state.x, state.y);
             setTimeout(() => state.el.remove(), 320);
         };
 
+        // El mouse usa Pointer Events (no hay ambigüedad de scroll con mouse).
+        // El dedo usa Touch Events aparte: en móvil, si el navegador decide
+        // que el toque es para hacer scroll, cancela el pointer (pointercancel)
+        // y deja de mandar pointermove — la gota se quedaría pegada apenas
+        // empezás a scrollear. touchmove, en cambio, se sigue disparando
+        // durante todo el scroll, así que la gota sigue el dedo igual.
+        const onPointerDown = (e) => {
+            if (e.pointerType !== 'mouse' || e.button !== 0) return;
+            spawnBubble('mouse', e.clientX, e.clientY);
+        };
+
+        const onPointerMove = (e) => {
+            if (e.pointerType !== 'mouse') return;
+            const state = bubbles.get('mouse');
+            if (!state) return;
+            state.targetX = e.clientX;
+            state.targetY = e.clientY;
+        };
+
+        const onPointerRelease = (e) => {
+            if (e.pointerType !== 'mouse') return;
+            release('mouse');
+        };
+
+        const onTouchStart = (e) => {
+            for (const t of e.changedTouches) spawnBubble(`touch-${t.identifier}`, t.clientX, t.clientY);
+        };
+
+        const onTouchMove = (e) => {
+            for (const t of e.changedTouches) {
+                const state = bubbles.get(`touch-${t.identifier}`);
+                if (!state) continue;
+                state.targetX = t.clientX;
+                state.targetY = t.clientY;
+            }
+        };
+
+        const onTouchEnd = (e) => {
+            for (const t of e.changedTouches) release(`touch-${t.identifier}`);
+        };
+
         window.addEventListener('pointerdown', onPointerDown, { passive: true });
         window.addEventListener('pointermove', onPointerMove, { passive: true });
-        window.addEventListener('pointerup', release, { passive: true });
-        window.addEventListener('pointercancel', release, { passive: true });
+        window.addEventListener('pointerup', onPointerRelease, { passive: true });
+        window.addEventListener('pointercancel', onPointerRelease, { passive: true });
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        window.addEventListener('touchmove', onTouchMove, { passive: true });
+        window.addEventListener('touchend', onTouchEnd, { passive: true });
+        window.addEventListener('touchcancel', onTouchEnd, { passive: true });
 
         return () => {
             window.removeEventListener('pointerdown', onPointerDown);
             window.removeEventListener('pointermove', onPointerMove);
-            window.removeEventListener('pointerup', release);
-            window.removeEventListener('pointercancel', release);
+            window.removeEventListener('pointerup', onPointerRelease);
+            window.removeEventListener('pointercancel', onPointerRelease);
+            window.removeEventListener('touchstart', onTouchStart);
+            window.removeEventListener('touchmove', onTouchMove);
+            window.removeEventListener('touchend', onTouchEnd);
+            window.removeEventListener('touchcancel', onTouchEnd);
             bubbles.forEach((state) => {
                 cancelAnimationFrame(state.raf);
                 state.el.remove();
