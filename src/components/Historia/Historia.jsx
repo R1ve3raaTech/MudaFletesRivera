@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
 const FOTOS = [
     { fotoSrc: foto3, ubicacion: undefined },
     { fotoSrc: foto2014, ubicacion: undefined },
-    { fotoSrc: foto4, ubicacion: undefined },
+    { fotoSrc: foto4, ubicacion: 'Parrita, Puntarenas' },
     { fotoSrc: undefined, ubicacion: undefined },
     { fotoSrc: foto2026, ubicacion: undefined },
 ];
