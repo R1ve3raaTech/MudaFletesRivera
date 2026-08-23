@@ -45,7 +45,7 @@ const Hero = () => {
                             <MessageCircle size={18} /> Cotizar por WhatsApp
                         </a>
                         <a
-                            href="#servicios"
+                            href="/"
                             onClick={(e) => { e.preventDefault(); scrollToSection('servicios'); }}
                             className={styles.btnSecondary}
                         >Ver servicios</a>

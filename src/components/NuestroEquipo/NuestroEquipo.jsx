@@ -9,6 +9,7 @@ import mudanza2 from '../../assets/mudanza2.webp';
 import mudanza3 from '../../assets/mudanza3.webp';
 import mudanza4 from '../../assets/mudanza4.webp';
 import mudanza5 from '../../assets/mudanza5.webp';
+import scrollToSection from '../../scrollToSection';
 import truck1 from '../../assets/truck1.webp';
 import truck2 from '../../assets/truck2.webp';
 import logoNew from '../../assets/trucklogo.png';
@@ -198,7 +199,11 @@ const NuestroEquipo = () => {
                     </div>
 
                     <div className="truckSecActions">
-                        <a href="#contacto" className="truckSecBtnForm">
+                        <a
+                            href="/"
+                            onClick={(e) => { e.preventDefault(); scrollToSection('contacto'); }}
+                            className="truckSecBtnForm"
+                        >
                             <Send size={18} /> Cotizar Ahora
                         </a>
                         <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer" className="truckSecBtnWa">

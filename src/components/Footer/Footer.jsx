@@ -79,9 +79,9 @@ const Footer = () => {
 
             <nav className={styles.navCol} aria-label="Navegación">
                 <a href="/" onClick={(e) => { e.preventDefault(); irASeccion('inicio'); }}>Inicio</a>
-                <a href="/#servicios" onClick={(e) => { e.preventDefault(); irASeccion('servicios'); }}>Servicios</a>
-                <a href="/#nosotros" onClick={(e) => { e.preventDefault(); irASeccion('nosotros'); }}>Nosotros</a>
-                <a href="/#contacto" onClick={(e) => { e.preventDefault(); irASeccion('contacto'); }}>Contáctenos</a>
+                <a href="/" onClick={(e) => { e.preventDefault(); irASeccion('servicios'); }}>Servicios</a>
+                <a href="/" onClick={(e) => { e.preventDefault(); irASeccion('nosotros'); }}>Nosotros</a>
+                <a href="/" onClick={(e) => { e.preventDefault(); irASeccion('contacto'); }}>Contáctenos</a>
                 <Link to="/mudanzas-san-jose">Mudanzas en San José</Link>
                 <Link to="/condiciones">Condiciones</Link>
             </nav>

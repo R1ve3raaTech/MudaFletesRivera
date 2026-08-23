@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Link } from 'react-router-dom';
+import scrollToSection from '../../scrollToSection';
 import styles from './WhyUs.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -62,7 +63,11 @@ const WhyUs = () => {
                             La cotización que recibe es el precio que paga. Sin extras de último momento, sin letra pequeña, sin cargos escondidos al bajar el último mueble.
                         </p>
                         <div className={styles.actions}>
-                            <a href="#contacto" className={styles.btnCta}>Cotizar ahora</a>
+                            <a
+                                href="/"
+                                onClick={(e) => { e.preventDefault(); scrollToSection('contacto'); }}
+                                className={styles.btnCta}
+                            >Cotizar ahora</a>
                             <Link to="/condiciones" className={styles.linkSecondary}>Ver condiciones</Link>
                         </div>
                     </div>

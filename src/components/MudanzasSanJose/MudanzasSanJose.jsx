@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MapPin, ArrowUpRight, CheckCircle2, MessageCircle } from 'lucide-react';
+import { MapPin, ArrowUpRight, MessageCircle, Plus } from 'lucide-react';
 import SEO from '../SEO';
+import zonaImg from '../../assets/mudanza2.webp';
 import styles from './MudanzasSanJose.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,10 +17,26 @@ const CANTONES = [
 ];
 
 const VENTAJAS = [
-    'Equipo con más de 20 años de experiencia en mudanzas del GAM',
-    'Cotización en línea con precio estimado al instante',
-    'Manejo cuidadoso de artículos frágiles y de valor',
-    'Coordinación con administraciones de condominios y edificios',
+    {
+        icon: 'history_edu',
+        title: '20+ años en el GAM',
+        description: 'Equipo con más de dos décadas de experiencia en mudanzas dentro del Gran Área Metropolitana.',
+    },
+    {
+        icon: 'bolt',
+        title: 'Cotización al instante',
+        description: 'Precio estimado en línea antes de coordinar cualquier detalle, sin esperar una llamada.',
+    },
+    {
+        icon: 'inventory_2',
+        title: 'Manejo cuidadoso',
+        description: 'Artículos frágiles y de valor embalados y trasladados con el mismo respeto que a lo propio.',
+    },
+    {
+        icon: 'apartment',
+        title: 'Coordinación con edificios',
+        description: 'Gestionamos horarios y ascensor de carga junto a la administración de condominios y torres.',
+    },
 ];
 
 const FAQS = [
@@ -43,20 +60,38 @@ const MudanzasSanJose = () => {
 
     useGSAP(() => {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const y = (v) => (reduceMotion ? 0 : v);
+
         gsap.timeline({ defaults: { ease: 'power3.out' } })
-            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 })
-            .from(`.${styles.title}`, { opacity: 0, y: reduceMotion ? 0 : 20, duration: 0.5 }, 0.1)
-            .from(`.${styles.subtitle}`, { opacity: 0, y: reduceMotion ? 0 : 16, duration: 0.5 }, 0.2)
-            .from(`.${styles.heroCtas} > *`, { opacity: 0, y: reduceMotion ? 0 : 12, duration: 0.4, stagger: 0.08 }, 0.3);
+            .from(`.${styles.eyebrow}`, { opacity: 0, y: y(14), duration: 0.5 })
+            .from(`.${styles.copy} h1`, { opacity: 0, y: y(22), duration: 0.6 }, 0.1)
+            .from(`.${styles.subtitle}`, { opacity: 0, y: y(14), duration: 0.5 }, 0.28)
+            .from(`.${styles.heroCtas} > *`, { opacity: 0, y: y(12), duration: 0.5, stagger: 0.08 }, 0.42)
+            .from(`.${styles.visual}`, { opacity: 0, x: reduceMotion ? 0 : 36, duration: 0.8 }, 0.2)
+            .from(`.${styles.badge}`, { opacity: 0, scale: reduceMotion ? 1 : 0.7, duration: 0.5, ease: 'back.out(2)' }, 0.7);
     }, { scope: heroRef });
 
     useGSAP(() => {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        gsap.utils.toArray(`.${styles.block}`).forEach((block) => {
-            gsap.from(block, {
-                opacity: 0, y: reduceMotion ? 0 : 24, duration: 0.5,
-                scrollTrigger: { trigger: block, start: 'top 88%', once: true },
+        gsap.utils.toArray(`.${styles.row}`).forEach((row, i) => {
+            gsap.from(row, {
+                opacity: 0, y: reduceMotion ? 0 : 24, duration: 0.5, delay: (i % 4) * 0.08,
+                scrollTrigger: { trigger: row, start: 'top 90%', once: true },
             });
+        });
+        gsap.utils.toArray(`.${styles.blockHead}`).forEach((head) => {
+            gsap.from(head, {
+                opacity: 0, y: reduceMotion ? 0 : 18, duration: 0.5,
+                scrollTrigger: { trigger: head, start: 'top 88%', once: true },
+            });
+        });
+        gsap.from(`.${styles.tag}`, {
+            opacity: 0, y: reduceMotion ? 0 : 10, duration: 0.4, stagger: 0.03,
+            scrollTrigger: { trigger: `.${styles.tags}`, start: 'top 88%', once: true },
+        });
+        gsap.from(`.${styles.faqItem}`, {
+            opacity: 0, y: reduceMotion ? 0 : 16, duration: 0.4, stagger: 0.08,
+            scrollTrigger: { trigger: `.${styles.faqList}`, start: 'top 88%', once: true },
         });
     }, { scope: sectionsRef });
 
@@ -69,63 +104,98 @@ const MudanzasSanJose = () => {
             />
 
             <section className={styles.hero} ref={heroRef}>
-                <span className={styles.eyebrow}>
-                    <MapPin size={14} /> San José · Gran Área Metropolitana
-                </span>
-                <h1 className={styles.title}>Mudanzas en San José y el GAM</h1>
-                <p className={styles.subtitle}>
-                    Trasladamos tu hogar u oficina dentro de San José y los cantones del Gran
-                    Área Metropolitana, con un equipo que conoce las condiciones propias de
-                    edificios, condominios y tráfico de la zona.
-                </p>
-                <div className={styles.heroCtas}>
-                    <Link to="/mimudanza" className={styles.primaryBtn}>
-                        Cotizar mi mudanza <ArrowUpRight size={18} />
-                    </Link>
-                    <a
-                        href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza%20en%20San%20Jos%C3%A9"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.secondaryBtn}
-                    >
-                        <MessageCircle size={18} /> Escribir por WhatsApp
-                    </a>
+                <div className={styles.grid}>
+                    <div className={styles.copy}>
+                        <span className={styles.eyebrow}>
+                            <MapPin size={14} /> San José · Gran Área Metropolitana
+                        </span>
+                        <h1 className={styles.title}>
+                            Su mudanza en San José,<br /><span>sin sorpresas.</span>
+                        </h1>
+                        <p className={styles.subtitle}>
+                            Trasladamos tu hogar u oficina dentro de San José y los cantones del Gran
+                            Área Metropolitana, con un equipo que conoce las condiciones propias de
+                            edificios, condominios y tráfico de la zona.
+                        </p>
+                        <div className={styles.heroCtas}>
+                            <a
+                                href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza%20en%20San%20Jos%C3%A9"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.primaryBtn}
+                            >
+                                <MessageCircle size={18} /> Cotizar por WhatsApp
+                            </a>
+                            <Link to="/mimudanza" className={styles.secondaryBtn}>
+                                Cotizar en línea <ArrowUpRight size={18} />
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className={styles.visual}>
+                        <img
+                            src={zonaImg}
+                            alt="Mudanza residencial en curso dentro del Gran Área Metropolitana"
+                            loading="lazy"
+                            decoding="async"
+                        />
+                        <div className={styles.badge}>
+                            <MapPin size={18} />
+                            <div>
+                                <strong>{CANTONES.length}+ cantones</strong>
+                                <span>cubiertos en el GAM</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <div ref={sectionsRef}>
                 <section className={styles.block}>
-                    <h2>Por qué elegirnos para tu mudanza en San José</h2>
-                    <ul className={styles.checkList}>
-                        {VENTAJAS.map((v) => (
-                            <li key={v}>
-                                <CheckCircle2 size={20} className={styles.checkIcon} />
-                                <span>{v}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-
-                <section className={styles.block}>
-                    <h2>Zonas donde damos servicio</h2>
-                    <p className={styles.blockIntro}>
-                        Cubrimos San José y los cantones del GAM, incluyendo:
-                    </p>
-                    <div className={styles.tags}>
-                        {CANTONES.map((c) => (
-                            <span key={c} className={styles.tag}>{c}</span>
+                    <h2 className={styles.blockHead}>Por qué elegirnos para tu mudanza en San José</h2>
+                    <div className={styles.list}>
+                        {VENTAJAS.map((v, i) => (
+                            <div key={v.title} className={styles.row}>
+                                <div className={styles.rail}>
+                                    <span className={styles.num}>{String(i + 1).padStart(2, '0')}</span>
+                                    <div className={styles.iconWrap}>
+                                        <span className="material-symbols-outlined">{v.icon}</span>
+                                    </div>
+                                </div>
+                                <div className={styles.rowContent}>
+                                    <h3>{v.title}</h3>
+                                    <p>{v.description}</p>
+                                </div>
+                            </div>
                         ))}
                     </div>
                 </section>
 
                 <section className={styles.block}>
-                    <h2>Preguntas frecuentes</h2>
+                    <h2 className={styles.blockHead}>Zonas donde damos servicio</h2>
+                    <p className={styles.blockIntro}>
+                        Cubrimos San José y los cantones del GAM, incluyendo:
+                    </p>
+                    <div className={styles.tags}>
+                        {CANTONES.map((c) => (
+                            <span key={c} className={styles.tag}>
+                                <MapPin size={13} /> {c}
+                            </span>
+                        ))}
+                    </div>
+                </section>
+
+                <section className={styles.block}>
+                    <h2 className={styles.blockHead}>Preguntas frecuentes</h2>
                     <div className={styles.faqList}>
                         {FAQS.map((f) => (
-                            <div key={f.pregunta} className={styles.faqItem}>
-                                <h3>{f.pregunta}</h3>
+                            <details key={f.pregunta} className={styles.faqItem}>
+                                <summary>
+                                    {f.pregunta}
+                                    <Plus size={18} className={styles.faqIcon} />
+                                </summary>
                                 <p>{f.respuesta}</p>
-                            </div>
+                            </details>
                         ))}
                     </div>
                 </section>
