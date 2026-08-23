@@ -15,8 +15,16 @@
 .termsCard h1 {
     font-size: 3rem;
     color: var(--primary-brand);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.6rem;
     text-align: center;
+}
+
+.lastUpdated {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 2.8rem;
 }
 
 .termsSection {

@@ -26,6 +26,7 @@ const Conditions = () => {
         <div className={styles.termsContainer} ref={containerRef}>
             <div className={styles.termsCard}>
                 <h1>Condiciones de Uso</h1>
+                <p className={styles.lastUpdated}>Última actualización: 15 de julio de 2026</p>
 
                 <div className={styles.termsSection}>
                     <h2>1. Introducción</h2>
