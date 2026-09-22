@@ -5,6 +5,12 @@
     z-index: 9999;
 }
 
+@media (pointer: coarse) {
+    .layer {
+        display: none;
+    }
+}
+
 .bubble {
     position: absolute;
     top: 0;

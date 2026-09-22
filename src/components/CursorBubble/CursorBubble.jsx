@@ -19,7 +19,11 @@ const CursorBubble = () => {
     const bubblesRef = useRef(new Map());
 
     useEffect(() => {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+        const esDispositivoTactil = window.matchMedia('(pointer: coarse)').matches
+            || navigator.maxTouchPoints > 0;
+        if (esDispositivoTactil || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return undefined;
+        }
 
         const container = containerRef.current;
         const bubbles = bubblesRef.current;
@@ -128,41 +132,16 @@ const CursorBubble = () => {
             release('mouse');
         };
 
-        const onTouchStart = (e) => {
-            for (const t of e.changedTouches) spawnBubble(`touch-${t.identifier}`, t.clientX, t.clientY);
-        };
-
-        const onTouchMove = (e) => {
-            for (const t of e.changedTouches) {
-                const state = bubbles.get(`touch-${t.identifier}`);
-                if (!state) continue;
-                state.targetX = t.clientX;
-                state.targetY = t.clientY;
-            }
-        };
-
-        const onTouchEnd = (e) => {
-            for (const t of e.changedTouches) release(`touch-${t.identifier}`);
-        };
-
         window.addEventListener('pointerdown', onPointerDown, { passive: true });
         window.addEventListener('pointermove', onPointerMove, { passive: true });
         window.addEventListener('pointerup', onPointerRelease, { passive: true });
         window.addEventListener('pointercancel', onPointerRelease, { passive: true });
-        window.addEventListener('touchstart', onTouchStart, { passive: true });
-        window.addEventListener('touchmove', onTouchMove, { passive: true });
-        window.addEventListener('touchend', onTouchEnd, { passive: true });
-        window.addEventListener('touchcancel', onTouchEnd, { passive: true });
 
         return () => {
             window.removeEventListener('pointerdown', onPointerDown);
             window.removeEventListener('pointermove', onPointerMove);
             window.removeEventListener('pointerup', onPointerRelease);
             window.removeEventListener('pointercancel', onPointerRelease);
-            window.removeEventListener('touchstart', onTouchStart);
-            window.removeEventListener('touchmove', onTouchMove);
-            window.removeEventListener('touchend', onTouchEnd);
-            window.removeEventListener('touchcancel', onTouchEnd);
             bubbles.forEach((state) => {
                 cancelAnimationFrame(state.raf);
                 state.el.remove();
