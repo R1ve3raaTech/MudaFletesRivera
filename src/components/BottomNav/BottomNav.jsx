@@ -34,7 +34,7 @@ const BottomNav = () => {
     }, { scope: navRef, dependencies: [currentPath] });
 
     return (
-        <nav className={styles.bottomNav} ref={navRef}>
+        <nav className={`${styles.bottomNav} ${currentPath.startsWith('/mimudanza') ? styles.quoteNav : ''}`} ref={navRef}>
             <a
                 href="/"
                 aria-label="Inicio"

@@ -45,21 +45,30 @@ const todayParts = () => {
 const MESES = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 const MESES_NOMBRES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-// Termómetro compacto para las cards
-const MiniTermometro = ({ calificacion }) => {
-    const pct = (calificacion / 6) * 100;
-    const color = NIVELES[calificacion - 1]?.color ?? '#e2e8f0';
+const formatearNombreTestimonio = (nombre = '') => {
+    const partes = nombre.trim().split(/\s+/).filter(Boolean);
+    if (partes.length <= 1) return nombre;
+    return `${partes[0].charAt(0).toUpperCase()}. ${partes[partes.length - 1]}`;
+};
+
+// Valoración compacta basada únicamente en la calificación guardada.
+const CalificacionDiscreta = ({ calificacion }) => {
+    const nivel = NIVELES[calificacion - 1];
     return (
-        <div className={styles.miniThermo}>
-            <div className={styles.miniThermoTrack}>
-                <div
-                    className={styles.miniThermoFill}
-                    style={{ transform: `scaleX(${pct / 100})`, background: color }}
-                />
-            </div>
-            <span className={styles.miniThermoLabel} style={{ color }}>
-                {NIVELES[calificacion - 1]?.label ?? ''}
+        <div
+            className={styles.rating}
+            aria-label={`Calificación: ${calificacion} de ${NIVELES.length}${nivel ? `, ${nivel.label}` : ''}`}
+        >
+            <span className={styles.ratingScale} aria-hidden="true">
+                {NIVELES.map((_, i) => (
+                    <span
+                        key={i}
+                        className={`${styles.ratingDot} ${i < calificacion ? styles.ratingDotActive : ''}`}
+                    />
+                ))}
             </span>
+            <span className={styles.ratingValue}>{calificacion}/{NIVELES.length}</span>
+            {nivel && <span className={styles.ratingLabel}>{nivel.label}</span>}
         </div>
     );
 };
@@ -69,8 +78,9 @@ const Termometro = ({ value, onChange }) => {
     const labelRef = useRef(null);
 
     useGSAP(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         if (!value) return;
-        gsap.fromTo(labelRef.current, { opacity: 0, y: -4 }, { opacity: 1, y: 0, duration: 0.25 });
+        gsap.fromTo(labelRef.current, { opacity: 0, y: -4 }, { opacity: 1, y: 0, duration: 0.2, ease: 'power2.out' });
     }, [value]);
 
     return (
@@ -114,36 +124,40 @@ const Termometro = ({ value, onChange }) => {
 
 const ReseñaCard = ({ nombre, calificacion, texto, fecha, aspectos, index }) => {
     const tags = aspectos ? aspectos.split(',').map(t => t.trim()).filter(Boolean) : [];
-    const color = NIVELES[calificacion - 1]?.color ?? '#0052cc';
     const ref = useRef(null);
 
     useGSAP(() => {
-        gsap.from(ref.current, {
-            opacity: 0, y: 40, duration: 0.5, delay: index * 0.1,
-            scrollTrigger: { trigger: ref.current, start: 'top 90%', once: true },
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        gsap.fromTo(ref.current, {
+            autoAlpha: 0,
+            y: 24,
+        }, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.42,
+            delay: Math.min(index * 0.08, 0.24),
+            ease: 'power2.out',
+            scrollTrigger: { trigger: ref.current, start: 'top 92%', once: true },
         });
-    }, { scope: ref });
+    }, { scope: ref, dependencies: [index] });
 
     return (
         <div ref={ref} className={styles.card}>
-            <Quote size={28} className={styles.quoteIcon} />
+            <Quote size={22} className={styles.quoteIcon} aria-hidden="true" />
             <p className={styles.texto}>{texto}</p>
             {tags.length > 0 && (
                 <div className={styles.cardTags}>
                     {tags.map((tag) => (
-                        <span key={tag} className={styles.cardTag} style={{ borderColor: color, color }}>
+                        <span key={tag} className={styles.cardTag}>
                             {tag}
                         </span>
                     ))}
                 </div>
             )}
-            <MiniTermometro calificacion={calificacion} />
+            <CalificacionDiscreta calificacion={calificacion} />
             <div className={styles.autor}>
-                <div className={styles.avatar} aria-hidden="true">
-                    {nombre.trim().split(/\s+/).slice(0, 2).map(p => p[0]?.toUpperCase()).join('')}
-                </div>
                 <div>
-                    <p className={styles.nombre}>{nombre}</p>
+                    <p className={styles.nombre}>{formatearNombreTestimonio(nombre)}</p>
                     <p className={styles.meta}>Mudanza · {fecha}</p>
                 </div>
             </div>
@@ -157,12 +171,17 @@ const Modal = ({ onClose }) => {
     const tagsFieldRef = useRef(null);
 
     useGSAP(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         gsap.from(overlayRef.current, { opacity: 0, duration: 0.25 });
-        gsap.from(modalRef.current, { opacity: 0, scale: 0.92, y: 30, duration: 0.4, ease: 'back.out(1.4)' });
+        gsap.from(modalRef.current, { opacity: 0, scale: 0.96, y: 18, duration: 0.32, ease: 'power3.out' });
     }, { scope: overlayRef });
 
     const closeAnimated = (recargar) => {
-        gsap.to(modalRef.current, { opacity: 0, scale: 0.92, y: 30, duration: 0.25, ease: 'power2.in' });
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            onClose(recargar);
+            return;
+        }
+        gsap.to(modalRef.current, { opacity: 0, scale: 0.96, y: 18, duration: 0.2, ease: 'power2.in' });
         gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, delay: 0.05, onComplete: () => onClose(recargar) });
     };
 
@@ -212,8 +231,9 @@ const Modal = ({ onClose }) => {
     };
 
     useGSAP(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         if (!tagsFieldRef.current) return;
-        gsap.fromTo(tagsFieldRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.2 });
+        gsap.fromTo(tagsFieldRef.current, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.18, ease: 'power2.out' });
     }, [form.calificacion <= 3]);
 
     const fechaFormateada = `${form.dia}/${form.mes}/${form.anio}`;
@@ -283,7 +303,7 @@ const Modal = ({ onClose }) => {
 
                 {status === 'success' ? (
                     <div className={styles.successMsg}>
-                        <ThumbsUp size={48} style={{ color: '#16a34a' }} />
+                        <ThumbsUp size={48} style={{ color: 'var(--primary-brand)' }} />
                         <h3>¡Gracias por tu reseña!</h3>
                         <p>Ya aparece en la página.</p>
                         <button className={styles.submitBtn} onClick={() => closeAnimated(true)}>Cerrar</button>
@@ -481,24 +501,34 @@ const Reseñas = () => {
     const reseñasPagina = reseñas.slice((pagina - 1) * POR_PAGINA, pagina * POR_PAGINA);
 
     const irPagina = (n) => {
+        const scrollTop = window.scrollY;
+        const activeElement = document.activeElement;
+        activeElement?.blur();
         setPagina(n);
-        document.getElementById('resenas')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Cambiar las tarjetas no debe mover al usuario hasta el botÃ³n
+        // enfocado ni llevarlo al inicio de la secciÃ³n.
+        setTimeout(() => {
+            window.scrollTo({ top: scrollTop, left: 0, behavior: 'auto' });
+            activeElement?.focus?.({ preventScroll: true });
+        });
     };
 
     const headerRef = useRef(null);
     const emptyRef = useRef(null);
 
     useGSAP(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
-            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.4 })
-            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 }, 0.1)
-            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.2)
-            .from(`.${styles.ctaBtn}`, { opacity: 0, y: 10, duration: 0.4 }, 0.3);
+            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.3 })
+            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 14, duration: 0.35, ease: 'power2.out' }, 0.08)
+            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.3 }, 0.16)
+            .from(`.${styles.ctaBtn}`, { opacity: 0, y: 8, duration: 0.3, ease: 'power2.out' }, 0.24);
     }, { scope: headerRef });
 
     useGSAP(() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         if (!cargando && reseñas.length === 0) {
-            gsap.from(emptyRef.current, { opacity: 0, y: 20, duration: 0.5 });
+            gsap.from(emptyRef.current, { opacity: 0, y: 16, duration: 0.4, ease: 'power2.out' });
         }
     }, [cargando, reseñas.length]);
 
@@ -536,7 +566,7 @@ const Reseñas = () => {
                         <p className={styles.emptySub}>Sé el primero en compartir tu experiencia con nosotros.</p>
                     </div>
                 ) : reseñasPagina.map((r, i) => (
-                    <ReseñaCard key={r.id ?? i} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
+                    <ReseñaCard key={`${pagina}-${r.id ?? i}`} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
                 ))}
             </div>
 

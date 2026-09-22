@@ -2,11 +2,11 @@
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     .bottomNav {
         display: flex;
         position: fixed;
-        bottom: 8px;
+        bottom: max(8px, env(safe-area-inset-bottom));
         left: 50%;
         transform: translateX(-50%);
         width: 94%;
@@ -24,6 +24,11 @@
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         z-index: 2000;
         gap: 4px;
+    }
+
+    /* En el cotizador la navegación flotante tapa campos y botones del formulario. */
+    .quoteNav {
+        display: none;
     }
 
     [data-theme='dark'] .bottomNav {

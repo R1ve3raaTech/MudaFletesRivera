@@ -105,11 +105,12 @@ export default function CotizadorForm() {
     const cardRef = useRef(null);
     const stepRef = useRef(null);
     const resumenRef = useRef(null);
-    const primeraCarga = useRef(true);
 
     // Animación de entrada al cambiar de paso + scroll al inicio de la tarjeta
     useGSAP(() => {
-        if (primeraCarga.current) { primeraCarga.current = false; return; }
+        // React StrictMode monta este efecto dos veces; el estado inicial no
+        // debe provocar un scroll automÃ¡tico que tape el encabezado.
+        if (paso === 1 && !enviado) return;
         if (!stepRef.current) return;
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         gsap.fromTo(stepRef.current,

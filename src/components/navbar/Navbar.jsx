@@ -33,10 +33,10 @@ const Navbar = () => {
     return (
         <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
             <div className={styles.navMain}>
-                <div className={styles.logo}>
+                <Link to="/" className={styles.logo} aria-label="Ir al inicio">
                     <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
                     <span>MudaFletesRivera</span>
-                </div>
+                </Link>
             </div>
 
             <ul className={styles.navLinks}>

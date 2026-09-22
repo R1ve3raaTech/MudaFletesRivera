@@ -29,7 +29,7 @@
     letter-spacing: 1px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     .floatButton {
         bottom: 100px; /* Stay above BottomNav */
         padding: 0 1.2rem;
@@ -41,7 +41,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     .floatButton {
         display: none;
     }

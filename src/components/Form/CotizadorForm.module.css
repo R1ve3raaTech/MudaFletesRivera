@@ -782,8 +782,25 @@
 }
 
 @media (max-width: 600px) {
+    .section {
+        padding: 6.25rem 1rem 4rem;
+    }
+
+    .header {
+        margin-bottom: 2rem;
+    }
+
     .card {
-        padding: 1.8rem 1.2rem;
+        padding: 1.35rem 1rem 1.2rem;
+        border-radius: 20px;
+    }
+
+    .progress {
+        margin-bottom: 1.8rem;
+    }
+
+    .step {
+        gap: 1.05rem;
     }
 
     .progressLabel {
@@ -803,6 +820,16 @@
     .btnWa {
         width: 100%;
         justify-content: center;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .section {
+        padding-inline: 1.25rem;
+    }
+
+    .card {
+        padding: 2rem;
     }
 }
 

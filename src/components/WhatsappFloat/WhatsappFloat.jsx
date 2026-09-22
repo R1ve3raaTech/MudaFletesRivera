@@ -1,14 +1,20 @@
 import React, { useRef } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { useLocation } from 'react-router-dom';
 import styles from './WhatsappFloat.module.css';
 
 const WhatsappFloat = () => {
     const ref = useRef(null);
+    const { pathname } = useLocation();
 
     useGSAP(() => {
+        if (pathname.startsWith('/mimudanza')) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         gsap.from(ref.current, { scale: 0, opacity: 0, duration: 0.6, ease: 'back.out(2)' });
-    }, { scope: ref });
+    }, { scope: ref, dependencies: [pathname] });
+
+    if (pathname.startsWith('/mimudanza')) return null;
 
     return (
         <a

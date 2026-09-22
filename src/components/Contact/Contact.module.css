@@ -137,8 +137,11 @@ a.cardValue:hover { color: var(--primary-brand); }
 }
 
 @media (max-width: 640px) {
-    .contact { padding: 5rem 1.4rem; }
+    .contact { padding: 4rem 1.1rem; }
+    .inner { gap: 2rem; }
     .grid { grid-template-columns: 1fr; }
+    .card { padding: 1.15rem 1rem; border-radius: 16px; }
+    .ctaBlock { padding: 1.8rem 1.2rem; border-radius: 16px; }
 }
 
 @media (hover: none) {

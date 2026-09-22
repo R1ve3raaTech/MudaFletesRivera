@@ -108,10 +108,11 @@
 }
 
 @media (max-width: 860px) {
-    .stepsRow { flex-wrap: wrap; gap: 2.5rem 0; justify-content: center; }
+    .stepsRow { flex-wrap: wrap; gap: 1.8rem 0; justify-content: center; }
     .step { flex: 0 0 45%; }
     .connector { display: none; }
-    .process { padding: 5rem 1.4rem; }
+    .process { padding: 4rem 1.1rem; }
+    .sectionHeader { margin-bottom: 2.2rem; }
 }
 
 @media (max-width: 480px) {

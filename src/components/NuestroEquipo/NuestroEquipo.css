@@ -252,7 +252,7 @@
 
 @media (max-width: 768px) {
     .truckSecContainer {
-        padding: 4rem 5%;
+        padding: 3.5rem 1.1rem;
     }
     .truckSecTitle {
         font-size: 2rem;
@@ -267,9 +267,11 @@
     }
     .truckSecGrid {
         grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1.6rem;
     }
     .truckSecCarouselContainer {
-        aspect-ratio: 4/5;
+        aspect-ratio: 1/0.95;
         overflow: visible;
         margin-bottom: 2rem;
     }
@@ -316,5 +318,18 @@
         font-size: 0.85rem;
         text-align: center;
         line-height: 1.4;
+    }
+
+    .truckSecFeature {
+        padding: 0.95rem;
+    }
+
+    .truckSecActions {
+        gap: 0.75rem;
+    }
+
+    .truckSecBtnForm, .truckSecBtnWa {
+        padding: 0.75rem 1.1rem;
+        font-size: 0.82rem;
     }
 }

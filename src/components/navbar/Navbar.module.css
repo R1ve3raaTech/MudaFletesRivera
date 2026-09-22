@@ -47,6 +47,7 @@
     gap: 0.8rem;
     letter-spacing: -0.5px;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 .truckIcon {
@@ -172,7 +173,7 @@
     .navLinks { gap: 1.5rem; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 720px) {
     .navbar {
         top: 0.8rem;
         left: 50% !important;

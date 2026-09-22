@@ -1,9 +1,10 @@
 /* ── Sección: banda azul de marca ── */
 .section {
-    padding: 6rem 1.5rem;
+    padding: clamp(7.5rem, 10vw, 9rem) 1.5rem clamp(5rem, 7vw, 7rem);
     background: linear-gradient(160deg, #16305e 0%, #1E40AF 55%, #1d4ed8 100%);
     position: relative;
     overflow: hidden;
+    scroll-margin-top: 5.5rem;
 }
 
 /* Comilla gigante decorativa de fondo */
@@ -24,7 +25,7 @@
 .sectionHeader {
     text-align: center;
     max-width: 700px;
-    margin: 0 auto 4rem;
+    margin: 0 auto clamp(2.75rem, 5vw, 3.5rem);
     position: relative;
 }
 
@@ -59,7 +60,7 @@
     color: #dbeafe;
     font-size: 1.05rem;
     line-height: 1.7;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 /* ── Botón CTA ── */
@@ -69,19 +70,20 @@
     gap: 0.5rem;
     background: #fff;
     color: #16305e;
-    border: none;
+    border: 1px solid rgba(219, 234, 254, 0.9);
     border-radius: 50px;
-    padding: 0.75rem 1.8rem;
+    padding: 0.7rem 1.6rem;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(10, 20, 45, 0.35);
+    margin-top: 0.25rem;
+    box-shadow: 0 8px 20px rgba(10, 20, 45, 0.2);
     transition: box-shadow 0.2s ease, transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .ctaBtn:hover {
-    box-shadow: 0 12px 32px rgba(10, 20, 45, 0.45);
-    transform: scale(1.04);
+    box-shadow: 0 10px 24px rgba(10, 20, 45, 0.26);
+    transform: translateY(-2px);
 }
 
 .ctaBtn:active {
@@ -90,33 +92,30 @@
 
 /* ── Grid de cards ── */
 .grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.8rem;
-    max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    max-width: 1120px;
     margin: 0 auto;
-    justify-content: center;
 }
 
 .card {
     background: #fff;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 16px 40px rgba(10, 20, 45, 0.28);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 1.35rem 1.4rem 1.25rem;
+    box-shadow: 0 8px 24px rgba(10, 20, 45, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.25);
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
     cursor: default;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    width: 100%;
-    max-width: 360px;
-    box-sizing: border-box;
+    min-width: 0;
 }
 
 .card:hover {
-    box-shadow: 0 24px 56px rgba(10, 20, 45, 0.4);
-    transform: translateY(-6px);
+    box-shadow: 0 12px 28px rgba(10, 20, 45, 0.16);
+    transform: translateY(-3px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -125,19 +124,13 @@
 
 .quoteIcon {
     color: var(--brand-blue);
-    opacity: 0.3;
+    opacity: 0.45;
 }
 
 .texto {
     color: var(--text-primary, #1e293b);
-    font-size: 0.97rem;
-    line-height: 1.7;
-    flex: 1;
-}
-
-.stars {
-    display: flex;
-    gap: 3px;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 /* ── Estado vacío ── */
@@ -172,43 +165,57 @@
 .cardTags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.3rem;
+    margin-top: -0.05rem;
 }
 
 .cardTag {
-    border: 1.5px solid;
-    border-radius: 99px;
-    padding: 0.2rem 0.65rem;
-    font-size: 0.75rem;
-    font-weight: 600;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    padding: 0.18rem 0.5rem;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.68rem;
+    line-height: 1.3;
+    font-weight: 700;
 }
 
-/* ── Mini termómetro (cards) ── */
-.miniThermo {
+/* ── Valoración discreta (cards) ── */
+.rating {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
+    min-height: 1.1rem;
 }
 
-.miniThermoTrack {
-    flex: 1;
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 99px;
-    overflow: hidden;
+.ratingScale {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.18rem;
 }
 
-.miniThermoFill {
-    height: 100%;
-    width: 100%;
-    border-radius: 99px;
-    transform-origin: left center;
-    transition: transform 0.4s ease;
+.ratingDot {
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 50%;
+    background: #dbeafe;
 }
 
-.miniThermoLabel {
-    font-size: 0.78rem;
-    font-weight: 700;
+.ratingDotActive {
+    background: var(--primary-brand);
+}
+
+.ratingValue {
+    color: #1e40af;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.ratingLabel {
+    color: #64748b;
+    font-size: 0.72rem;
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -216,7 +223,11 @@
 .thermo {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.45rem;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
 }
 
 .thermoRow {
@@ -226,8 +237,8 @@
 }
 
 .thermoBulb {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     flex-shrink: 0;
     transition: background 0.3s ease;
@@ -237,7 +248,7 @@
 .thermoTrack {
     display: flex;
     gap: 3px;
-    height: 18px;
+    height: 14px;
 }
 
 .thermoSegment {
@@ -290,11 +301,15 @@
 .tagsField {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.45rem;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
 }
 
 .tagsHint {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 700;
     color: #64748b;
     margin: 0;
@@ -303,16 +318,16 @@
 .tagsList {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.35rem;
 }
 
 .tag {
-    border: 1.5px solid #e2e8f0;
+    border: 1px solid #dbeafe;
     background: white;
-    color: #64748b;
-    border-radius: 99px;
-    padding: 0.35rem 0.85rem;
-    font-size: 0.82rem;
+    color: #1d4ed8;
+    border-radius: 7px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.74rem;
     font-weight: 600;
     cursor: pointer;
     transition: border-color 0.18s, color 0.18s, background 0.18s, transform 0.12s;
@@ -320,7 +335,8 @@
 }
 
 .tag:hover {
-    transform: scale(1.04);
+    background: #eff6ff;
+    transform: translateY(-1px);
 }
 
 .tagActivo {
@@ -329,45 +345,31 @@
 
 .autor {
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
-    color: white;
-    font-weight: 800;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    align-items: flex-start;
+    margin-top: 0.15rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e2e8f0;
 }
 
 .nombre {
     font-weight: 700;
     color: var(--text-primary, #0f172a);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     margin: 0;
 }
 
 .meta {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     color: var(--text-secondary, #94a3b8);
-    margin: 0;
+    margin: 0.08rem 0 0;
 }
 
 /* ── Modal overlay ── */
 .overlay {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.6);
-    backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.68);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -377,14 +379,14 @@
 
 .modal {
     background: var(--surface-color, #fff);
-    border: 1px solid var(--border-neutral, #e7e1d6);
-    border-radius: 24px;
-    padding: 2.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 18px;
+    padding: 1.75rem;
     width: 100%;
-    max-width: 480px;
+    max-width: 500px;
     position: relative;
-    box-shadow: 0 24px 80px rgba(10, 20, 45, 0.28);
-    max-height: 90vh;
+    box-shadow: 0 20px 54px rgba(10, 20, 45, 0.24);
+    max-height: calc(100vh - 2rem);
     overflow-y: auto;
 }
 
@@ -392,32 +394,32 @@
 .modalHead {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-    margin-bottom: 1.6rem;
+    gap: 0.7rem;
+    margin-bottom: 1.25rem;
 }
 
 .modalHeadIcon {
     flex-shrink: 0;
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
-    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    color: var(--brand-blue);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 6px 16px rgba(0, 82, 204, 0.3);
 }
 
 .closeBtn {
     position: absolute;
-    top: 1.2rem;
-    right: 1.2rem;
-    background: #f1f5f9;
-    border: none;
+    top: 0.85rem;
+    right: 0.85rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -427,11 +429,12 @@
 }
 
 .closeBtn:hover {
-    background: #e2e8f0;
+    background: #eff6ff;
+    color: var(--brand-blue);
 }
 
 .modalTitle {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 900;
     color: var(--text-primary, #0f172a);
     margin: 0;
@@ -439,7 +442,7 @@
 }
 
 .modalSub {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     color: var(--text-secondary, #64748b);
     margin: 0.15rem 0 0;
 }
@@ -448,7 +451,7 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1rem;
 }
 
 /* Honeypot anti-bot: fuera de vista pero enfocable por scripts */
@@ -464,13 +467,13 @@
 .field {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.32rem;
 }
 
 .field label {
-    font-size: 0.88rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    color: #334155;
+    color: #475569;
 }
 
 .fechaRow {
@@ -480,10 +483,10 @@
 
 .fechaRow select {
     flex: 1;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.7rem 0.5rem;
-    font-size: 0.92rem;
+    border: 1px solid #dbe4f0;
+    border-radius: 9px;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.86rem;
     color: #0f172a;
     outline: none;
     background: white;
@@ -503,10 +506,10 @@
 
 .field input,
 .field textarea {
-    border: 1.5px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 0.7rem 1rem;
-    font-size: 0.95rem;
+    border: 1px solid #dbe4f0;
+    border-radius: 9px;
+    padding: 0.62rem 0.85rem;
+    font-size: 0.9rem;
     color: #0f172a;
     outline: none;
     transition: border-color 0.2s;
@@ -517,6 +520,7 @@
 .field input:focus,
 .field textarea:focus {
     border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .inputError {
@@ -561,18 +565,18 @@
     background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
     color: white;
     border: none;
-    border-radius: 50px;
-    padding: 0.85rem 2rem;
-    font-size: 1rem;
+    border-radius: 10px;
+    padding: 0.72rem 1.4rem;
+    font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
     margin-top: 0.4rem;
-    box-shadow: 0 4px 18px rgba(0, 82, 204, 0.3);
+    box-shadow: 0 6px 16px rgba(0, 82, 204, 0.2);
     transition: opacity 0.2s, box-shadow 0.2s;
 }
 
 .submitBtn:hover:not(:disabled) {
-    box-shadow: 0 8px 28px rgba(0, 82, 204, 0.4);
+    box-shadow: 0 8px 22px rgba(0, 82, 204, 0.28);
 }
 
 .submitBtn:disabled {
@@ -585,13 +589,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     text-align: center;
     padding: 1rem 0;
 }
 
 .successMsg h3 {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 900;
     color: #0f172a;
     margin: 0;
@@ -599,7 +603,7 @@
 
 .successMsg p {
     color: #64748b;
-    margin: 0 0 1rem;
+    margin: 0 0 0.75rem;
 }
 
 /* ── Paginación ── */
@@ -607,16 +611,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.2rem;
-    margin-top: 2.5rem;
+    gap: 0.75rem;
+    width: min(100%, 1120px);
+    margin: 2rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(219, 234, 254, 0.2);
 }
 
 .pageBtn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50px;
-    padding: 0.6rem 1.4rem;
-    font-size: 0.92rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(219, 234, 254, 0.32);
+    border-radius: 10px;
+    padding: 0.55rem 1rem;
+    min-width: 110px;
+    font-size: 0.85rem;
     font-weight: 700;
     color: #fff;
     cursor: pointer;
@@ -626,8 +634,8 @@
 
 .pageBtn:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.6);
-    box-shadow: 0 4px 14px rgba(10, 20, 45, 0.3);
+    border-color: rgba(219, 234, 254, 0.6);
+    box-shadow: 0 4px 12px rgba(10, 20, 45, 0.16);
 }
 
 .pageBtn:disabled {
@@ -636,24 +644,67 @@
 }
 
 .pageInfo {
-    font-size: 0.92rem;
+    padding: 0.42rem 0.7rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 0.78rem;
     font-weight: 700;
     color: #dbeafe;
-    min-width: 50px;
+    min-width: 44px;
     text-align: center;
 }
 
 /* ── Responsive ── */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .section {
-        padding: 4rem 1rem;
+        padding: 5.5rem 1rem 4.5rem;
+        scroll-margin-top: 4.5rem;
+    }
+
+    .sectionHeader {
+        margin-bottom: 2.25rem;
+    }
+
+    .sectionHeader p {
+        font-size: 0.95rem;
+        margin-bottom: 1.35rem;
+    }
+
+    .card {
+        padding: 1.25rem;
+    }
+
+    .modal {
+        padding: 1.35rem 1rem;
+        border-radius: 16px;
+        max-height: calc(100vh - 1.5rem);
+    }
+
+    .pagination {
+        margin-top: 1.5rem;
+    }
+
+    .pageBtn {
+        flex: 1;
+        min-width: 0;
+        padding-inline: 0.65rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .section {
+        padding-bottom: 7rem;
     }
 
     .grid {
         grid-template-columns: 1fr;
-    }
-
-    .modal {
-        padding: 2rem 1.5rem;
+        max-width: 420px;
+        gap: 1rem;
     }
 }
