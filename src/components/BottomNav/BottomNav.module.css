@@ -26,11 +26,6 @@
         gap: 4px;
     }
 
-    /* En el cotizador la navegación flotante tapa campos y botones del formulario. */
-    .quoteNav {
-        display: none;
-    }
-
     [data-theme='dark'] .bottomNav {
         background: rgba(15, 23, 42, 0.7);
         border-color: rgba(255, 255, 255, 0.08);
