@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, LazyMotion, domAnimation, m as Motion, useReducedMotion } from 'motion/react';
 import { Timer, X, ArrowRight, Truck } from 'lucide-react';
-import { DARK_LOGO_URL } from '../../branding';
+import { BADGE_LOGO_URL } from '../../branding';
 import styles from './PromoCotizador.module.css';
 
 const CLAVE = 'promoCotizadorVisto';
@@ -43,13 +43,60 @@ export default function PromoCotizador() {
     useEffect(() => {
         if (!abierto) return undefined;
         const previousFocus = document.activeElement;
-        const previousOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
+        const scrollX = window.scrollX;
+        const scrollY = window.scrollY;
+        const lockedPath = window.location.pathname;
+        const body = document.body;
+        const html = document.documentElement;
+        const scrollbarWidth = window.innerWidth - html.clientWidth;
+        const paddingRight = parseFloat(getComputedStyle(body).paddingRight) || 0;
+        const savedStyles = [
+            [body, ['position', 'top', 'left', 'right', 'width', 'overflow', 'padding-right']],
+            [html, ['overflow', 'overscroll-behavior', 'scroll-behavior']],
+        ].map(([element, properties]) => [element, properties.map((property) => [
+            property, element.style.getPropertyValue(property), element.style.getPropertyPriority(property),
+        ])]);
+
+        // Fijar el cuerpo evita que Safari móvil desplace la página detrás del aviso.
+        html.style.overflow = 'hidden';
+        html.style.overscrollBehavior = 'none';
+        html.style.scrollBehavior = 'auto';
+        body.style.position = 'fixed';
+        body.style.top = `-${scrollY}px`;
+        body.style.left = '0';
+        body.style.right = '0';
+        body.style.width = '100%';
+        body.style.overflow = 'hidden';
+        body.style.paddingRight = `${paddingRight + scrollbarWidth}px`;
         const siblings = [...(overlayRef.current?.parentElement?.children || [])]
             .filter((element) => element !== overlayRef.current)
             .map((element) => [element, element.inert]);
         siblings.forEach(([element]) => { element.inert = true; });
         cardRef.current?.focus({ preventScroll: true });
+
+        const overlay = overlayRef.current;
+        let touchY = 0;
+        const canScrollCard = (target, delta) => {
+            const card = cardRef.current;
+            if (!card?.contains(target)) return false;
+            if (delta < 0) return card.scrollTop > 0;
+            if (delta > 0) return card.scrollTop + card.clientHeight < card.scrollHeight - 1;
+            return true;
+        };
+        const onTouchStart = (event) => { touchY = event.touches[0]?.clientY ?? 0; };
+        const onTouchMove = (event) => {
+            if (event.touches.length !== 1) return;
+            const nextY = event.touches[0].clientY;
+            const delta = touchY - nextY;
+            touchY = nextY;
+            if (!canScrollCard(event.target, delta)) event.preventDefault();
+        };
+        const onWheel = (event) => {
+            if (!canScrollCard(event.target, event.deltaY)) event.preventDefault();
+        };
+        overlay?.addEventListener('touchstart', onTouchStart, { passive: true });
+        overlay?.addEventListener('touchmove', onTouchMove, { passive: false });
+        overlay?.addEventListener('wheel', onWheel, { passive: false });
 
         const onKey = (event) => {
             if (event.key === 'Escape') {
@@ -71,7 +118,18 @@ export default function PromoCotizador() {
         window.addEventListener('keydown', onKey);
         return () => {
             window.removeEventListener('keydown', onKey);
-            document.body.style.overflow = previousOverflow;
+            overlay?.removeEventListener('touchstart', onTouchStart);
+            overlay?.removeEventListener('touchmove', onTouchMove);
+            overlay?.removeEventListener('wheel', onWheel);
+            savedStyles.forEach(([element, properties]) => properties.forEach(([property, value, priority]) => {
+                if (value) element.style.setProperty(property, value, priority);
+                else element.style.removeProperty(property);
+            }));
+            window.scrollTo({
+                left: window.location.pathname === lockedPath ? scrollX : 0,
+                top: window.location.pathname === lockedPath ? scrollY : 0,
+                behavior: 'instant',
+            });
             siblings.forEach(([element, inert]) => { element.inert = inert; });
             if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
                 previousFocus.focus({ preventScroll: true });
@@ -111,7 +169,7 @@ export default function PromoCotizador() {
                             </button>
 
                             <div className={styles.visual} aria-hidden="true">
-                                <img src={DARK_LOGO_URL} alt="" className={styles.brandLogo} width="72" height="35" />
+                                <img src={BADGE_LOGO_URL} alt="" className={styles.brandLogo} width="72" height="51" />
                                 <Motion.div
                                     className={styles.clock}
                                     initial={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.92 }}
