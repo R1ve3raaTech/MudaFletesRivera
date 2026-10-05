@@ -1,11 +1,11 @@
 .page {
-    padding-bottom: 8rem;
+    padding-bottom: 3rem;
 }
 
 /* ===== Hero ===== */
 
 .hero {
-    padding: clamp(7.5rem, 12vh, 10rem) 5% 5rem;
+    padding: clamp(7rem, 10vh, 8rem) 5% 3rem;
     display: flex;
     justify-content: center;
 }
@@ -163,7 +163,7 @@
 .block {
     max-width: 920px;
     margin: 0 auto;
-    padding: 3.5rem 5% 0;
+    padding: 2.5rem 5% 0;
 }
 
 .blockHead {
@@ -352,9 +352,9 @@
 }
 
 @media (max-width: 900px) {
-    .hero { padding: 7rem 1.4rem 3.5rem; }
+    .hero { padding: 6.25rem 1.4rem 2.5rem; }
 
-    .grid { grid-template-columns: 1fr; gap: 2.6rem; }
+    .grid { grid-template-columns: 1fr; gap: 1.8rem; }
 
     .copy { text-align: center; }
     .title { text-align: center; }
@@ -365,7 +365,7 @@
     .visual img { transform: rotate(0.8deg); }
     .badge { right: 0.8rem; bottom: 1rem; }
 
-    .block { padding: 2.6rem 1.4rem 0; }
+    .block { padding: 2rem 1.4rem 0; }
     .blockHead { text-align: center; }
     .blockIntro { text-align: center; }
 }

@@ -1,335 +1,58 @@
-.truckSecContainer {
-    width: 100%;
-    padding: 6rem 5%;
-    background-color: var(--bg-neutral);
-    position: relative;
-    border-top: 1px solid var(--border-neutral);
-    border-bottom: 1px solid var(--border-neutral);
+.truckSecContainer { padding: var(--section-space) 5%; background: var(--bg-neutral); }
+.truckSecWrapper { max-width: 1120px; margin: auto; }
+.truckSecHeader { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 4rem; align-items: end; margin-bottom: 2.5rem; }
+.truckSecSubtitle { display: flex; align-items: center; gap: .8rem; margin-bottom: .9rem; color: var(--text-secondary); font-size: .75rem; font-weight: 600; letter-spacing: .05em; }
+.truckSecSubLogo { width: 50px; height: auto; aspect-ratio: 696 / 342; object-fit: contain; flex-shrink: 0; }
+.truckSecTitle { font-size: clamp(2.1rem, 3.8vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -.035em; }
+.truckSecTitle span { color: var(--primary-brand); }
+.truckSecDesc { color: var(--text-secondary); font-size: .97rem; line-height: 1.7; max-width: 48ch; }
+.truckSecPhotoFrame { position: relative; width: 100%; aspect-ratio: 2.15; overflow: hidden; border-radius: 12px; background: #d8d4cc; }
+.truckSecMainImg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+.truckSecGalleryBar { display: flex; justify-content: space-between; align-items: start; gap: 2rem; padding: 1.35rem 0 1.5rem; }
+.truckSecCaption { min-height: 85px; max-width: 76ch; }
+.truckSecCaption h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.35; letter-spacing: -.02em; }
+.truckSecCaption p { margin-top: .5rem; color: var(--text-secondary); font-size: .88rem; line-height: 1.65; max-width: 75ch; }
+.truckSecControls { display: flex; gap: .5rem; flex-shrink: 0; }
+.truckSecControls button { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid #d1cabd; border-radius: 8px; background: transparent; color: var(--text-primary); cursor: pointer; transition: background .2s, border-color .2s; }
+.truckSecControls button:hover { background: #fff; border-color: #9cabc0; }
+.truckSecControls button:last-child:not(:nth-child(2)) { margin-left: .4rem; }
+.truckSecFeatures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid #dcd5c9; padding-top: 1.75rem; gap: 2rem; }
+.truckSecFeature { display: flex; align-items: start; gap: .85rem; min-width: 0; }
+.truckSecFeature > svg { flex-shrink: 0; color: var(--primary-brand); margin-top: .1rem; }
+.truckSecFeature h3 { font-size: .98rem; line-height: 1.4; font-weight: 700; }
+.truckSecFeature p { font-size: .87rem; color: var(--text-secondary); line-height: 1.65; margin-top: .4rem; }
+.truckSecActions { display: flex; gap: 1rem; align-items: center; margin-top: 1.75rem; }
+.truckSecBtnForm, .truckSecBtnWa { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 48px; padding: .7rem 1.25rem; border-radius: 8px; text-decoration: none; font-weight: 650; font-size: .9rem; transition: background .2s; }
+.truckSecBtnForm { background: var(--primary-brand); color: #fff; }
+.truckSecBtnForm:hover { background: var(--primary-dark); }
+.truckSecBtnWa { background: transparent; color: #15783d; border: 1px solid #b4cbb7; }
+.truckSecBtnWa:hover { background: #e3eddf; }
+.truckSecActions svg { flex-shrink: 0; }
+@media (max-width: 900px) {
+    .truckSecHeader { grid-template-columns: 1fr; gap: 1.1rem; margin-bottom: 2rem; }
+    .truckSecTitle { max-width: 23ch; }
+    .truckSecDesc { max-width: 65ch; }
+    .truckSecPhotoFrame { aspect-ratio: 1.8; }
+    .truckSecGalleryBar { gap: 1.25rem; }
+    .truckSecFeatures { gap: 1.5rem; }
+    .truckSecFeature { flex-direction: column; gap: .7rem; }
 }
-
-.truckSecWrapper {
-    max-width: 1280px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+@media (max-width: 600px) {
+    .truckSecContainer { padding: var(--section-space) 1.1rem; }
+    .truckSecHeader { gap: 1rem; }
+    .truckSecTitle { font-size: clamp(2rem, 8vw, 2.5rem); }
+    .truckSecDesc { font-size: .95rem; }
+    .truckSecPhotoFrame { aspect-ratio: 1.5; }
+    .truckSecGalleryBar { flex-direction: column; gap: .75rem; padding-block: 1.25rem; }
+    .truckSecCaption { min-height: 148px; }
+    .truckSecCaption h3 { font-size: 1.08rem; }
+    .truckSecFeatures { grid-template-columns: 1fr; gap: 1rem; padding-top: 1.5rem; }
+    .truckSecFeature { flex-direction: row; gap: .85rem; }
+    .truckSecFeature + .truckSecFeature { border-top: 1px solid #dcd5c9; padding-top: 1rem; }
+    .truckSecActions { flex-wrap: wrap; gap: .75rem; }
+    .truckSecBtnForm, .truckSecBtnWa { flex: 1; padding-inline: 1rem; font-size: .85rem; white-space: nowrap; }
 }
-
-/* LEFT SIDE - VISUAL */
-.truckSecVisual {
-    flex: 1.4;
-    position: relative;
-}
-
-.truckSecCarouselContainer {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 3/2;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: var(--shadow-hover);
-    background: #f0f0f0;
-}
-
-.truckSecSlide {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.truckSecMainImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: brightness(1);
-}
-
-.truckSecSlideOverlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
-    display: flex;
-    align-items: flex-end;
-    padding: 2.5rem;
-    color: white;
-}
-
-.truckSecSlideOverlay h3 {
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-bottom: 0.4rem;
-    line-height: 1.1;
-}
-
-.truckSecSlideOverlay p {
-    font-size: 0.9rem;
-    opacity: 0.95;
-    line-height: 1.4;
-}
-
-.truckSecNavBtn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.2);
-    backdrop-filter: blur(5px);
-    border: none;
-    color: white;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: var(--transition-smooth);
-}
-
-.truckSecNavBtn:hover {
-    background: var(--primary-brand);
-}
-
-.truckSecNavBtn.prev { left: 15px; }
-.truckSecNavBtn.next { right: 15px; }
-
-/* RIGHT SIDE - CONTENT */
-.truckSecContent {
-    flex: 1;
-}
-
-.truckSecSubLogo {
-    height: 32px;
-    width: 32px;
-    object-fit: cover;
-    border-radius: 0;
-}
-
-.truckSecSubtitle {
-    color: var(--primary-brand);
-    text-transform: uppercase;
-    font-weight: 700;
-    letter-spacing: 2px;
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
-
-.truckSecSubtitle::before {
-    content: '';
-    display: block;
-    width: 30px;
-    height: 3px;
-    background-color: var(--accent-color);
-    border-radius: 2px;
-}
-
-.truckSecTitle {
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.truckSecTitle span {
-    color: var(--primary-brand);
-}
-
-.truckSecDesc {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-    margin-bottom: 2.5rem;
-    line-height: 1.8;
-}
-
-.truckSecGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
-}
-
-.truckSecFeature {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    background: var(--surface-color);
-    padding: 1.2rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-neutral);
-    transition: var(--transition-smooth);
-}
-
-.truckSecFeatureIcon {
-    width: 48px;
-    height: 48px;
-    background: rgba(37, 99, 235, 0.1);
-    color: var(--primary-brand);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: var(--transition-smooth);
-}
-
-.truckSecFeature:hover {
-    transform: translateX(10px);
-}
-
-.truckSecFeature:hover .truckSecFeatureIcon {
-    background: var(--primary-brand);
-    color: white;
-}
-
-.truckSecActions {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.truckSecBtnForm, .truckSecBtnWa {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: var(--transition-smooth);
-    font-size: 0.95rem;
-}
-
-.truckSecBtnForm {
-    background: var(--primary-brand);
-    color: white;
-}
-
-.truckSecBtnWa {
-    background: #25D366;
-    color: white;
-}
-
-.truckSecBtnForm:hover, .truckSecBtnWa:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    filter: brightness(1.1);
-}
-
-.truckSecBlob {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background: var(--primary-brand);
-    filter: blur(150px);
-    opacity: 0.08;
-    border-radius: 4px;
-    z-index: 0;
-    top: 50%;
-    left: -100px;
-    transform: translateY(-50%);
-    pointer-events: none;
-}
-
-/* RESPONSIVE */
-@media (max-width: 992px) {
-    .truckSecWrapper {
-        flex-direction: column;
-        gap: 2.5rem;
-    }
-    .truckSecVisual {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .truckSecContainer {
-        padding: 3.5rem 1.1rem;
-    }
-    .truckSecTitle {
-        font-size: 2rem;
-        text-align: center;
-    }
-    .truckSecSubtitle {
-        justify-content: center;
-    }
-    .truckSecDesc {
-        text-align: center;
-        font-size: 1rem;
-    }
-    .truckSecGrid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-        margin-bottom: 1.6rem;
-    }
-    .truckSecCarouselContainer {
-        aspect-ratio: 1/0.95;
-        overflow: visible;
-        margin-bottom: 2rem;
-    }
-    .truckSecSlide {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        border-radius: 12px;
-        overflow: hidden;
-        background: var(--surface-color);
-        box-shadow: var(--shadow-card);
-    }
-
-    .truckSecMainImg {
-        height: 60%;
-        width: 100%;
-        object-fit: cover;
-    }
-
-    .truckSecSlideOverlay {
-        height: 40%;
-        position: relative;
-        background: var(--surface-color);
-        color: var(--text-primary);
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        border-top: 1px solid var(--border-neutral);
-    }
-
-    .truckSecSlideOverlay h3 {
-        color: var(--primary-brand);
-        font-size: 1.15rem;
-        margin-bottom: 0.4rem;
-        text-align: center;
-    }
-
-    .truckSecSlideOverlay p {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        text-align: center;
-        line-height: 1.4;
-    }
-
-    .truckSecFeature {
-        padding: 0.95rem;
-    }
-
-    .truckSecActions {
-        gap: 0.75rem;
-    }
-
-    .truckSecBtnForm, .truckSecBtnWa {
-        padding: 0.75rem 1.1rem;
-        font-size: 0.82rem;
-    }
+@media (max-width: 360px) {
+    .truckSecCaption { min-height: 172px; }
+    .truckSecBtnForm, .truckSecBtnWa { padding-inline: .85rem; font-size: .8rem; }
 }

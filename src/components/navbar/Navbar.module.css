@@ -51,8 +51,10 @@
 }
 
 .truckIcon {
-    height: 48px;
-    width: 48px;
+    height: auto;
+    width: clamp(44px, 4vw, 48px);
+    aspect-ratio: 696 / 342;
+    flex-shrink: 0;
     object-fit: contain;
     background: transparent;
     border-radius: 0;
@@ -170,7 +172,16 @@
 }
 
 @media (max-width: 1024px) {
-    .navLinks { gap: 1.5rem; }
+    .navbar { gap: 1rem; padding-inline: 1.1rem; }
+    .navLinks { gap: .3rem; }
+    .navLinks a { font-size: .88rem; }
+    .logo { font-size: 1.2rem; gap: .6rem; }
+    .navLinks:has(a:hover) a.navActive:not(:hover) { padding: .6rem; }
+    .navLinks:has(a:hover) a.navActive:not(:hover) .navLabel {
+        max-width: 0;
+        opacity: 0;
+        margin-left: 0;
+    }
 }
 
 @media (max-width: 720px) {
@@ -202,13 +213,13 @@
     }
 
     .logo {
-        font-size: 1.25rem;
+        font-size: clamp(1rem, 4vw, 1.25rem);
         gap: 0.6rem;
     }
 
     .truckIcon {
-        height: 36px;
-        width: 36px;
+        height: auto;
+        width: clamp(38px, 11vw, 44px);
         object-fit: contain;
         background: transparent;
         border-radius: 0;

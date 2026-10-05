@@ -156,7 +156,7 @@ const MudanzasSanJose = () => {
                     <h2 className={styles.blockHead}>Por qué elegirnos para tu mudanza en San José</h2>
                     <div className={styles.list}>
                         {VENTAJAS.map((v, i) => (
-                            <div key={v.title} className={styles.row}>
+                            <div key={v.title} className={styles.row} data-micro="card">
                                 <div className={styles.rail}>
                                     <span className={styles.num}>{String(i + 1).padStart(2, '0')}</span>
                                     <div className={styles.iconWrap}>

@@ -1,4 +1,6 @@
 :root {
+    --section-space: clamp(2.5rem, 4vw, 4.5rem);
+    --section-heading-gap: clamp(1.5rem, 2.5vw, 2.5rem);
     --bg-color: #FAF7F1;
     --surface-color: #FFFFFF;
     --text-primary: #1B2437;
@@ -86,11 +88,6 @@ section {
     position: relative;
 }
 
-@media (max-width: 768px) {
-    main {
-        padding-bottom: 5.5rem;
-    }
-}
 
 button,
 a,

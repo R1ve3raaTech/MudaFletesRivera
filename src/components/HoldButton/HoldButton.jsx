@@ -78,6 +78,7 @@ const HoldButton = ({ onComplete, disabled, className = '', holdMs = 900, childr
             <button
                 type="button"
                 ref={btnRef}
+                data-micro="off"
                 className={`${styles.hold} ${className}`}
                 disabled={disabled}
                 onPointerDown={alPointerDown}

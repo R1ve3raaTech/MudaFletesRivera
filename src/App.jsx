@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Navbar from './components/navbar/Navbar';
+import MicroInteractions from './components/MicroInteractions';
 import Hero from './components/Hero/Hero';
 import Stats from './components/stats/Stats';
 import Footer from './components/Footer/Footer';
@@ -67,12 +68,12 @@ const HomePage = () => {
                 chunk cargando no debe colapsar el resto de la página. */}
             {/* minHeight ≈ altura real medida de cada sección (móvil/escritorio)
                 para que el layout no salte mientras cargan. */}
-            <LazySection order={0} variant="services" minHeight={{ mobile: 1540, desktop: 1060 }}><Services /></LazySection>
-            <LazySection order={1} variant="process" minHeight={{ mobile: 1180, desktop: 600 }}><Process /></LazySection>
-            <LazySection order={2} variant="whyus" minHeight={{ mobile: 1160, desktop: 800 }}><WhyUs /></LazySection>
-            <LazySection order={3} variant="team" minHeight={{ mobile: 1500, desktop: 990 }}><NuestroEquipo /></LazySection>
-            <LazySection order={4} variant="reviews" minHeight={{ mobile: 1580, desktop: 980 }}><Reseñas /></LazySection>
-            <LazySection order={5} variant="contact" minHeight={{ mobile: 1370, desktop: 870 }}><Contact /></LazySection>
+            <LazySection order={0} variant="services" minHeight={{ mobile: 1600, tablet: 980, desktop: 985 }}><Services /></LazySection>
+            <LazySection order={1} variant="process" minHeight={{ mobile: 890, tablet: 600, desktop: 700 }}><Process /></LazySection>
+            <LazySection order={2} variant="whyus" minHeight={{ mobile: 840, tablet: 510, desktop: 435 }}><WhyUs /></LazySection>
+            <LazySection order={3} variant="team" minHeight={{ mobile: 1190, tablet: 1030, desktop: 1110 }}><NuestroEquipo /></LazySection>
+            <LazySection order={4} variant="reviews" minHeight={{ mobile: 1240, tablet: 700, desktop: 665 }}><Reseñas /></LazySection>
+            <LazySection order={5} variant="contact" minHeight={{ mobile: 765, tablet: 720, desktop: 515 }}><Contact /></LazySection>
         </PageWrapper>
     );
 };
@@ -114,6 +115,7 @@ const App = () => {
         <Router>
             <ScrollToTop />
             <div id="app-container">
+                <MicroInteractions />
                 <Navbar />
                 <main>
                     <AnimatedRoutes />

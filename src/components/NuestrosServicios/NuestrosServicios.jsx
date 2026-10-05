@@ -1,30 +1,22 @@
-import React, { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MessageCircle, ExternalLink } from 'lucide-react';
+import { Check, ExternalLink, ArrowUpRight, Hammer } from 'lucide-react';
+import truckImg from '../../assets/truck2.webp';
+import movingImg from '../../assets/mudanza1.webp';
+import Reveal from '../Reveal';
+import WhatsAppIcon from '../WhatsAppIcon';
 import styles from './NuestrosServicios.module.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const services = [
     {
-        icon: "local_shipping",
-        num: "01",
         title: "Logística de Carga",
         description: "Soluciones logísticas de alto nivel. Su mercancía llega intacta, a tiempo y respaldada por nuestra experiencia de décadas.",
         benefits: ["Carga Protegida", "Seguimiento en Tiempo Real", "Conductores Expertos"],
     },
     {
-        icon: "inventory_2",
-        num: "02",
         title: "Mudanzas Profesionales",
         description: "Traslados residenciales y de oficina sin complicaciones. Empacamos y movemos su vida con el máximo respeto y seguridad.",
         benefits: ["Embalaje de Protección", "Carga y Descarga", "Desarmado de Muebles"]
     },
     {
-        icon: "construction",
-        num: "03",
         title: "Materiales de Construcción",
         description: "¿Necesita aditivos y materiales para su obra? Visite a nuestro socio Aditivos Rivera, especialistas en materiales de construcción.",
         benefits: ["Aditivos y Morteros", "Asesoría Especializada", "Sitio Independiente"],
@@ -34,76 +26,55 @@ const services = [
     }
 ];
 
-const ServiceCard = ({ icon, num, title, description, benefits, index, href, ctaLabel, external }) => {
-    const ref = useRef(null);
+function Benefits({ items }) {
+    return <ul className={styles.benefits}>
+        {items.map(item => <li key={item}><Check size={15} aria-hidden="true" />{item}</li>)}
+    </ul>;
+}
 
-    useGSAP(() => {
-        gsap.from(ref.current, {
-            opacity: 0, y: 50, duration: 0.6, delay: index * 0.13, ease: 'back.out(1.7)',
-            scrollTrigger: { trigger: ref.current, start: 'top 85%', once: true },
-        });
-    }, { scope: ref });
+function ServiceCard({ service, photo, delay }) {
+    return <Reveal as="article" className={styles.service} delay={delay}>
+        <div className={styles.photoFrame}>
+            <img src={photo} alt={service.title === 'Logística de Carga'
+                ? 'Furgón de MudaFletesRivera para el transporte de carga'
+                : 'Muebles protegidos y preparados para una mudanza'} loading="lazy" decoding="async" />
+        </div>
+        <div className={styles.serviceBody}>
+            <h3>{service.title}</h3>
+            <p className={styles.description}>{service.description}</p>
+            <Benefits items={service.benefits} />
+            <a className={styles.quote}
+                href={'https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20' + encodeURIComponent(service.title)}
+                target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon size={19} /> Cotizar <ArrowUpRight size={17} aria-hidden="true" />
+            </a>
+        </div>
+    </Reveal>;
+}
 
-    return (
-    <div ref={ref} className={styles.row}>
-        <div className={styles.rail}>
-            <span className={styles.num}>{num}</span>
-            <div className={styles.iconWrap}>
-                <span className="material-symbols-outlined">{icon}</span>
+export default function Services() {
+    const materials = services[2];
+    return <section id="servicios" className={styles.services}>
+        <div className={styles.inner}>
+            <Reveal className={styles.header}>
+                <h2>Movemos su casa,<br />su oficina y su carga.</h2>
+                <p>Tres servicios, una sola promesa: todo llega completo, a tiempo y al precio acordado.</p>
+            </Reveal>
+            <div className={styles.mainServices}>
+                <ServiceCard service={services[0]} photo={truckImg} delay={0} />
+                <ServiceCard service={services[1]} photo={movingImg} delay={.08} />
             </div>
+            <Reveal as="article" className={styles.materials}>
+                <Hammer size={27} className={styles.materialsIcon} aria-hidden="true" />
+                <div className={styles.materialsCopy}>
+                    <h3>{materials.title}</h3>
+                    <p>{materials.description}</p>
+                    <Benefits items={materials.benefits} />
+                </div>
+                <a href={materials.href} target="_blank" rel="noopener noreferrer" className={styles.partnerLink}>
+                    {materials.ctaLabel} <ExternalLink size={16} aria-hidden="true" />
+                </a>
+            </Reveal>
         </div>
-
-        <div className={styles.content}>
-            <h3>{title}</h3>
-            <p className={styles.desc}>{description}</p>
-
-            <ul className={styles.benefits}>
-                {benefits.map((b, i) => (
-                    <li key={i}>
-                        <span className={`material-symbols-outlined ${styles.check}`}>check_circle</span>
-                        {b}
-                    </li>
-                ))}
-            </ul>
-        </div>
-
-        <a
-            href={href || `https://wa.me/50670818306?text=Hola,%20quisiera%20cotizar%20el%20servicio%20de%20${encodeURIComponent(title)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.btnService}
-        >
-            {external ? <ExternalLink size={16} /> : <MessageCircle size={16} />} {ctaLabel || "Cotizar"}
-        </a>
-    </div>
-    );
-};
-
-const Services = () => {
-    const headerRef = useRef(null);
-
-    useGSAP(() => {
-        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
-            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 20, duration: 0.4 })
-            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.4 }, 0.15);
-    }, { scope: headerRef });
-
-    return (
-    <section id="servicios" className={styles.services}>
-        <div className={styles.sectionHeader} ref={headerRef}>
-            <h2>
-                Movemos su casa,<br />su oficina y su carga.
-            </h2>
-            <p>
-                Tres servicios, una sola promesa: todo llega completo, a tiempo y al precio acordado.
-            </p>
-        </div>
-
-        <div className={styles.list}>
-            {services.map((s, i) => <ServiceCard key={i} {...s} index={i} />)}
-        </div>
-    </section>
-    );
-};
-
-export default Services;
+    </section>;
+}

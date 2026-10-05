@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, FileText, Info, Star } from 'lucide-react';
-import logoImg from '../../assets/trucklogo.png';
+import { LOGO_URL as logoImg } from '../../branding';
 import scrollToSection from '../../scrollToSection';
 import styles from './Navbar.module.css';
 
@@ -34,7 +34,7 @@ const Navbar = () => {
         <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
             <div className={styles.navMain}>
                 <Link to="/" className={styles.logo} aria-label="Ir al inicio">
-                    <img src={logoImg} className={styles.truckIcon} alt="MudaFletesRivera Logo" />
+                    <img src={logoImg} className={styles.truckIcon} alt="Logo oficial de MudaFletesRivera" />
                     <span>MudaFletesRivera</span>
                 </Link>
             </div>

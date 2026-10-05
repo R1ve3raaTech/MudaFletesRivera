@@ -1,17 +1,17 @@
 import React, { useState, useRef, lazy, Suspense } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import logoTruck from '../../assets/trucklogo.png';
+import { BADGE_LOGO_URL as logoTruck } from '../../branding';
 import supabase from '../../supabaseClient';
 import {
     MessageCircle, MapPin, Package, Settings, Calendar,
     AlertTriangle, Info, Zap, CheckCircle, ArrowRight, ArrowLeft,
-    BedSingle, BedDouble, Shirt, Armchair, UtensilsCrossed, Tv, Refrigerator,
-    WashingMachine, Drum, Flame, Laptop, Boxes, ShoppingBag, Package2, Plus, Minus, Check,
+    Plus, Minus, Check,
     PartyPopper, RotateCcw
 } from 'lucide-react';
 import { calcularEstimacion, fmtCRC } from './tarifas';
 import HoldButton from '../HoldButton/HoldButton';
+import FurnitureIcon from './FurnitureIcon';
 import Confetti from '../Confetti/Confetti';
 import { obtenerTokenTurnstile } from '../../lib/turnstile';
 
@@ -43,25 +43,21 @@ const generarClaveCorta = () => {
 const generarNombreTemporal = (nombre) => `${Date.now()}-${nombre.replace(/\s+/g, '_')}.pdf`;
 
 const MUEBLES = [
-    { id: 'cama_individual',  Icon: BedSingle,       label: 'Cama individual' },
-    { id: 'cama_matrimonial', Icon: BedDouble,       label: 'Cama matrimonial / king' },
-    { id: 'ropero',           Icon: Shirt,           label: 'Ropero / closet' },
-    { id: 'sofa',             Icon: Armchair,        label: 'Sofá / sillón' },
-    { id: 'comedor',          Icon: UtensilsCrossed, label: 'Comedor (mesa + sillas)' },
-    { id: 'mueble_tv',        Icon: Tv,              label: 'Mueble de TV' },
-    { id: 'refrigerador',     Icon: Refrigerator,    label: 'Refrigerador' },
-    { id: 'lavadora',         Icon: WashingMachine,  label: 'Lavadora' },
-    { id: 'secadora',         Icon: Drum,            label: 'Secadora' },
-    { id: 'estufa',           Icon: Flame,           label: 'Estufa' },
-    { id: 'escritorio',       Icon: Laptop,          label: 'Escritorio' },
-    { id: 'cajas',            Icon: Boxes,           label: 'Cajas (aprox.)' },
-    { id: 'bolsas',           Icon: ShoppingBag,     label: 'Bolsas (aprox.)' },
-    { id: 'otros_grandes',    Icon: Package2,        label: 'Otros objetos grandes' },
+    { id: 'cama_individual',  label: 'Cama individual' },
+    { id: 'cama_matrimonial', label: 'Cama matrimonial / king' },
+    { id: 'ropero',           label: 'Ropero / closet' },
+    { id: 'sofa',             label: 'Sofá / sillón' },
+    { id: 'comedor',          label: 'Comedor (mesa + sillas)' },
+    { id: 'mueble_tv',        label: 'Mueble de TV' },
+    { id: 'refrigerador',     label: 'Refrigerador' },
+    { id: 'lavadora',         label: 'Lavadora' },
+    { id: 'secadora',         label: 'Secadora' },
+    { id: 'estufa',           label: 'Estufa' },
+    { id: 'escritorio',       label: 'Escritorio' },
+    { id: 'cajas',            label: 'Cajas (aprox.)' },
+    { id: 'bolsas',           label: 'Bolsas (aprox.)' },
+    { id: 'otros_grandes',    label: 'Otros objetos grandes' },
 ];
-
-const STEP_LABELS = ['Ubicación', 'Lo que movés', 'Extras', 'Fecha'];
-
-const STEP_ICONS  = [MapPin, Package, Settings, Calendar];
 
 const OpcionBtn = ({ value, selected, onClick, children }) => (
     <button
@@ -226,9 +222,10 @@ export default function CotizadorForm() {
         doc.rect(0, 0, W, 40, 'F');
 
         if (b64Truck) {
-            doc.setFillColor(255, 255, 255);
-            doc.roundedRect(ML, 8, 24, 24, 3.5, 3.5, 'F');
-            doc.addImage(b64Truck, 'PNG', ML + 2, 10, 20, 20);
+            const logoProps = doc.getImageProperties(b64Truck);
+            const logoWidth = 18;
+            const logoHeight = logoWidth * logoProps.height / logoProps.width;
+            doc.addImage(b64Truck, 'PNG', ML + (24 - logoWidth) / 2, 20 - logoHeight / 2, logoWidth, logoHeight);
         }
 
         doc.setTextColor(255, 255, 255);
@@ -593,9 +590,10 @@ export default function CotizadorForm() {
         <section className={styles.section} id="cotizador">
             <div className={styles.inner}>
                 <div className={styles.header}>
-                    <span className={styles.eyebrow}>Cotizador</span>
-                    <h2>Cuanto cuesta tu mudanza?</h2>
-                    <div className={styles.rule}></div>
+                    <div className={styles.heading}>
+                        <span className={styles.eyebrow}>Cotizador</span>
+                        <h2>Cuanto cuesta <span>tu mudanza?</span></h2>
+                    </div>
                     <p>Responde estas preguntas y recibe una cotizacion personalizada por WhatsApp en minutos.</p>
                 </div>
 
@@ -635,33 +633,6 @@ export default function CotizadorForm() {
                         </div>
                     ) : (
                     <>
-                    {/* Progreso */}
-                    <div className={styles.progressHead}>
-                        <span className={styles.progressStep}>Paso {paso} de 4</span>
-                        <span className={styles.progressPct}>{Math.round((paso / 4) * 100)}% completado</span>
-                    </div>
-                    <div className={styles.progressBar}>
-                        <div
-                            className={styles.progressBarFill}
-                            style={{ transform: `scaleX(${paso / 4})` }}
-                        />
-                    </div>
-                    <div className={styles.progress}>
-                        {STEP_LABELS.map((label, i) => {
-                            const n = i + 1;
-                            const StepIcon = STEP_ICONS[i];
-                            return (
-                                <div key={n} className={`${styles.progressItem} ${paso > n ? styles.done : ''} ${paso === n ? styles.active : ''}`}>
-                                    <div className={styles.progressDot}>
-                                        {paso > n ? <Check size={16} /> : <StepIcon size={16} />}
-                                    </div>
-                                    <span className={styles.progressLabel}>{label}</span>
-                                    {n < 4 && <div className={styles.progressLine}></div>}
-                                </div>
-                            );
-                        })}
-                    </div>
-
                     <div ref={stepRef}>
                     {/* PASO 1: Ubicacion */}
                     {paso === 1 && (
@@ -772,7 +743,7 @@ export default function CotizadorForm() {
                                     const qty = form.muebles[m.id] || 0;
                                     return (
                                         <div key={m.id} className={`${styles.muebleCard} ${qty > 0 ? styles.muebleActivo : ''}`}>
-                                            <m.Icon size={20} className={styles.muebleIcon} />
+                                            <FurnitureIcon type={m.id} size={20} className={styles.muebleIcon} />
                                             <span className={styles.muebleLabel}>{m.label}</span>
                                             <div className={styles.counter}>
                                                 <button type="button" onClick={() => setMueble(m.id, -1)} disabled={qty === 0}>
@@ -984,7 +955,7 @@ export default function CotizadorForm() {
                     {paso === 4 && form.fecha && (
                         <div className={styles.pdfNota}>
                             <Info size={15} />
-                            Se descargara un PDF con tu informacion. Adjuntalo en WhatsApp para que podamos darte el precio.
+                            <span>Se descargara un PDF con tu informacion. Adjuntalo en WhatsApp para que podamos darte el precio.</span>
                         </div>
                     )}
 
@@ -1006,7 +977,7 @@ export default function CotizadorForm() {
                     )}
 
                     {/* Navegacion */}
-                    <div className={styles.nav}>
+                    <div className={`${styles.nav} ${paso === 4 ? styles.navFinal : ''}`}>
                         {paso > 1 && (
                             <button type="button" className={styles.btnBack} onClick={() => setPaso(p => p - 1)}>
                                 <ArrowLeft size={16} /> Anterior

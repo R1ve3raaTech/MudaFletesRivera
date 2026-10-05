@@ -3,14 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Quote, X, Send, ThumbsUp } from 'lucide-react';
+import { Quote, X, Send, ThumbsUp, ArrowUpRight, ArrowLeft, ArrowRight } from 'lucide-react';
 // Supabase pesa ~200 KB: se importa bajo demanda para no cargarlo con la portada
 const getSupabase = () => import('../../supabaseClient').then((m) => m.default);
 import { obtenerTokenTurnstile } from '../../lib/turnstile';
 import styles from './Resenhas.module.css';
+import Reveal from '../Reveal';
 
-gsap.registerPlugin(ScrollTrigger);
 
 const NIVELES = [
     { label: 'Pésimo',    color: '#ef4444' },
@@ -122,47 +121,20 @@ const Termometro = ({ value, onChange }) => {
     );
 };
 
-const ReseñaCard = ({ nombre, calificacion, texto, fecha, aspectos, index }) => {
+const ReviewCard = ({ nombre, calificacion, texto, fecha, aspectos, index }) => {
     const tags = aspectos ? aspectos.split(',').map(t => t.trim()).filter(Boolean) : [];
-    const ref = useRef(null);
-
-    useGSAP(() => {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        gsap.fromTo(ref.current, {
-            autoAlpha: 0,
-            y: 24,
-        }, {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.42,
-            delay: Math.min(index * 0.08, 0.24),
-            ease: 'power2.out',
-            scrollTrigger: { trigger: ref.current, start: 'top 92%', once: true },
-        });
-    }, { scope: ref, dependencies: [index] });
-
-    return (
-        <div ref={ref} className={styles.card}>
-            <Quote size={22} className={styles.quoteIcon} aria-hidden="true" />
-            <p className={styles.texto}>{texto}</p>
-            {tags.length > 0 && (
-                <div className={styles.cardTags}>
-                    {tags.map((tag) => (
-                        <span key={tag} className={styles.cardTag}>
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-            )}
-            <CalificacionDiscreta calificacion={calificacion} />
-            <div className={styles.autor}>
-                <div>
-                    <p className={styles.nombre}>{formatearNombreTestimonio(nombre)}</p>
-                    <p className={styles.meta}>Mudanza · {fecha}</p>
-                </div>
-            </div>
+    return <Reveal as="article" className={styles.card} delay={Math.min(index * .06, .18)}>
+        <Quote size={23} className={styles.quoteIcon} aria-hidden="true" />
+        <blockquote className={styles.texto}>{texto}</blockquote>
+        {tags.length > 0 && <div className={styles.cardTags}>
+            {tags.map(tag => <span key={tag} className={styles.cardTag}>{tag}</span>)}
+        </div>}
+        <CalificacionDiscreta calificacion={calificacion} />
+        <div className={styles.autor}>
+            <p className={styles.nombre}>{formatearNombreTestimonio(nombre)}</p>
+            <p className={styles.meta}>Mudanza · {fecha}</p>
         </div>
-    );
+    </Reveal>;
 };
 
 const Modal = ({ onClose }) => {
@@ -513,46 +485,21 @@ const Reseñas = () => {
         });
     };
 
-    const headerRef = useRef(null);
-    const emptyRef = useRef(null);
-
-    useGSAP(() => {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        gsap.timeline({ scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true } })
-            .from(`.${styles.eyebrow}`, { opacity: 0, duration: 0.3 })
-            .from(`.${styles.sectionHeader} h2`, { opacity: 0, y: 14, duration: 0.35, ease: 'power2.out' }, 0.08)
-            .from(`.${styles.sectionHeader} p`, { opacity: 0, duration: 0.3 }, 0.16)
-            .from(`.${styles.ctaBtn}`, { opacity: 0, y: 8, duration: 0.3, ease: 'power2.out' }, 0.24);
-    }, { scope: headerRef });
-
-    useGSAP(() => {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        if (!cargando && reseñas.length === 0) {
-            gsap.from(emptyRef.current, { opacity: 0, y: 16, duration: 0.4, ease: 'power2.out' });
-        }
-    }, [cargando, reseñas.length]);
-
     return (
         <section id="resenas" className={styles.section}>
             {!cargando && <RatingSchema reseñas={reseñas} />}
-            <div className={styles.sectionHeader} ref={headerRef}>
-                <span className={styles.eyebrow}>
-                    Lo que dicen nuestros clientes
-                </span>
-                <h2>
-                    Reseñas y Testimonios
-                </h2>
-                <div className={styles.rule} />
-                <p>
-                    Más de 20 años generando confianza en Costa Rica. Aquí están las experiencias de quienes ya confiaron en nosotros.
-                </p>
-                <button
-                    className={styles.ctaBtn}
-                    onClick={() => setModalOpen(true)}
-                >
-                    Dejá tu reseña
-                </button>
-            </div>
+            <Reveal className={styles.sectionHeader}>
+                <div>
+                    <span className={styles.eyebrow}>Lo que dicen nuestros clientes</span>
+                    <h2>Reseñas y Testimonios</h2>
+                </div>
+                <div className={styles.headerCopy}>
+                    <p>Más de 20 años generando confianza en Costa Rica. Aquí están las experiencias de quienes ya confiaron en nosotros.</p>
+                    <button type="button" className={styles.ctaBtn} onClick={() => setModalOpen(true)}>
+                        Dejá tu reseña <ArrowUpRight size={17} aria-hidden="true" />
+                    </button>
+                </div>
+            </Reveal>
 
             <div className={styles.grid}>
                 {cargando ? (
@@ -560,13 +507,13 @@ const Reseñas = () => {
                         <p className={styles.emptySub}>Cargando reseñas...</p>
                     </div>
                 ) : reseñas.length === 0 ? (
-                    <div ref={emptyRef} className={styles.emptyState}>
-                        <span className={styles.emptyIcon}>⭐</span>
+                    <div className={styles.emptyState}>
+                        <Quote size={28} className={styles.emptyIcon} aria-hidden="true" />
                         <p className={styles.emptyTitle}>¡Muy pronto más reseñas!</p>
                         <p className={styles.emptySub}>Sé el primero en compartir tu experiencia con nosotros.</p>
                     </div>
                 ) : reseñasPagina.map((r, i) => (
-                    <ReseñaCard key={`${pagina}-${r.id ?? i}`} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
+                    <ReviewCard key={`${pagina}-${r.id ?? i}`} {...r} texto={r.comentario} fecha={r.fecha_mudanza} index={i} />
                 ))}
             </div>
 
@@ -577,15 +524,15 @@ const Reseñas = () => {
                         onClick={() => irPagina(pagina - 1)}
                         disabled={pagina === 1}
                     >
-                        ← Anterior
+                        <ArrowLeft size={15} aria-hidden="true" /> Anterior
                     </button>
-                    <span className={styles.pageInfo}>{pagina} / {totalPaginas}</span>
+                    <span className={styles.pageInfo} aria-live="polite">{pagina} / {totalPaginas}</span>
                     <button
                         className={styles.pageBtn}
                         onClick={() => irPagina(pagina + 1)}
                         disabled={pagina === totalPaginas}
                     >
-                        Siguiente →
+                        Siguiente <ArrowRight size={15} aria-hidden="true" />
                     </button>
                 </div>
             )}

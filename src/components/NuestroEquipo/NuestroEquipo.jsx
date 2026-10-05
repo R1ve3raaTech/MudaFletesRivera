@@ -1,20 +1,18 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ShieldCheck, TruckIcon, Route, Box, ChevronLeft, ChevronRight, MessageCircle, Send } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
+import { AnimatePresence, LazyMotion, domAnimation, m as Motion, useInView, useReducedMotion } from 'motion/react';
+import { ShieldCheck, Route, Box, ChevronLeft, ChevronRight, Pause, Play, ArrowUpRight } from 'lucide-react';
 import './NuestroEquipo.css';
 import mudanza1 from '../../assets/mudanza1.webp';
 import mudanza2 from '../../assets/mudanza2.webp';
 import mudanza3 from '../../assets/mudanza3.webp';
 import mudanza4 from '../../assets/mudanza4.webp';
 import mudanza5 from '../../assets/mudanza5.webp';
-import scrollToSection from '../../scrollToSection';
 import truck1 from '../../assets/truck1.webp';
 import truck2 from '../../assets/truck2.webp';
-import logoNew from '../../assets/trucklogo.png';
-
-gsap.registerPlugin(ScrollTrigger);
+import { LOGO_URL } from '../../branding';
+import scrollToSection from '../../scrollToSection';
+import Reveal from '../Reveal';
+import WhatsAppIcon from '../WhatsAppIcon';
 
 const images = [
     {
@@ -61,159 +59,130 @@ const images = [
     }
 ];
 
-const NuestroEquipo = () => {
-    const [[page, direction], setPage] = useState([0, 0]);
-    const [displayPage, setDisplayPage] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
-    const slideRef = useRef(null);
-    const overlayRef = useRef(null);
-    const visualRef = useRef(null);
-    const contentRef = useRef(null);
+const features = [
+    { Icon: ShieldCheck, title: 'Seguridad Total', description: 'Furgones cerrados y acondicionados.' },
+    { Icon: Box, title: 'Interior Especializado', description: 'Rieles y protección de madera.' },
+    { Icon: Route, title: 'Cobertura Nacional', description: 'Llegamos a todo Costa Rica.' },
+];
 
-    const paginate = (newDirection) => {
-        setPage(([p]) => [(p + newDirection + images.length) % images.length, newDirection]);
+export default function NuestroEquipo() {
+    const [page, setPage] = useState(0);
+    const [playing, setPlaying] = useState(true);
+    const [hovered, setHovered] = useState(false);
+    const [focused, setFocused] = useState(false);
+    const [tabVisible, setTabVisible] = useState(true);
+    const galleryRef = useRef(null);
+    const inView = useInView(galleryRef, { amount: .2 });
+    const reduced = useReducedMotion();
+    const automatic = playing && !reduced;
+
+    const paginate = (direction) => {
+        setPlaying(false);
+        setPage(current => (current + direction + images.length) % images.length);
     };
 
     useEffect(() => {
-        images.forEach(image => {
-            const img = new Image();
-            img.src = image.url;
-        });
+        const update = () => setTabVisible(!document.hidden);
+        document.addEventListener('visibilitychange', update);
+        return () => document.removeEventListener('visibilitychange', update);
+    }, []);
 
-        if (isHovered) return;
-        const timer = setInterval(() => {
-            paginate(1);
-        }, 5000);
+    useEffect(() => {
+        if (!automatic || hovered || focused || !inView || !tabVisible) return;
+        const timer = setInterval(() => setPage(current => (current + 1) % images.length), 6000);
         return () => clearInterval(timer);
-    }, [page, isHovered]);
+    }, [automatic, hovered, focused, inView, tabVisible, page]);
 
-    useGSAP(() => {
-        gsap.from(visualRef.current, {
-            opacity: 0, x: -50, duration: 0.7,
-            scrollTrigger: { trigger: visualRef.current, start: 'top 80%', once: true },
-        });
-        gsap.from(contentRef.current.children, {
-            opacity: 0, y: 20, duration: 0.5, stagger: 0.1,
-            scrollTrigger: { trigger: contentRef.current, start: 'top 80%', once: true },
-        });
-    }, { scope: contentRef });
+    useEffect(() => {
+        if (!inView) return;
+        const next = new Image();
+        next.src = images[(page + 1) % images.length].url;
+    }, [page, inView]);
 
-    // Exit animation when target page changes
-    useGSAP(() => {
-        if (page === displayPage) return;
-        gsap.to(slideRef.current, {
-            x: direction > 0 ? '-15%' : '15%',
-            opacity: 0,
-            duration: 0.25,
-            ease: 'power2.in',
-            onComplete: () => setDisplayPage(page),
-        });
-    }, [page]);
-
-    // Enter animation once the displayed slide content updates
-    useGSAP(() => {
-        gsap.fromTo(slideRef.current,
-            { x: direction > 0 ? '15%' : '-15%', opacity: 0 },
-            { x: '0%', opacity: 1, duration: 0.4, ease: 'power2.out' }
-        );
-        gsap.fromTo(overlayRef.current,
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.4, delay: 0.15, ease: 'power2.out' }
-        );
-    }, [displayPage]);
-
-    return (
+    return <LazyMotion features={domAnimation}>
         <section className="truckSecContainer" id="nuestro-equipo">
-            <div className="truckSecBlob"></div>
-
             <div className="truckSecWrapper">
-                {/* Visual Side - CAROUSEL */}
-                <div
-                    className="truckSecVisual"
-                    ref={visualRef}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    <div className="truckSecCarouselContainer">
-                        <div ref={slideRef} className="truckSecSlide">
-                            <img
-                                src={images[displayPage].url}
-                                alt={images[displayPage].title}
-                                className="truckSecMainImg"
-                                loading={displayPage === 0 ? "eager" : "lazy"}
-                                fetchPriority={displayPage === 0 ? "high" : "low"}
-                                decoding="async"
-                            />
-                            <div className="truckSecSlideOverlay">
-                                <div ref={overlayRef} className="truckSecOverlayContent">
-                                    <h3>{images[displayPage].title}</h3>
-                                    <p>{images[displayPage].subtitle}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button className="truckSecNavBtn prev" onClick={() => paginate(-1)}><ChevronLeft /></button>
-                        <button className="truckSecNavBtn next" onClick={() => paginate(1)}><ChevronRight /></button>
-                    </div>
-                </div>
-
-                {/* Content Side */}
-                <div className="truckSecContent" ref={contentRef}>
+                <Reveal className="truckSecHeader">
                     <div>
                         <div className="truckSecSubtitle">
-                            <img src={logoNew} alt="Logo" className="truckSecSubLogo" />
-                            Elite & Profesional
+                            <img src={LOGO_URL} alt="Logo oficial de MudaFletesRivera" className="truckSecSubLogo" />
+                            <span>Elite &amp; Profesional</span>
                         </div>
-                        <h2 className="truckSecTitle">
-                            Mudanzas Profesionales en <span>Toda Costa Rica</span>
-                        </h2>
-                        <p className="truckSecDesc">
-                            Combinamos la mejor tecnología en transporte con un equipo humano excepcional. Cada mudanza es tratada con precisión logística para garantizar la integridad absoluta de sus bienes.
-                        </p>
+                        <h2 className="truckSecTitle">Mudanzas Profesionales en <span>Toda Costa Rica</span></h2>
                     </div>
+                    <p className="truckSecDesc">
+                        Combinamos la mejor tecnología en transporte con un equipo humano excepcional. Cada mudanza es tratada con precisión logística para garantizar la integridad absoluta de sus bienes.
+                    </p>
+                </Reveal>
 
-                    <div className="truckSecGrid">
-                        <div className="truckSecFeature">
-                            <div className="truckSecFeatureIcon"><ShieldCheck size={22} /></div>
-                            <div>
-                                <h4>Seguridad Total</h4>
-                                <p>Furgones cerrados y acondicionados.</p>
+                <Reveal className="truckSecGallery">
+                    <div ref={galleryRef} className="truckSecGalleryRegion" role="region"
+                        aria-roledescription="carrusel" aria-label="Galería de nuestras mudanzas"
+                        onPointerEnter={e => { if (e.pointerType === 'mouse') setHovered(true); }}
+                        onPointerLeave={() => setHovered(false)}
+                        onFocusCapture={() => setFocused(true)}
+                        onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}
+                        onKeyDown={e => {
+                            if (e.key === 'ArrowLeft') { e.preventDefault(); paginate(-1); }
+                            if (e.key === 'ArrowRight') { e.preventDefault(); paginate(1); }
+                        }}>
+                        <div className="truckSecPhotoFrame">
+                            <AnimatePresence initial={false} mode="wait">
+                                <Motion.img key={page} src={images[page].url} alt={images[page].title}
+                                    className="truckSecMainImg" loading="lazy" decoding="async"
+                                    initial={reduced ? false : { opacity: 0 }}
+                                    animate={{ opacity: 1 }} exit={{ opacity: reduced ? 1 : 0 }}
+                                    transition={{ duration: reduced ? 0 : .25 }} />
+                            </AnimatePresence>
+                        </div>
+                        <div className="truckSecGalleryBar">
+                            <div className="truckSecCaption" aria-live={automatic ? 'off' : 'polite'} aria-atomic="true">
+                                <AnimatePresence initial={false} mode="wait">
+                                    <Motion.div key={page}
+                                        initial={reduced ? false : { opacity: 0 }}
+                                        animate={{ opacity: 1 }} exit={{ opacity: reduced ? 1 : 0 }}
+                                        transition={{ duration: reduced ? 0 : .15 }}>
+                                        <h3>{images[page].title}</h3>
+                                        <p>{images[page].subtitle}</p>
+                                    </Motion.div>
+                                </AnimatePresence>
+                            </div>
+                            <div className="truckSecControls">
+                                <button type="button" onClick={() => paginate(-1)} aria-label="Foto anterior">
+                                    <ChevronLeft size={21} aria-hidden="true" />
+                                </button>
+                                <button type="button" onClick={() => paginate(1)} aria-label="Foto siguiente">
+                                    <ChevronRight size={21} aria-hidden="true" />
+                                </button>
+                                {!reduced && <button type="button" onClick={() => setPlaying(value => !value)}
+                                    aria-label={playing ? 'Pausar galería' : 'Reanudar galería'}>
+                                    {playing ? <Pause size={17} aria-hidden="true" /> : <Play size={17} aria-hidden="true" />}
+                                </button>}
                             </div>
                         </div>
-
-                        <div className="truckSecFeature">
-                            <div className="truckSecFeatureIcon"><Box size={22} /></div>
-                            <div>
-                                <h4>Interior Especializado</h4>
-                                <p>Rieles y protección de madera.</p>
-                            </div>
-                        </div>
-
-                        <div className="truckSecFeature">
-                            <div className="truckSecFeatureIcon"><Route size={22} /></div>
-                            <div>
-                                <h4>Cobertura Nacional</h4>
-                                <p>Llegamos a todo Costa Rica.</p>
-                            </div>
-                        </div>
                     </div>
+                </Reveal>
 
-                    <div className="truckSecActions">
-                        <a
-                            href="/"
-                            onClick={(e) => { e.preventDefault(); scrollToSection('contacto'); }}
-                            className="truckSecBtnForm"
-                        >
-                            <Send size={18} /> Cotizar Ahora
-                        </a>
-                        <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza" target="_blank" rel="noopener noreferrer" className="truckSecBtnWa">
-                            <MessageCircle size={20} /> WhatsApp
-                        </a>
-                    </div>
+                <div className="truckSecFeatures">
+                    {features.map((feature, i) => {
+                        const { Icon, title, description } = feature;
+                        return <Reveal as="article" key={title} className="truckSecFeature" delay={i * .06}>
+                            <Icon size={23} aria-hidden="true" />
+                            <div><h3>{title}</h3><p>{description}</p></div>
+                        </Reveal>;
+                    })}
                 </div>
+                <Reveal className="truckSecActions">
+                    <a href="/#contacto" className="truckSecBtnForm"
+                        onClick={e => { e.preventDefault(); scrollToSection('contacto'); }}>
+                        Cotizar Ahora <ArrowUpRight size={17} aria-hidden="true" />
+                    </a>
+                    <a href="https://wa.me/50670818306?text=Hola,%20deseo%20cotizar%20una%20mudanza"
+                        target="_blank" rel="noopener noreferrer" className="truckSecBtnWa">
+                        <WhatsAppIcon size={20} /> WhatsApp
+                    </a>
+                </Reveal>
             </div>
         </section>
-    );
-};
-
-export default NuestroEquipo;
+    </LazyMotion>;
+}
