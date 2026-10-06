@@ -131,44 +131,9 @@
     background: #edf2fc !important;
 }
 
-.themeToggle {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-primary);
-    transition: color 0.2s ease, transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-.themeToggle:hover {
-    color: var(--accent-color);
-    transform: rotate(15deg) scale(1.1);
-}
-
-[data-theme='dark'] .themeToggle {
-    background: transparent;
-    color: white;
-}
-
-[data-theme='dark'] .themeToggle:hover {
-    color: var(--accent-color);
-}
-
 .navMain {
     display: flex;
     align-items: center;
-}
-
-.mobileActions {
-    display: none;
-}
-
-.desktopOnly {
-    display: block;
 }
 
 @media (max-width: 1024px) {

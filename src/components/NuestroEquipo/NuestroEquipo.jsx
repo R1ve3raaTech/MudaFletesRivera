@@ -1,14 +1,15 @@
 import { useRef, useState, useEffect } from 'react';
 import { AnimatePresence, LazyMotion, domAnimation, m as Motion, useInView, useReducedMotion } from 'motion/react';
-import { ShieldCheck, Route, Box, ChevronLeft, ChevronRight, Pause, Play, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck, Route, Box, ChevronLeft, ChevronRight, ArrowLeftRight, ArrowUpRight } from 'lucide-react';
 import './NuestroEquipo.css';
-import mudanza1 from '../../assets/mudanza1.webp';
-import mudanza2 from '../../assets/mudanza2.webp';
+import truckNueva from '../../assets/camion-carga-comercial.webp';
+import truck2 from '../../assets/truck2.webp';
+import truck1 from '../../assets/truck1.webp';
 import mudanza3 from '../../assets/mudanza3.webp';
+import mudanza2 from '../../assets/mudanza2.webp';
+import mudanza1 from '../../assets/mudanza1.webp';
 import mudanza4 from '../../assets/mudanza4.webp';
 import mudanza5 from '../../assets/mudanza5.webp';
-import truck1 from '../../assets/truck1.webp';
-import truck2 from '../../assets/truck2.webp';
 import { LOGO_URL } from '../../branding';
 import scrollToSection from '../../scrollToSection';
 import Reveal from '../Reveal';
@@ -56,6 +57,13 @@ const images = [
         url: mudanza3,
         title: "Capacidad sin límites, orden sin fallas.",
         subtitle: "Equipos de línea blanca, parrillas y muebles de exterior... no hay carga demasiado grande. Nuestro estibado evita desplazamientos.",
+    },
+    {
+        id: 8,
+        url: truckNueva,
+        position: 'center 75%',
+        title: "Transporte para tu hogar y tu negocio.",
+        subtitle: "Nuestro equipo y nuestro camión, listos para tu próxima mudanza.",
     }
 ];
 
@@ -65,33 +73,43 @@ const features = [
     { Icon: Route, title: 'Cobertura Nacional', description: 'Llegamos a todo Costa Rica.' },
 ];
 
+const photoMotion = {
+    enter: direction => ({ x: `${direction * 100}%`, opacity: 1 }),
+    visible: { x: '0%', opacity: 1 },
+    exit: direction => ({ x: `${direction * -100}%`, opacity: 1 }),
+};
+
 export default function NuestroEquipo() {
     const [page, setPage] = useState(0);
-    const [playing, setPlaying] = useState(true);
-    const [hovered, setHovered] = useState(false);
-    const [focused, setFocused] = useState(false);
-    const [tabVisible, setTabVisible] = useState(true);
+    const [direction, setDirection] = useState(1);
+    const [interacted, setInteracted] = useState(false);
+    const gestureRef = useRef(null);
     const galleryRef = useRef(null);
-    const inView = useInView(galleryRef, { amount: .2 });
+    const inView = useInView(galleryRef, { amount: .2, once: true });
     const reduced = useReducedMotion();
-    const automatic = playing && !reduced;
 
     const paginate = (direction) => {
-        setPlaying(false);
+        setInteracted(true);
+        setDirection(direction);
         setPage(current => (current + direction + images.length) % images.length);
     };
 
-    useEffect(() => {
-        const update = () => setTabVisible(!document.hidden);
-        document.addEventListener('visibilitychange', update);
-        return () => document.removeEventListener('visibilitychange', update);
-    }, []);
+    const startGesture = (event) => {
+        if (!event.isPrimary || event.button !== 0 || event.target.closest('button')) return;
+        gestureRef.current = { x: event.clientX, y: event.clientY, id: event.pointerId };
+        event.currentTarget.setPointerCapture(event.pointerId);
+    };
 
-    useEffect(() => {
-        if (!automatic || hovered || focused || !inView || !tabVisible) return;
-        const timer = setInterval(() => setPage(current => (current + 1) % images.length), 6000);
-        return () => clearInterval(timer);
-    }, [automatic, hovered, focused, inView, tabVisible, page]);
+    const finishGesture = (event) => {
+        const gesture = gestureRef.current;
+        gestureRef.current = null;
+        if (!gesture || gesture.id !== event.pointerId) return;
+        const deltaX = event.clientX - gesture.x;
+        const deltaY = event.clientY - gesture.y;
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4) {
+            paginate(deltaX < 0 ? 1 : -1);
+        }
+    };
 
     useEffect(() => {
         if (!inView) return;
@@ -118,25 +136,44 @@ export default function NuestroEquipo() {
                 <Reveal className="truckSecGallery">
                     <div ref={galleryRef} className="truckSecGalleryRegion" role="region"
                         aria-roledescription="carrusel" aria-label="Galería de nuestras mudanzas"
-                        onPointerEnter={e => { if (e.pointerType === 'mouse') setHovered(true); }}
-                        onPointerLeave={() => setHovered(false)}
-                        onFocusCapture={() => setFocused(true)}
-                        onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}
+                        tabIndex={0}
                         onKeyDown={e => {
                             if (e.key === 'ArrowLeft') { e.preventDefault(); paginate(-1); }
                             if (e.key === 'ArrowRight') { e.preventDefault(); paginate(1); }
                         }}>
-                        <div className="truckSecPhotoFrame">
-                            <AnimatePresence initial={false} mode="wait">
+                        <div className="truckSecPhotoFrame"
+                            onPointerDown={startGesture} onPointerUp={finishGesture}
+                            onPointerCancel={() => { gestureRef.current = null; }}>
+                            <AnimatePresence initial={false} custom={direction}>
                                 <Motion.img key={page} src={images[page].url} alt={images[page].title}
-                                    className="truckSecMainImg" loading="lazy" decoding="async"
-                                    initial={reduced ? false : { opacity: 0 }}
-                                    animate={{ opacity: 1 }} exit={{ opacity: reduced ? 1 : 0 }}
-                                    transition={{ duration: reduced ? 0 : .25 }} />
+                                    className="truckSecMainImg" loading="lazy" decoding="async" draggable={false}
+                                    style={{ objectPosition: images[page].position }}
+                                    custom={direction} variants={photoMotion}
+                                    initial={reduced ? false : 'enter'}
+                                    animate="visible" exit={reduced ? undefined : 'exit'}
+                                    transition={{ duration: reduced ? 0 : .34, ease: [.22, 1, .36, 1] }} />
                             </AnimatePresence>
+                            <div className="truckSecControls">
+                                <button type="button" onClick={() => paginate(-1)} aria-label="Foto anterior">
+                                    <ChevronLeft size={23} aria-hidden="true" />
+                                </button>
+                                <button type="button" onClick={() => paginate(1)} aria-label="Foto siguiente">
+                                    <ChevronRight size={23} aria-hidden="true" />
+                                </button>
+                            </div>
+                            <Motion.div className="truckSecGalleryHint" aria-hidden="true"
+                                initial={false} animate={{ opacity: interacted ? 0 : 1 }}>
+                                <Motion.span initial={false}
+                                    animate={inView && !interacted && !reduced ? { x: [0, 5, -5, 0] } : { x: 0 }}
+                                    transition={{ duration: 1, delay: .5, repeat: 1, repeatDelay: .3 }}>
+                                    <ArrowLeftRight size={16} />
+                                </Motion.span>
+                                <span className="truckSecHintTouch">Desliza para ver más fotos</span>
+                                <span className="truckSecHintMouse">Arrastra o usa las flechas</span>
+                            </Motion.div>
                         </div>
                         <div className="truckSecGalleryBar">
-                            <div className="truckSecCaption" aria-live={automatic ? 'off' : 'polite'} aria-atomic="true">
+                            <div className="truckSecCaption" aria-live="polite" aria-atomic="true">
                                 <AnimatePresence initial={false} mode="wait">
                                     <Motion.div key={page}
                                         initial={reduced ? false : { opacity: 0 }}
@@ -146,18 +183,6 @@ export default function NuestroEquipo() {
                                         <p>{images[page].subtitle}</p>
                                     </Motion.div>
                                 </AnimatePresence>
-                            </div>
-                            <div className="truckSecControls">
-                                <button type="button" onClick={() => paginate(-1)} aria-label="Foto anterior">
-                                    <ChevronLeft size={21} aria-hidden="true" />
-                                </button>
-                                <button type="button" onClick={() => paginate(1)} aria-label="Foto siguiente">
-                                    <ChevronRight size={21} aria-hidden="true" />
-                                </button>
-                                {!reduced && <button type="button" onClick={() => setPlaying(value => !value)}
-                                    aria-label={playing ? 'Pausar galería' : 'Reanudar galería'}>
-                                    {playing ? <Pause size={17} aria-hidden="true" /> : <Play size={17} aria-hidden="true" />}
-                                </button>}
                             </div>
                         </div>
                     </div>

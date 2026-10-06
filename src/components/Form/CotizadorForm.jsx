@@ -1,4 +1,4 @@
-import React, { useState, useRef, lazy, Suspense } from 'react';
+import { useState, useRef, lazy, Suspense } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { BADGE_LOGO_URL as logoTruck } from '../../branding';
@@ -6,13 +6,12 @@ import supabase from '../../supabaseClient';
 import {
     MessageCircle, MapPin, Package, Settings, Calendar,
     AlertTriangle, Info, Zap, CheckCircle, ArrowRight, ArrowLeft,
-    Plus, Minus, Check,
-    PartyPopper, RotateCcw
+    Plus, Minus
 } from 'lucide-react';
 import { calcularEstimacion, fmtCRC } from './tarifas';
 import HoldButton from '../HoldButton/HoldButton';
 import FurnitureIcon from './FurnitureIcon';
-import Confetti from '../Confetti/Confetti';
+import SuccessConfirmation from './SuccessConfirmation';
 import { obtenerTokenTurnstile } from '../../lib/turnstile';
 
 // Convierte el blob del PDF a base64 (sin el prefijo data:) para mandarlo
@@ -109,6 +108,10 @@ export default function CotizadorForm() {
         if (paso === 1 && !enviado) return;
         if (!stepRef.current) return;
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (enviado) {
+            cardRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            return;
+        }
         gsap.fromTo(stepRef.current,
             { opacity: 0, x: reduceMotion ? 0 : 26 },
             { opacity: 1, x: 0, duration: 0.35, ease: 'power2.out' }
@@ -599,37 +602,9 @@ export default function CotizadorForm() {
 
                 <div className={styles.card} ref={cardRef}>
                     {enviado ? (
-                        <div className={styles.exito} ref={stepRef}>
-                            <Confetti />
-                            <div className={styles.exitoIcon}>
-                                <PartyPopper size={34} />
-                            </div>
-                            <h3>¡Listo, {form.nombre.trim().split(' ')[0]}!</h3>
-                            <p>
-                                Tu PDF se descargó y se abrió WhatsApp. Adjunta el PDF en el chat
-                                y en minutos te confirmamos el precio de tu mudanza.
-                            </p>
-                            <div className={styles.exitoPasos}>
-                                <span><Check size={15} /> PDF generado con tus datos</span>
-                                <span><Check size={15} /> Solicitud registrada</span>
-                                <span><MessageCircle size={15} /> Solo falta adjuntarlo en WhatsApp</span>
-                            </div>
-                            <div className={styles.exitoAviso}>
-                                <Info size={16} className={styles.exitoAvisoIcon} />
-                                <p>
-                                    El precio mostrado es <strong>solamente un estimado</strong> calculado
-                                    según el kilometraje, el acceso, los pisos y los artículos.
-                                    El <strong>precio final se aclara por WhatsApp</strong>.
-                                </p>
-                            </div>
-                            <div className={styles.exitoAcciones}>
-                                <button type="button" className={styles.btnWa} onClick={compartirPdf}>
-                                    <MessageCircle size={18} /> Enviar PDF por WhatsApp
-                                </button>
-                                <button type="button" className={styles.btnBack} onClick={reiniciar}>
-                                    <RotateCcw size={15} /> Hacer otra cotización
-                                </button>
-                            </div>
+                        <div ref={stepRef}>
+                            <SuccessConfirmation name={form.nombre.trim().split(' ')[0]}
+                                onShare={compartirPdf} onRestart={reiniciar} />
                         </div>
                     ) : (
                     <>

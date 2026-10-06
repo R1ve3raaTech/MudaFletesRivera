@@ -32,11 +32,6 @@
     margin-bottom: 32px;
 }
 
-.circle {
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
 /* Service and assurance loading layouts match their photo-led sections. */
 .serviceGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; width: 100%; }
 .servicePreview { display: flex; flex-direction: column; gap: 16px; min-width: 0; }

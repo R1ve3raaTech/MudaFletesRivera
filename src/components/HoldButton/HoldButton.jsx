@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './HoldButton.module.css';
 
 // Botón de "mantener para confirmar": al presionar, una carga llena el

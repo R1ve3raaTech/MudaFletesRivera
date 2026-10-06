@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { MOUNT_SECTIONS_EVENT } from '../scrollToSection';
 import ErrorBoundary from './ErrorBoundary';
 import styles from './LazySection.module.css';

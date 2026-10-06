@@ -392,27 +392,6 @@
     border-color: var(--brand-blue);
 }
 
-/* ── Number input ── */
-.numberInput {
-    border: 1.5px solid var(--border-neutral);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #0f172a;
-    outline: none;
-    font-family: inherit;
-    transition: border-color 0.2s;
-    background: #FDFCFA;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    width: 100px;
-}
-
-.numberInput:focus {
-    border-color: var(--brand-blue);
-}
-
 /* ── Resumen ── */
 .resumen {
     background: #fff;
@@ -449,72 +428,6 @@
     font-weight: 700;
     text-align: right;
     overflow-wrap: anywhere;
-}
-
-/* ── Autocomplete ── */
-.autocompleteWrap {
-    position: relative;
-}
-
-.autocompleteWrap input {
-    width: 100%;
-    border: 1.5px solid var(--border-neutral);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
-    color: #0f172a;
-    outline: none;
-    font-family: inherit;
-    transition: border-color 0.2s;
-    background: #FDFCFA;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-sizing: border-box;
-}
-
-.autocompleteWrap input:focus {
-    border-color: var(--brand-blue);
-}
-
-.sugerencias {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: #FDFCFA;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--border-neutral);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    list-style: none;
-    padding: 0.4rem 0;
-    margin: 0;
-    overflow: hidden;
-}
-
-.sugerencias li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 0.6rem 1rem;
-    font-size: 0.83rem;
-    color: #334155;
-    cursor: pointer;
-    transition: background 0.15s;
-    line-height: 1.4;
-}
-
-.sugerencias li:hover {
-    background: #f0f7ff;
-    color: var(--brand-blue);
-}
-
-.sugIcon {
-    color: var(--brand-blue);
-    flex-shrink: 0;
-    margin-top: 2px;
 }
 
 /* ── Nota PDF ── */
@@ -1046,14 +959,6 @@
 }
 
 .selectInput:focus { border-color: var(--brand-blue); }
-
-/* ── Sub-etiqueta dentro de un field (ej. hora de mascotas) ── */
-.subLabel {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: #64748b;
-    margin-top: 0.4rem;
-}
 
 /* ── Entrada fluida de elementos condicionales ──
    Los avisos, el resumen y la nota del PDF aparecen con un
