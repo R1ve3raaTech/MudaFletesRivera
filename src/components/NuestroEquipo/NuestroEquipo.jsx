@@ -61,7 +61,7 @@ const images = [
     {
         id: 8,
         url: truckNueva,
-        position: 'center 75%',
+        position: 'center 5%',
         title: "Transporte para tu hogar y tu negocio.",
         subtitle: "Nuestro equipo y nuestro camión, listos para tu próxima mudanza.",
     }
@@ -141,7 +141,7 @@ export default function NuestroEquipo() {
                             if (e.key === 'ArrowLeft') { e.preventDefault(); paginate(-1); }
                             if (e.key === 'ArrowRight') { e.preventDefault(); paginate(1); }
                         }}>
-                        <div className="truckSecPhotoFrame"
+                        <div className={`truckSecPhotoFrame${images[page].id === 8 ? ' truckSecPhotoFrameTruck' : ''}`}
                             onPointerDown={startGesture} onPointerUp={finishGesture}
                             onPointerCancel={() => { gestureRef.current = null; }}>
                             <AnimatePresence initial={false} custom={direction}>
