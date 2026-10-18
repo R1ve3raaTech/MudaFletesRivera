@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AnimatePresence, LazyMotion, domAnimation, m as Motion, useReducedMotion } from 'motion/react';
-import { Timer, X, ArrowRight, Truck } from 'lucide-react';
-import { BADGE_LOGO_URL } from '../../branding';
+import { X, ArrowRight } from 'lucide-react';
+import { LOGO_URL } from '../../branding';
+import movingPhoto from '../../assets/mudanza1.webp';
 import styles from './PromoCotizador.module.css';
 
 const CLAVE = 'promoCotizadorVisto';
@@ -169,35 +170,25 @@ export default function PromoCotizador() {
                             </button>
 
                             <div className={styles.visual} aria-hidden="true">
-                                <img src={BADGE_LOGO_URL} alt="" className={styles.brandLogo} width="72" height="51" />
-                                <Motion.div
-                                    className={styles.clock}
-                                    initial={{ opacity: reduceMotion ? 1 : 0, scale: reduceMotion ? 1 : 0.92 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ duration: reduceMotion ? 0 : 0.4, delay: reduceMotion ? 0 : 0.08 }}
-                                >
-                                    <Timer strokeWidth={1.4} />
-                                </Motion.div>
-                                <span className={styles.orbit} />
+                                <img src={movingPhoto} alt="" className={styles.photo} width="1600" height="1200" decoding="async" />
                             </div>
 
                             <div className={styles.content}>
-                                <span className={styles.badge}>
-                                    <Truck size={16} /> Cotización express
-                                </span>
+                                <img src={LOGO_URL} alt="MudaFletesRivera" className={styles.brandLogo} width="108" height="60" />
                                 <h3 className={styles.titulo} id="promo-cotizador-title">
-                                    Cotiza tu mudanza en <em>menos de 2 minutos</em>
+                                    Tu mudanza empieza con un precio claro.
                                 </h3>
                                 <p className={styles.sub} id="promo-cotizador-description">
-                                    Responde unas preguntas rápidas y mira tu precio estimado al instante,
+                                    Cuéntanos qué llevas y a dónde vas. Obtén un precio estimado al instante,
                                     sin llamadas ni esperas.
                                 </p>
                                 <div className={styles.actions}>
                                     <Link to="/mimudanza" className={styles.cta} onClick={cerrar}>
-                                        Cotizar ahora <span aria-hidden="true"><ArrowRight size={20} /></span>
+                                        Cotizar mi mudanza <ArrowRight size={20} aria-hidden="true" />
                                     </Link>
+                                    <p className={styles.reassurance}>Gratis y sin compromiso.</p>
                                     <button type="button" className={styles.despues} onClick={cerrar} disabled={!visible}>
-                                        Quizás después
+                                        Seguir explorando
                                     </button>
                                 </div>
                             </div>
